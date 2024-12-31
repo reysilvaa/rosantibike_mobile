@@ -4,7 +4,7 @@ import 'package:rosantibike_mobile/theme/theme_provider.dart';
 
 class StatCard extends StatelessWidget {
   final String statType;
-  final String value;
+  final Widget value; // Ubah value menjadi Widget
   final String percentage;
   final bool isIncreasing;
   final VoidCallback onTap;
@@ -87,14 +87,7 @@ class StatCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              value,
-              style: TextStyle(
-                color: style['textColor'],
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            value, // Gunakan widget untuk value
           ],
         ),
       ),
