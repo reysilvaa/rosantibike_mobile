@@ -9,11 +9,13 @@ class DashboardLoaded extends DashboardState {
   final int motorTersewa;
   final int sisaMotor;
   final int totalUnit;
+  final int totalBooking;
   
   DashboardLoaded({
     required this.motorTersewa,
     required this.sisaMotor,
     required this.totalUnit,
+    required this.totalBooking,
   });
 }
 

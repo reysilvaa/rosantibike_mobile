@@ -91,6 +91,7 @@ class DashboardPage extends StatelessWidget {
         final sisaMotor = state is DashboardLoaded ? state.sisaMotor : 0;
         final motorTersewa = state is DashboardLoaded ? state.motorTersewa : 0;
         final totalMotor = state is DashboardLoaded ? state.totalUnit : 0;
+        final totalBooking = state is DashboardLoaded ? state.totalBooking : 0;
 
         return Column(
           children: [
@@ -141,9 +142,9 @@ class DashboardPage extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: StatCard(
-                    statType: 'AksesKeWeb',
+                    statType: 'TotalBooking',
                     value: _buildValueWidget(
-                        context, 0, isLoading, isError, false),
+                        context, totalBooking, isLoading, isError, false),
                     percentage: '0%',
                     isIncreasing: true,
                     onTap: () {

@@ -42,7 +42,7 @@ class StatCard extends StatelessWidget {
         'progressBarColor': Colors.blue,
         'icon': Icons.motorcycle_rounded,
       },
-      'AksesKeWeb': {
+      'TotalBooking': {
         'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
         'textColor': isDark ? Colors.white : Colors.black,
         'progressBarColor': Colors.blue,

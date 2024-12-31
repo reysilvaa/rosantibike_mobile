@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rosantibike_mobile/api/booking_api.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'pages/dashboard_page.dart';
 import 'pages/analytics_page.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
               create: (context) => DashboardBloc(
                 transaksiApi: TransaksiApi(),
                 jenisMotorApi: JenisMotorApi(),
+                bookingApi: BookingApi(),
               )..add(FetchDashboardData()),
             ),
           ],
