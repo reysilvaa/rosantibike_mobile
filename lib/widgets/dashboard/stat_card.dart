@@ -4,7 +4,7 @@ import 'package:rosantibike_mobile/theme/theme_provider.dart';
 
 class StatCard extends StatelessWidget {
   final String statType;
-  final Widget value; // Ubah value menjadi Widget
+  final Widget value;
   final String percentage;
   final bool isIncreasing;
   final VoidCallback onTap;
@@ -25,8 +25,10 @@ class StatCard extends StatelessWidget {
 
     final Map<String, Map<String, dynamic>> statTypeStyles = {
       'SisaMotor': {
-        'backgroundColor': Colors.black,
-        'textColor': Colors.white, // Sesuaikan dengan tema
+        'backgroundColor': isDark
+            ? Colors.black
+            : const Color(0xFF2196F3), // Primary blue from theme for light mode
+        'textColor': Colors.white, // White text for both modes
         'progressBarColor': Colors.blue,
         'icon': Icons.motorcycle,
       },
@@ -50,15 +52,15 @@ class StatCard extends StatelessWidget {
       },
     };
 
-    // Retrieve styles based on the statType
-    final style = statTypeStyles[statType] ??
-        statTypeStyles[
-            'sisaMotor']; // Default to 'MotorTersewa' style if not found
+    final style = statTypeStyles[statType] ?? statTypeStyles['SisaMotor'];
 
-    // Menentukan warna teks untuk value berdasarkan tema
+    // Update value text color logic
     final valueTextColor = isDark
-        ? (statType == 'SisaMotor' ? Colors.white : Colors.grey[200])
-        : (statType == 'SisaMotor' ? Colors.black : Colors.black);
+        ? Colors.white // Dark mode: always white
+        : (statType == 'SisaMotor'
+            ? Colors.white
+            : Colors
+                .black); // Light mode: white for SisaMotor, black for others
 
     return GestureDetector(
       onTap: onTap,
@@ -76,14 +78,14 @@ class StatCard extends StatelessWidget {
                 Icon(
                   style?['icon'],
                   color: style?['textColor'],
-                  size: 28, // Set your preferred icon size
+                  size: 28,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   statType.replaceAllMapped(
                     RegExp(r'([a-z])([A-Z])'),
                     (Match m) => '${m[1]} ${m[2]}',
-                  ), // Formatting statType for display
+                  ),
                   style: TextStyle(
                     color: style?['textColor'],
                     fontSize: 14,
@@ -94,9 +96,9 @@ class StatCard extends StatelessWidget {
             const SizedBox(height: 8),
             DefaultTextStyle(
               style: TextStyle(
-                color: valueTextColor, // Use dynamic text color for value
+                color: valueTextColor,
               ),
-              child: value, // Gunakan widget untuk value
+              child: value,
             ),
           ],
         ),

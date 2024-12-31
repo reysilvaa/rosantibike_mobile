@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/api/booking_api.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'pages/dashboard_page.dart';
-import 'pages/analytics_page.dart';
+import 'pages/transaksi_page.dart';
 import 'pages/wallets_page.dart';
 import 'pages/review_page.dart';
 import 'pages/settings_page.dart';
@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     const DashboardPage(),
-    const AnalyticsPage(),
+    const TransaksiPage(),
     const WalletsPage(),
     const ReviewPage(),
     const SettingsPage(),
