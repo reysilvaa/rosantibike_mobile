@@ -55,7 +55,7 @@ class DashboardPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: StatCard(
-                      statType: 'TotalMenus',
+                      statType: 'SisaMotor',
                       value: '120',
                       percentage: '45%',
                       isIncreasing: true,
@@ -68,7 +68,7 @@ class DashboardPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: StatCard(
-                      statType: 'totalOrders',
+                      statType: 'MotorTersewa',
                       value: '180',
                       percentage: '62%',
                       isIncreasing: true,
@@ -85,7 +85,7 @@ class DashboardPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: StatCard(
-                      statType: 'totalClients',
+                      statType: 'TotalMotor',
                       value: '240',
                       percentage: '80%',
                       isIncreasing: true,
@@ -98,7 +98,7 @@ class DashboardPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: StatCard(
-                      statType: 'revenue',
+                      statType: 'AksesKeWeb',
                       value: '140',
                       percentage: '85%',
                       isIncreasing: true,
