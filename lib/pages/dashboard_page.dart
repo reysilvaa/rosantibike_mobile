@@ -83,8 +83,7 @@ class DashboardPage extends StatelessWidget {
 
         final sisaMotor = state is DashboardLoaded ? state.sisaMotor : 0;
         final motorTersewa = state is DashboardLoaded ? state.motorTersewa : 0;
-        final totalMotor =
-            state is DashboardLoaded ? state.motorTersewa + state.sisaMotor : 0;
+        final totalMotor = state is DashboardLoaded ? state.totalUnit : 0;
 
         return Column(
           children: [
