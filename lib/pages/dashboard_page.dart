@@ -85,7 +85,7 @@ class DashboardPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: StatCard(
-                      statType: 'TotalMotor',
+                      statType: 'TotalUnit',
                       value: '240',
                       percentage: '80%',
                       isIncreasing: true,

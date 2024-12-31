@@ -36,7 +36,7 @@ class StatCard extends StatelessWidget {
         'progressBarColor': Colors.red,
         'icon': Icons.north_east_rounded, // Example icon
       },
-      'TotalMotor': {
+      'TotalUnit': {
         'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
         'textColor': isDark ? Colors.white : Colors.black,
         'progressBarColor': Colors.blue,
