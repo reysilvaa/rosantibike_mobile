@@ -26,7 +26,7 @@ class StatCard extends StatelessWidget {
     final Map<String, Map<String, dynamic>> statTypeStyles = {
       'SisaMotor': {
         'backgroundColor': Colors.black,
-        'textColor': Colors.white,
+        'textColor': Colors.white, // Sesuaikan dengan tema
         'progressBarColor': Colors.blue,
         'icon': Icons.motorcycle,
       },
@@ -34,33 +34,38 @@ class StatCard extends StatelessWidget {
         'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
         'textColor': isDark ? Colors.white : Colors.black,
         'progressBarColor': Colors.red,
-        'icon': Icons.north_east_rounded, // Example icon
+        'icon': Icons.north_east_rounded,
       },
       'TotalUnit': {
         'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
         'textColor': isDark ? Colors.white : Colors.black,
         'progressBarColor': Colors.blue,
-        'icon': Icons.motorcycle_rounded, // Example icon
+        'icon': Icons.motorcycle_rounded,
       },
       'AksesKeWeb': {
         'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
         'textColor': isDark ? Colors.white : Colors.black,
         'progressBarColor': Colors.blue,
-        'icon': Icons.web, // Example icon
+        'icon': Icons.web,
       },
     };
 
     // Retrieve styles based on the statType
     final style = statTypeStyles[statType] ??
         statTypeStyles[
-            'MotorTersewa']; // Default to 'MotorTersewa' style if not found
+            'sisaMotor']; // Default to 'MotorTersewa' style if not found
+
+    // Menentukan warna teks untuk value berdasarkan tema
+    final valueTextColor = isDark
+        ? (statType == 'SisaMotor' ? Colors.white : Colors.grey[200])
+        : (statType == 'SisaMotor' ? Colors.black : Colors.black);
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: style!['backgroundColor'],
+          color: style?['backgroundColor'],
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -69,8 +74,8 @@ class StatCard extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  style['icon'],
-                  color: style['textColor'],
+                  style?['icon'],
+                  color: style?['textColor'],
                   size: 28, // Set your preferred icon size
                 ),
                 const SizedBox(width: 8),
@@ -80,14 +85,19 @@ class StatCard extends StatelessWidget {
                     (Match m) => '${m[1]} ${m[2]}',
                   ), // Formatting statType for display
                   style: TextStyle(
-                    color: style['textColor'],
+                    color: style?['textColor'],
                     fontSize: 14,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            value, // Gunakan widget untuk value
+            DefaultTextStyle(
+              style: TextStyle(
+                color: valueTextColor, // Use dynamic text color for value
+              ),
+              child: value, // Gunakan widget untuk value
+            ),
           ],
         ),
       ),

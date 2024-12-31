@@ -10,6 +10,7 @@ import '../widgets/dashboard/line_chart.dart';
 import '../widgets/dashboard/period_selector.dart';
 import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
+import '../theme/app_theme.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -18,11 +19,12 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    // Gunakan BlocProvider.value untuk mempertahankan instance
+    // Use BlocProvider to fetch data
     return BlocProvider.value(
-      value: BlocProvider.of<DashboardBloc>(context)
-        ..add(FetchDashboardData()), // Tambahkan hanya saat pertama kali
+      value: BlocProvider.of<DashboardBloc>(context)..add(FetchDashboardData()),
       child: Scaffold(
+        backgroundColor: Theme.of(context)
+            .scaffoldBackgroundColor, // Set background color based on theme
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -31,7 +33,7 @@ class DashboardPage extends StatelessWidget {
               children: [
                 _buildHeader(context, themeProvider),
                 const SizedBox(height: 20),
-                _buildDashboardStats(),
+                _buildDashboardStats(context), // Pass context here
                 const SizedBox(height: 20),
                 const PeriodSelector(),
                 const SizedBox(height: 20),
@@ -45,13 +47,14 @@ class DashboardPage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context, ThemeProvider themeProvider) {
+    final theme = Theme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'Dashboard',
-          style: TextStyle(
-            fontSize: 24,
+          style: theme.appBarTheme.titleTextStyle?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -60,13 +63,17 @@ class DashboardPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                color: theme.iconTheme.color,
               ),
               onPressed: () {
                 themeProvider.toggleTheme();
               },
             ),
             IconButton(
-              icon: const Icon(Icons.more_horiz),
+              icon: Icon(
+                Icons.more_horiz,
+                color: theme.iconTheme.color,
+              ),
               onPressed: () {},
             ),
           ],
@@ -75,7 +82,7 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDashboardStats() {
+  Widget _buildDashboardStats(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
         final isLoading = state is DashboardLoading;
@@ -92,8 +99,8 @@ class DashboardPage extends StatelessWidget {
                 Expanded(
                   child: StatCard(
                     statType: 'SisaMotor',
-                    value:
-                        _buildValueWidget(sisaMotor, isLoading, isError, true),
+                    value: _buildValueWidget(
+                        context, sisaMotor, isLoading, isError, true),
                     percentage: _calculatePercentage(sisaMotor, totalMotor),
                     isIncreasing: true,
                     onTap: () {
@@ -106,7 +113,7 @@ class DashboardPage extends StatelessWidget {
                   child: StatCard(
                     statType: 'MotorTersewa',
                     value: _buildValueWidget(
-                        motorTersewa, isLoading, isError, false),
+                        context, motorTersewa, isLoading, isError, false),
                     percentage: _calculatePercentage(motorTersewa, totalMotor),
                     isIncreasing: true,
                     onTap: () {
@@ -123,7 +130,7 @@ class DashboardPage extends StatelessWidget {
                   child: StatCard(
                     statType: 'TotalUnit',
                     value: _buildValueWidget(
-                        totalMotor, isLoading, isError, false),
+                        context, totalMotor, isLoading, isError, false),
                     percentage: '100%',
                     isIncreasing: true,
                     onTap: () {
@@ -135,7 +142,8 @@ class DashboardPage extends StatelessWidget {
                 Expanded(
                   child: StatCard(
                     statType: 'AksesKeWeb',
-                    value: _buildValueWidget(0, isLoading, isError, false),
+                    value: _buildValueWidget(
+                        context, 0, isLoading, isError, false),
                     percentage: '0%',
                     isIncreasing: true,
                     onTap: () {
@@ -151,12 +159,22 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildValueWidget(
-      int value, bool isLoading, bool isError, bool isSisaMotor) {
+  Widget _buildValueWidget(BuildContext context, int value, bool isLoading,
+      bool isError, bool isSisaMotor) {
+    final theme = Theme.of(context);
+
+    // Check if the app is in dark mode
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    // Set color directly based on the theme (dark mode)
+    Color textColor =
+        isDarkMode ? Colors.white : (isSisaMotor ? Colors.white : Colors.black);
+
+    // If there's an error, display in red
     if (isError) {
-      return const Text(
+      return Text(
         'Error',
-        style: TextStyle(
+        style: theme.textTheme.bodyLarge?.copyWith(
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: Colors.red,
@@ -164,14 +182,13 @@ class DashboardPage extends StatelessWidget {
       );
     }
 
+    // Set the value with the correct color, ensuring it stays white in dark mode
     return Text(
       isLoading ? '--' : value.toString(),
-      style: TextStyle(
+      style: theme.textTheme.bodyLarge?.copyWith(
         fontSize: 22,
         fontWeight: FontWeight.bold,
-        color: isLoading
-            ? Colors.grey
-            : (isSisaMotor ? Colors.white : Colors.black),
+        color: isLoading ? Colors.grey : textColor, // Apply textColor here
       ),
     );
   }
