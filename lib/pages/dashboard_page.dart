@@ -52,44 +52,60 @@ class DashboardPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Row(
-                children: const [
+                children: [
                   Expanded(
                     child: StatCard(
-                      title: 'Total Menus',
+                      statType: 'TotalMenus',
                       value: '120',
                       percentage: '45%',
                       isIncreasing: true,
+                      onTap: () {
+                        // Add your onTap functionality here for "Total Menus"
+                        print('Tapped Total Menus');
+                      },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: StatCard(
-                      title: 'Total Orders',
+                      statType: 'totalOrders',
                       value: '180',
                       percentage: '62%',
                       isIncreasing: true,
+                      onTap: () {
+                        // Add your onTap functionality here for "Total Orders"
+                        print('Tapped Total Orders');
+                      },
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
               Row(
-                children: const [
+                children: [
                   Expanded(
                     child: StatCard(
-                      title: 'Total Clients',
+                      statType: 'totalClients',
                       value: '240',
                       percentage: '80%',
                       isIncreasing: true,
+                      onTap: () {
+                        // Add your onTap functionality here for "Total Clients"
+                        print('Tapped Total Clients');
+                      },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: StatCard(
-                      title: 'Revenue',
+                      statType: 'revenue',
                       value: '140',
                       percentage: '85%',
                       isIncreasing: true,
+                      onTap: () {
+                        // Add your onTap functionality here for "Revenue"
+                        print('Tapped Revenue');
+                      },
                     ),
                   ),
                 ],
