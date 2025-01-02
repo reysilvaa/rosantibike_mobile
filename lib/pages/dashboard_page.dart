@@ -6,7 +6,7 @@ import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
 import '../widgets/dashboard/stat_card.dart';
-import '../widgets/dashboard/line_chart.dart';
+import '../widgets/dashboard/menu_grid.dart';
 import '../widgets/dashboard/period_selector.dart';
 import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
@@ -33,7 +33,6 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -52,6 +51,12 @@ class _DashboardPageState extends State<DashboardPage> {
                         current is DashboardError,
                     listener: (context, state) {
                       if (state is DashboardError) {
+                        // Print full error to the console
+                        print('Error: ${state.message}');
+                        // print(
+                        //     'Stack trace: ${state.stackTrace}'); // If stack trace is available
+
+                        // Optionally, you can also show the error message in the SnackBar
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.message)),
                         );
@@ -67,7 +72,7 @@ class _DashboardPageState extends State<DashboardPage> {
               const SizedBox(height: 20),
               const PeriodSelector(),
               const SizedBox(height: 20),
-              const Expanded(child: RevenueLineChart()),
+              const Expanded(child: MenuGrid()),
             ],
           ),
         ),
