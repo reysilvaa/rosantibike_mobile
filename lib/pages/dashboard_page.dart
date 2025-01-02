@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
+import 'package:rosantibike_mobile/widgets/dashboard/unit_preview.dart';
 import '../widgets/dashboard/stat_card.dart';
 import '../widgets/dashboard/menu_grid.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +69,8 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               const SizedBox(height: 30),
               const MenuGrid(),
+              const SizedBox(height: 30),
+              const MotorCarousel(),
               // const SizedBox(height: 20),
               // const Expanded(child: MenuGrid()),
             ],
