@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rosantibike_mobile/constants/currency_format.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
@@ -233,6 +234,8 @@ class MotorCard extends StatelessWidget {
     final hargaPerHari = stok['harga_perHari'] ?? '0';
     final status = unit['status'] ?? 'Unknown';
 
+    final formattedPrice = formatCurrency(hargaPerHari);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       shape: RoundedRectangleBorder(
@@ -304,7 +307,7 @@ class MotorCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Rp $hargaPerHari / day',
+                        '$formattedPrice / Hari',
                         style: theme.textTheme.titleSmall?.copyWith(
                           color: theme.primaryColor,
                           fontWeight: FontWeight.w600,
