@@ -14,16 +14,21 @@ class DashboardLoaded extends DashboardState {
   final int sisaMotor;
   final int totalUnit;
   final int totalBooking;
+  final List<dynamic> data;
+  final List<dynamic> motorUnits;
 
   DashboardLoaded({
     required this.motorTersewa,
     required this.sisaMotor,
     required this.totalUnit,
     required this.totalBooking,
+    required this.data,
+    required this.motorUnits,
   });
 
   @override
-  List<Object?> get props => [motorTersewa, sisaMotor, totalUnit, totalBooking];
+  List<Object?> get props =>
+      [motorTersewa, sisaMotor, totalUnit, totalBooking, data, motorUnits];
 }
 
 class DashboardError extends DashboardState {
