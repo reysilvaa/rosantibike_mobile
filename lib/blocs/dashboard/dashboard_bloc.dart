@@ -33,7 +33,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     add(FetchDashboardData());
 
     // Poll data every 10 seconds
-    _pollingTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+    _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
       add(FetchDashboardData());
     });
   }
