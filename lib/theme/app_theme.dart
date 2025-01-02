@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Color constants
@@ -16,40 +17,42 @@ class AppTheme {
     shadowColor: Colors.black,
     dividerColor: Colors.grey[300],
 
-    // Text colors
-    textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        color: Colors.black87,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-      ),
-      headlineMedium: TextStyle(
-        color: Colors.black87,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: TextStyle(
-        color: Colors.black87,
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-      ),
-      titleMedium: TextStyle(
-        color: Colors.black87,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      bodyLarge: TextStyle(
-        color: Colors.black87,
-        fontSize: 16,
-      ),
-      bodyMedium: TextStyle(
-        color: Colors.black87,
-        fontSize: 14,
-      ),
-      labelLarge: TextStyle(
-        color: Colors.black87,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
+    // Text colors using Poppins font
+    textTheme: GoogleFonts.poppinsTextTheme(
+      const TextTheme(
+        headlineLarge: TextStyle(
+          color: Colors.black87,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+        headlineMedium: TextStyle(
+          color: Colors.black87,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        titleLarge: TextStyle(
+          color: Colors.black87,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        titleMedium: TextStyle(
+          color: Colors.black87,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+        bodyLarge: TextStyle(
+          color: Colors.black87,
+          fontSize: 16,
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.black87,
+          fontSize: 14,
+        ),
+        labelLarge: TextStyle(
+          color: Colors.black87,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     ),
 
@@ -131,40 +134,42 @@ class AppTheme {
     shadowColor: Colors.black,
     dividerColor: Colors.grey[800],
 
-    // Text colors
-    textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-      ),
-      headlineMedium: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-      ),
-      titleMedium: TextStyle(
-        color: Colors.white,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      bodyLarge: TextStyle(
-        color: Colors.white70,
-        fontSize: 16,
-      ),
-      bodyMedium: TextStyle(
-        color: Colors.white70,
-        fontSize: 14,
-      ),
-      labelLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
+    // Text colors using Poppins font
+    textTheme: GoogleFonts.poppinsTextTheme(
+      const TextTheme(
+        headlineLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+        headlineMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        titleLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        titleMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+        bodyLarge: TextStyle(
+          color: Colors.white70,
+          fontSize: 16,
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.white70,
+          fontSize: 14,
+        ),
+        labelLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     ),
 

@@ -1,4 +1,3 @@
-
 // lib/widgets/period_selector.dart
 import 'package:flutter/material.dart';
 
@@ -17,7 +16,7 @@ class _PeriodSelectorState extends State<PeriodSelector> {
     return Row(
       children: [
         const Text(
-          'Revenue',
+          'MyMenu',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

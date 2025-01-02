@@ -1,4 +1,5 @@
 // lib/main.dart
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ import 'package:rosantibike_mobile/pages/settings_page.dart';
 import 'package:rosantibike_mobile/bottom_navigation_widget.dart';
 import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:rosantibike_mobile/theme/app_theme.dart';
+
 
 void main() {
   runApp(
