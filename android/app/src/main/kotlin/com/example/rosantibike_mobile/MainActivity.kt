@@ -1,4 +1,4 @@
-package com.example.rosantibike_mobile
+package com.rosantibike.mobile;
 
 import io.flutter.embedding.android.FlutterActivity
 

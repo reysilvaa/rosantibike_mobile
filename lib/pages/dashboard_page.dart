@@ -10,36 +10,65 @@ import '../widgets/dashboard/line_chart.dart';
 import '../widgets/dashboard/period_selector.dart';
 import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
-import '../theme/app_theme.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  late DashboardBloc _dashboardBloc;
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    _dashboardBloc.add(FetchDashboardData());
+    context.read<DashboardBloc>().add(FetchDashboardData());
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    // Use BlocProvider to fetch data
-    return BlocProvider.value(
-      value: BlocProvider.of<DashboardBloc>(context)..add(FetchDashboardData()),
-      child: Scaffold(
-        backgroundColor: Theme.of(context)
-            .scaffoldBackgroundColor, // Set background color based on theme
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(context, themeProvider),
-                const SizedBox(height: 20),
-                _buildDashboardStats(context), // Pass context here
-                const SizedBox(height: 20),
-                const PeriodSelector(),
-                const SizedBox(height: 20),
-                const Expanded(child: RevenueLineChart()),
-              ],
-            ),
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(context, themeProvider),
+              const SizedBox(height: 20),
+              StreamBuilder<DashboardState>(
+                stream: _dashboardBloc.stateStream,
+                builder: (context, snapshot) {
+                  return BlocConsumer<DashboardBloc, DashboardState>(
+                    listenWhen: (previous, current) =>
+                        current is DashboardError,
+                    listener: (context, state) {
+                      if (state is DashboardError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.message)),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      final currentState = snapshot.data ?? state;
+                      return _buildDashboardStats(context, currentState);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              const PeriodSelector(),
+              const SizedBox(height: 20),
+              const Expanded(child: RevenueLineChart()),
+            ],
           ),
         ),
       ),
@@ -48,7 +77,6 @@ class DashboardPage extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context, ThemeProvider themeProvider) {
     final theme = Theme.of(context);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -65,15 +93,10 @@ class DashboardPage extends StatelessWidget {
                 themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
                 color: theme.iconTheme.color,
               ),
-              onPressed: () {
-                themeProvider.toggleTheme();
-              },
+              onPressed: () => themeProvider.toggleTheme(),
             ),
             IconButton(
-              icon: Icon(
-                Icons.more_horiz,
-                color: theme.iconTheme.color,
-              ),
+              icon: Icon(Icons.more_horiz, color: theme.iconTheme.color),
               onPressed: () {},
             ),
           ],
@@ -82,96 +105,76 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDashboardStats(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      builder: (context, state) {
-        final isLoading = state is DashboardLoading;
-        final isError = state is DashboardError;
+  Widget _buildDashboardStats(BuildContext context, DashboardState state) {
+    final sisaMotor = (state is DashboardLoaded) ? state.sisaMotor : 0;
+    final motorTersewa = (state is DashboardLoaded) ? state.motorTersewa : 0;
+    final totalMotor = (state is DashboardLoaded) ? state.totalUnit : 0;
+    final totalBooking = (state is DashboardLoaded) ? state.totalBooking : 0;
 
-        final sisaMotor = state is DashboardLoaded ? state.sisaMotor : 0;
-        final motorTersewa = state is DashboardLoaded ? state.motorTersewa : 0;
-        final totalMotor = state is DashboardLoaded ? state.totalUnit : 0;
-        final totalBooking = state is DashboardLoaded ? state.totalBooking : 0;
-
-        return Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: StatCard(
-                    statType: 'SisaMotor',
-                    value: _buildValueWidget(
-                        context, sisaMotor, isLoading, isError, true),
-                    percentage: _calculatePercentage(sisaMotor, totalMotor),
-                    isIncreasing: true,
-                    onTap: () {
-                      print('Tapped Sisa Motor');
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: StatCard(
-                    statType: 'MotorTersewa',
-                    value: _buildValueWidget(
-                        context, motorTersewa, isLoading, isError, false),
-                    percentage: _calculatePercentage(motorTersewa, totalMotor),
-                    isIncreasing: true,
-                    onTap: () {
-                      print('Tapped Motor Tersewa');
-                    },
-                  ),
-                ),
-              ],
+            Expanded(
+              child: StatCard(
+                statType: 'SisaMotor',
+                value:
+                    _buildValueWidget(context, sisaMotor, false, false, true),
+                percentage: _calculatePercentage(sisaMotor, totalMotor),
+                isIncreasing: true,
+                onTap: () {},
+              ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: StatCard(
-                    statType: 'TotalUnit',
-                    value: _buildValueWidget(
-                        context, totalMotor, isLoading, isError, false),
-                    percentage: '100%',
-                    isIncreasing: true,
-                    onTap: () {
-                      print('Tapped Total Unit');
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: StatCard(
-                    statType: 'TotalBooking',
-                    value: _buildValueWidget(
-                        context, totalBooking, isLoading, isError, false),
-                    percentage: '0%',
-                    isIncreasing: true,
-                    onTap: () {
-                      print('Tapped Akses Ke Web');
-                    },
-                  ),
-                ),
-              ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: StatCard(
+                statType: 'MotorTersewa',
+                value: _buildValueWidget(
+                    context, motorTersewa, false, false, false),
+                percentage: _calculatePercentage(motorTersewa, totalMotor),
+                isIncreasing: true,
+                onTap: () {},
+              ),
             ),
           ],
-        );
-      },
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: StatCard(
+                statType: 'TotalUnit',
+                value:
+                    _buildValueWidget(context, totalMotor, false, false, false),
+                percentage: '100%',
+                isIncreasing: true,
+                onTap: () {},
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: StatCard(
+                statType: 'TotalBooking',
+                value: _buildValueWidget(
+                    context, totalBooking, false, false, false),
+                percentage: '0%',
+                isIncreasing: true,
+                onTap: () {},
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
   Widget _buildValueWidget(BuildContext context, int value, bool isLoading,
       bool isError, bool isSisaMotor) {
     final theme = Theme.of(context);
-
-    // Check if the app is in dark mode
     final isDarkMode = theme.brightness == Brightness.dark;
-
-    // Set color directly based on the theme (dark mode)
-    Color textColor =
+    final textColor =
         isDarkMode ? Colors.white : (isSisaMotor ? Colors.white : Colors.black);
 
-    // If there's an error, display in red
     if (isError) {
       return Text(
         'Error',
@@ -183,13 +186,12 @@ class DashboardPage extends StatelessWidget {
       );
     }
 
-    // Set the value with the correct color, ensuring it stays white in dark mode
     return Text(
-      isLoading ? '--' : value.toString(),
+      isLoading ? '' : value.toString(),
       style: theme.textTheme.bodyLarge?.copyWith(
         fontSize: 22,
         fontWeight: FontWeight.bold,
-        color: isLoading ? Colors.grey : textColor, // Apply textColor here
+        color: isLoading ? Colors.grey : textColor,
       ),
     );
   }

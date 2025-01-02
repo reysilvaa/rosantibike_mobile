@@ -1,19 +1,20 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/api/booking_api.dart';
+import 'package:rosantibike_mobile/api/jenis_motor_api.dart';
+import 'package:rosantibike_mobile/api/transaksi_api.dart';
+import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
-import 'pages/dashboard_page.dart';
-import 'pages/transaksi_page.dart';
-import 'pages/wallets_page.dart';
-import 'pages/review_page.dart';
-import 'pages/settings_page.dart';
-import 'bottom_navigation_widget.dart';
-import 'theme/theme_provider.dart';
-import 'theme/app_theme.dart';
-import 'blocs/dashboard/dashboard_bloc.dart';
-import 'api/transaksi_api.dart';
-import 'api/jenis_motor_api.dart';
+import 'package:rosantibike_mobile/pages/dashboard_page.dart';
+import 'package:rosantibike_mobile/pages/transaksi_page.dart';
+import 'package:rosantibike_mobile/pages/wallets_page.dart';
+import 'package:rosantibike_mobile/pages/review_page.dart';
+import 'package:rosantibike_mobile/pages/settings_page.dart';
+import 'package:rosantibike_mobile/bottom_navigation_widget.dart';
+import 'package:rosantibike_mobile/theme/theme_provider.dart';
+import 'package:rosantibike_mobile/theme/app_theme.dart';
 
 void main() {
   runApp(
