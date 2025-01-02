@@ -9,16 +9,23 @@ class BookingApi {
   final String apiUrl = ApiService.apiUrl;
 
   // Mendapatkan data booking
-  Future<Map<String, dynamic>> getBooking() async {
-    final response = await http.get(Uri.parse('$apiUrl/admin/booking/list'));
+  Future<Map<String, dynamic>> getBooking({String? lastUpdated}) async {
+    final uri =
+        Uri.parse('$apiUrl/admin/booking/list').replace(queryParameters: {
+      if (lastUpdated != null) 'last_updated': lastUpdated,
+    });
+
+    final response = await http.get(uri);
     if (response.statusCode != 200) throw Exception('Failed to load data');
 
     final responseData = json.decode(response.body);
+
     return {
       'data': List.from(responseData['data'])
           .map((item) => _mapTransaction(item))
           .toList(),
       'count': responseData['count'],
+      'timestamp': responseData['timestamp'], // For lastUpdated
     };
   }
 

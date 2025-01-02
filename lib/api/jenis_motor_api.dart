@@ -7,21 +7,23 @@ class JenisMotorApi {
   final String apiUrl = ApiService.apiUrl;
 
   // Mendapatkan daftar jenis motor beserta count-nya
-  Future<Map<String, dynamic>> getJenisMotors() async {
-    final response = await http.get(Uri.parse('$apiUrl/admin/jenis-motor'));
+Future<Map<String, dynamic>> getJenisMotors({String? lastUpdated}) async {
+  final uri = Uri.parse('$apiUrl/admin/jenis-motor').replace(queryParameters: {
+    if (lastUpdated != null) 'last_updated': lastUpdated,
+  });
 
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
+  final response = await http.get(uri);
 
-      // Mengembalikan data dan count dalam bentuk Map
-      return {
-        'data': responseData['data'], // Data jenis motor
-        'count': responseData['count'], // Jumlah jenis motor
-      };
-    } else {
-      throw Exception('Failed to load jenis motors');
-    }
-  }
+  if (response.statusCode != 200) throw Exception('Failed to load jenis motors');
+
+  final responseData = json.decode(response.body);
+
+  return {
+    'data': List.from(responseData['data']),
+    'count': responseData['count'],
+    'timestamp': responseData['timestamp'], // For lastUpdated
+  };
+}
 
   // Mendapatkan detail jenis motor berdasarkan ID
   Future<JenisMotor> getJenisMotorDetail(int id) async {

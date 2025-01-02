@@ -9,8 +9,12 @@ class TransaksiApi {
   final String apiUrl = ApiService.apiUrl;
 
   // Mendapatkan data transaksi
-  Future<Map<String, dynamic>> getTransaksi() async {
-    final response = await http.get(Uri.parse('$apiUrl/admin/transaksi'));
+  Future<Map<String, dynamic>> getTransaksi({String? lastUpdated}) async {
+    final uri = Uri.parse('$apiUrl/admin/transaksi').replace(queryParameters: {
+      if (lastUpdated != null) 'last_updated': lastUpdated,
+    });
+
+    final response = await http.get(uri);
     if (response.statusCode != 200) throw Exception('Failed to load data');
 
     final responseData = json.decode(response.body);
@@ -20,6 +24,7 @@ class TransaksiApi {
           .toList(),
       'motor_tersewa': responseData['motor_tersewa'],
       'sisa_motor': responseData['sisa_motor'],
+      'timestamp': responseData['timestamp'], // Update lastUpdated
     };
   }
 

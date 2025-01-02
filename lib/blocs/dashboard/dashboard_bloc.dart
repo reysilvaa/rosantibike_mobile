@@ -12,6 +12,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final BookingApi bookingApi;
   final _stateController = StreamController<DashboardState>.broadcast();
   Timer? _pollingTimer;
+  String? _lastUpdated; // To store last updated time
 
   Stream<DashboardState> get stateStream => _stateController.stream;
 
@@ -29,8 +30,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     // Initial fetch
     add(FetchDashboardData());
 
-    // Set up periodic polling every 5 seconds
-    _pollingTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+    // Set up periodic polling every 2 seconds
+    _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
       add(FetchDashboardData());
     });
   }
@@ -40,9 +41,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     Emitter<DashboardState> emit,
   ) async {
     try {
-      final transactions = await transaksiApi.getTransaksi();
-      final jenisMotors = await jenisMotorApi.getJenisMotors();
-      final booking = await bookingApi.getBooking();
+      // Use lastUpdated for polling the latest data
+      final transactions =
+          await transaksiApi.getTransaksi(lastUpdated: _lastUpdated);
+      _lastUpdated =
+          transactions['timestamp']; // Update lastUpdated after fetch
+
+      final jenisMotors =
+          await jenisMotorApi.getJenisMotors(lastUpdated: _lastUpdated);
+      final booking = await bookingApi.getBooking(lastUpdated: _lastUpdated);
 
       final newState = DashboardLoaded(
         motorTersewa: transactions['motor_tersewa'] ?? 0,
