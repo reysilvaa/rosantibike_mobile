@@ -48,6 +48,8 @@ class BookingCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => DetailsPage(
+                id: bookingId,
+                type: 'booking',
                 bookingId: bookingId,
                 customer: customer,
                 nopol: nopol,

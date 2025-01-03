@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+import 'dart:typed_data';
+import 'dart:convert'; // Untuk decoding Base64
+import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/details_card.dart';
+import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/pdf_preview_widget.dart';
 import 'dart:io';
 
-class DetailsPage extends StatelessWidget {
+class DetailsPage extends StatefulWidget {
+  final String type;
+  final String id;
   final String bookingId;
   final String customer;
   final String nopol;
@@ -17,51 +21,66 @@ class DetailsPage extends StatelessWidget {
 
   const DetailsPage({
     Key? key,
+    required this.type,
+    required this.id,
     required this.bookingId,
     required this.customer,
     required this.nopol,
     required this.dateSewa,
     required this.dateKembali,
-    required this.jamKembali,
     required this.jamSewa,
+    required this.jamKembali,
     required this.total,
   }) : super(key: key);
 
-  Future<void> _downloadInvoice() async {
-    final pdf = await _generateInvoicePdf();
-    final output = await getTemporaryDirectory();
-    final file = File('${output.path}/Invoice-$bookingId.pdf');
-    await file.writeAsBytes(await pdf.save());
-    // You can implement your own download handling here
+  @override
+  _DetailsPageState createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
+  late Future<Uint8List> invoicePdf;
+
+  @override
+  void initState() {
+    super.initState();
+    invoicePdf = fetchInvoicePdf();
   }
 
-  Future<pw.Document> _generateInvoicePdf() async {
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.Page(
-        build: (context) => pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            pw.Text(
-              'INVOICE',
-              style: pw.TextStyle(
-                fontSize: 24,
-                fontWeight: pw.FontWeight.bold,
-              ),
-            ),
-            pw.SizedBox(height: 20),
-            pw.Text('Booking ID: $bookingId'),
-            pw.Text('Customer: $customer'),
-            pw.Text('Sewa Date: $dateSewa'),
-            pw.Text('Kembali Date: $dateKembali'),
-            pw.Text('Total: $total'),
-          ],
-        ),
-      ),
+  Future<Uint8List> fetchInvoicePdf() async {
+    final response = await http.get(
+      Uri.parse(
+          'https://rosantibikemotorent.com/api/invoice/preview/${widget.type}/${widget.id}'),
     );
 
-    return pdf;
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      if (responseBody.containsKey('pdf_base64')) {
+        return base64Decode(responseBody['pdf_base64']);
+      } else {
+        throw Exception('PDF data not found in response');
+      }
+    } else {
+      throw Exception('Failed to load invoice PDF');
+    }
+  }
+
+  Future<void> _downloadInvoice() async {
+    final response = await http.get(
+      Uri.parse(
+          'https://rosantibikemotorent.com/api/invoice/download/${widget.type}/${widget.id}'),
+    );
+
+    if (response.statusCode == 200) {
+      final output = await getTemporaryDirectory();
+      final file = File('${output.path}/Invoice-${widget.bookingId}.pdf');
+      await file.writeAsBytes(response.bodyBytes);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invoice downloaded to ${file.path}')),
+      );
+    } else {
+      throw Exception('Failed to download invoice');
+    }
   }
 
   @override
@@ -80,156 +99,21 @@ class DetailsPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildDetailsCard(context),
+            DetailsCard(
+              bookingId: widget.bookingId,
+              customer: widget.customer,
+              nopol: widget.nopol,
+              dateSewa: widget.dateSewa,
+              dateKembali: widget.dateKembali,
+              jamSewa: widget.jamSewa,
+              jamKembali: widget.jamKembali,
+              total: widget.total,
+            ),
             const SizedBox(height: 16),
-            _buildPdfPreview(),
+            PdfPreviewWidget(invoicePdf: invoicePdf),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDetailsCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Booking Details',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'ID: $bookingId',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.receipt_long,
-                    size: 32,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
-              ),
-              const Divider(height: 32),
-              _buildInfoRow(
-                context,
-                Icons.person,
-                'Customer',
-                customer,
-              ),
-              const SizedBox(height: 16),
-              _buildInfoRow(
-                context,
-                Icons.calendar_today,
-                'Sewa Date',
-                dateSewa,
-              ),
-              const SizedBox(height: 16),
-              _buildInfoRow(
-                context,
-                Icons.calendar_today,
-                'Jam Sewa',
-                jamSewa,
-              ),
-              const SizedBox(height: 16),
-              _buildInfoRow(
-                context,
-                Icons.calendar_today,
-                'Kembali Date',
-                dateKembali,
-              ),
-              const SizedBox(height: 16),
-              _buildInfoRow(
-                context,
-                Icons.calendar_today,
-                'Jam Kembali',
-                jamKembali,
-              ),
-              const SizedBox(height: 16),
-              _buildInfoRow(
-                context,
-                Icons.attach_money,
-                'Total Amount',
-                total,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String value,
-  ) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 20,
-          color: Theme.of(context).primaryColor,
-        ),
-        const SizedBox(width: 8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(height: 2),
-            Text(
-              value,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPdfPreview() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            'Invoice Preview',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 500,
-          child: PdfPreview(
-            build: (format) => _generateInvoicePdf().then((pdf) => pdf.save()),
-            initialPageFormat: PdfPageFormat.a4,
-            canChangePageFormat: false,
-            canChangeOrientation: false,
-            allowPrinting: false,
-            allowSharing: false,
-          ),
-        ),
-      ],
     );
   }
 }

@@ -47,6 +47,8 @@ class TransaksiCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => DetailsPage(
+                id: transaksiId,
+                type: 'transaksi',
                 bookingId: transaksiId,
                 customer: customer,
                 nopol: nopol,
