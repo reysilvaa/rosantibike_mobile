@@ -211,7 +211,7 @@ class _PdfPreviewWidgetState extends State<PdfPreviewWidget>
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Invoice Preview',
+                  'Pratinjau Bukti',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context).primaryColor,
                       ),

@@ -137,7 +137,7 @@ class _DetailsPageState extends State<DetailsPage> {
         onPressed: _downloadInvoice,
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.download),
-        tooltip: 'Download Invoice',
+        tooltip: 'Simopan Bukti',
       ),
     );
   }

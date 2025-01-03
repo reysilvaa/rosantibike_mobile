@@ -55,7 +55,7 @@ class DetailsCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Booking Details',
+                          'Bukti Booking',
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall
@@ -126,7 +126,7 @@ class DetailsCard extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildSection(
                     context,
-                    'Rental Period',
+                    'Jatuh Tempo',
                     [
                       InfoRow(
                         icon: Icons.calendar_today,
