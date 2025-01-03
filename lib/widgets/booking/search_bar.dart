@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
+import 'package:rosantibike_mobile/blocs/booking/booking_event.dart';
 
 class BookingSearchBar extends StatelessWidget {
   const BookingSearchBar({Key? key}) : super(key: key);
@@ -29,7 +32,7 @@ class BookingSearchBar extends StatelessWidget {
         ),
         style: theme.textTheme.bodyLarge,
         onChanged: (value) {
-          // Implement search logic
+          context.read<BookingBloc>().add(SearchBookings(value));
         },
       ),
     );

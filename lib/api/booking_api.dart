@@ -7,32 +7,74 @@ import 'package:rosantibike_mobile/model/booking.dart';
 
 class BookingApi {
   final String apiUrl = ApiService.apiUrl;
-
-  Future<Map<String, dynamic>> getBooking({String? lastUpdated}) async {
+  Future<Map<String, dynamic>> getBooking(
+      {String? lastUpdated, String? search}) async {
     final uri =
         Uri.parse('$apiUrl/admin/booking/list').replace(queryParameters: {
-      if (lastUpdated != null) 'last_updated': lastUpdated,
+      if (search != null) 'search': search,
     });
 
     try {
+      print('Fetching bookings from: $uri'); // Debug log
       final response = await http.get(uri);
+      print('Response status code: ${response.statusCode}'); // Debug log
+      print('Response body: ${response.body}'); // Debug log
+
       if (response.statusCode != 200) {
-        print('error');
-        throw Exception('Failed to load data');
+        throw Exception('Failed to load data: ${response.statusCode}');
       }
 
       final responseData = json.decode(response.body);
-      if (!responseData['success']) {
+
+      if (responseData == null ||
+          responseData is List && responseData.isEmpty) {
+        print('Empty response received'); // Debug log
+        return {
+          'data': [],
+          'count': 0,
+          'timestamp': DateTime.now().toIso8601String(),
+        };
+      }
+
+      // Directly return data if it's an array
+      if (responseData is List) {
+        return {
+          'data': responseData,
+          'count': responseData.length,
+          'timestamp': DateTime.now().toIso8601String(),
+        };
+      }
+
+      // Handle success field
+      final success = responseData['success'];
+      if (success == null ||
+          (success is bool && !success) ||
+          (success is String && success.toLowerCase() != 'true') ||
+          (success is int && success != 1)) {
+        print('Success validation failed: $success'); // Debug log
         throw Exception(responseData['message'] ?? 'Failed to load data');
       }
 
+      final data = responseData['data'];
+      if (data == null) {
+        print('No data field in response'); // Debug log
+        return {
+          'data': [],
+          'count': 0,
+          'timestamp':
+              responseData['timestamps'] ?? DateTime.now().toIso8601String(),
+        };
+      }
+
       return {
-        'data': List<Map<String, dynamic>>.from(responseData['data']),
-        'count': responseData['count'] ?? 0,
-        'timestamp': responseData['timestamps'],
+        'data': data is List ? data : [data],
+        'count': responseData['count'] ?? (data is List ? data.length : 1),
+        'timestamp':
+            responseData['timestamps'] ?? DateTime.now().toIso8601String(),
       };
     } catch (e) {
-      throw Exception('Failed to load bookings: ${e.toString()}');
+      print('Error fetching bookings: $e'); // Debug log
+      throw Exception('Failed to load bookings: $e');
     }
   }
 

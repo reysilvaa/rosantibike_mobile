@@ -8,14 +8,20 @@ import 'dart:io';
 class DetailsPage extends StatelessWidget {
   final String bookingId;
   final String customer;
-  final String date;
+  final String dateSewa;
+  final String dateKembali;
+  final String jamSewa;
+  final String jamKembali;
   final String total;
 
   const DetailsPage({
     Key? key,
     required this.bookingId,
     required this.customer,
-    required this.date,
+    required this.dateSewa,
+    required this.dateKembali,
+    required this.jamKembali,
+    required this.jamSewa,
     required this.total,
   }) : super(key: key);
 
@@ -35,11 +41,18 @@ class DetailsPage extends StatelessWidget {
         build: (context) => pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text('INVOICE', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+            pw.Text(
+              'INVOICE',
+              style: pw.TextStyle(
+                fontSize: 24,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
             pw.SizedBox(height: 20),
             pw.Text('Booking ID: $bookingId'),
             pw.Text('Customer: $customer'),
-            pw.Text('Date: $date'),
+            pw.Text('Sewa Date: $dateSewa'),
+            pw.Text('Kembali Date: $dateKembali'),
             pw.Text('Total: $total'),
           ],
         ),
@@ -118,8 +131,29 @@ class DetailsPage extends StatelessWidget {
               _buildInfoRow(
                 context,
                 Icons.calendar_today,
-                'Date',
-                date,
+                'Sewa Date',
+                dateSewa,
+              ),
+              const SizedBox(height: 16),
+              _buildInfoRow(
+                context,
+                Icons.calendar_today,
+                'Jam Sewa',
+                jamSewa,
+              ),
+              const SizedBox(height: 16),
+              _buildInfoRow(
+                context,
+                Icons.calendar_today,
+                'Kembali Date',
+                dateKembali,
+              ),
+              const SizedBox(height: 16),
+              _buildInfoRow(
+                context,
+                Icons.calendar_today,
+                'Jam Kembali',
+                jamKembali,
               ),
               const SizedBox(height: 16),
               _buildInfoRow(

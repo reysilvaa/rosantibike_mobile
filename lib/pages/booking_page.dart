@@ -109,8 +109,17 @@ class _BookingPageState extends State<BookingPage> {
                             return BookingCard(
                               bookingId: booking.id.toString(),
                               customer: booking.namaPenyewa,
-                              date: DateFormatUtils.formatTanggalIndonesia(
+                              dateSewa: DateFormatUtils.formatTanggalPendek(
                                 DateTime.parse(booking.tglSewa),
+                              ),
+                              dateKembali: DateFormatUtils.formatTanggalPendek(
+                                DateTime.parse(booking.tglKembali),
+                              ),
+                              jamSewa: DateFormatUtils.formatJam(
+                                DateTime.parse(booking.tglSewa),
+                              ),
+                              jamKembali: DateFormatUtils.formatJam(
+                                DateTime.parse(booking.tglKembali),
                               ),
                               total: formatCurrency(booking.total),
                               motorType: booking.jenisMotor.stok.merk,

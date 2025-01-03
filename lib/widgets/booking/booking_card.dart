@@ -1,12 +1,14 @@
-
-// booking_card.dart
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/pages/transaksi/details_page.dart';
+import 'package:intl/intl.dart'; // Add import for date formatting
 
 class BookingCard extends StatelessWidget {
   final String bookingId;
   final String customer;
-  final String date;
+  final String dateSewa;
+  final String dateKembali;
+  final String jamSewa;
+  final String jamKembali;
   final String total;
   final String motorType;
 
@@ -14,9 +16,12 @@ class BookingCard extends StatelessWidget {
     Key? key,
     required this.bookingId,
     required this.customer,
-    required this.date,
+    required this.dateSewa,
+    required this.jamSewa,
+    required this.jamKembali,
     required this.total,
     required this.motorType,
+    required this.dateKembali,
   }) : super(key: key);
 
   @override
@@ -43,7 +48,10 @@ class BookingCard extends StatelessWidget {
               builder: (context) => DetailsPage(
                 bookingId: bookingId,
                 customer: customer,
-                date: date,
+                dateSewa: dateSewa,
+                dateKembali: dateKembali,
+                jamKembali: jamKembali,
+                jamSewa: jamSewa,
                 total: total,
               ),
             ),
@@ -56,7 +64,7 @@ class BookingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Column(
@@ -79,7 +87,8 @@ class BookingCard extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: theme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
@@ -98,30 +107,68 @@ class BookingCard extends StatelessWidget {
               Divider(color: theme.dividerColor.withOpacity(0.2)),
               const SizedBox(height: 12),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Icon(Icons.confirmation_number_outlined,
+                      size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
+                  const SizedBox(width: 8),
+                  Text(
+                    'ID: $bookingId',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color:
+                          theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // Date and time section
+              Row(
+                children: [
+                  Icon(Icons.calendar_today,
+                      size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.confirmation_number_outlined,
-                          size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
-                      const SizedBox(width: 8),
                       Text(
-                        'ID: $bookingId',
+                        'Sewa: ${dateSewa}',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                          color: theme.textTheme.bodyMedium?.color
+                              ?.withOpacity(0.7),
+                        ),
+                      ),
+                      Text(
+                        'Jam: $jamSewa',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.textTheme.bodySmall?.color
+                              ?.withOpacity(0.7),
                         ),
                       ),
                     ],
                   ),
-                  Row(
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Icon(Icons.calendar_today,
+                      size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.calendar_today,
-                          size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
-                      const SizedBox(width: 8),
                       Text(
-                        date,
+                        'Kembali: ${dateKembali}',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                          color: theme.textTheme.bodyMedium?.color
+                              ?.withOpacity(0.7),
+                        ),
+                      ),
+                      Text(
+                        'Jam: $jamKembali',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.textTheme.bodySmall?.color
+                              ?.withOpacity(0.7),
                         ),
                       ),
                     ],
