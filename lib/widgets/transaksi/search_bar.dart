@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
-import 'package:rosantibike_mobile/blocs/booking/booking_event.dart';
+import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
+import 'package:rosantibike_mobile/blocs/transaksi/transaksi_event.dart';
 
-class BookingSearchBar extends StatelessWidget {
-  const BookingSearchBar({Key? key}) : super(key: key);
+class TransaksiSearchBar extends StatelessWidget {
+  const TransaksiSearchBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +25,14 @@ class BookingSearchBar extends StatelessWidget {
       ),
       child: TextField(
         decoration: InputDecoration(
-          hintText: 'Cari Booking...',
+          hintText: 'Cari Transaksi...',
           hintStyle: TextStyle(color: theme.hintColor),
           border: InputBorder.none,
           icon: Icon(Icons.search, color: theme.iconTheme.color),
         ),
         style: theme.textTheme.bodyLarge,
         onChanged: (value) {
-          context.read<BookingBloc>().add(SearchBookings(value));
+          context.read<TransaksiBloc>().add(SearchTransaksi(value));
         },
       ),
     );

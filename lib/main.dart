@@ -8,8 +8,10 @@ import 'package:rosantibike_mobile/api/transaksi_api.dart';
 import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
+import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/pages/dashboard_page.dart';
 import 'package:rosantibike_mobile/pages/booking_page.dart';
+import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 import 'package:rosantibike_mobile/pages/wallets_page.dart';
 import 'package:rosantibike_mobile/pages/review_page.dart';
 import 'package:rosantibike_mobile/pages/settings_page.dart';
@@ -51,6 +53,10 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (context) => BookingBloc(bookingApi: BookingApi()),
               child: BookingPage(),
+            ),
+            BlocProvider(
+              create: (context) => TransaksiBloc(transaksiApi: TransaksiApi()),
+              child: TransaksiPage(),
             )
           ],
           child: MaterialApp(
@@ -81,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
     const DashboardPage(),
     const BookingPage(),
     const WalletsPage(),
-    const ReviewPage(),
+    const TransaksiPage(),
     const SettingsPage(),
   ];
 

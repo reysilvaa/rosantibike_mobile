@@ -8,24 +8,55 @@ import 'package:rosantibike_mobile/model/transaksi.dart';
 class TransaksiApi {
   final String apiUrl = ApiService.apiUrl;
 
-  // Mendapatkan data transaksi
-  Future<Map<String, dynamic>> getTransaksi({String? lastUpdated}) async {
+  Future<Map<String, dynamic>> getTransaksi(
+      {String? lastUpdated, String? search}) async {
     final uri = Uri.parse('$apiUrl/admin/transaksi').replace(queryParameters: {
-      if (lastUpdated != null) 'last_updated': lastUpdated,
+      if (search != null) 'search': search,
     });
 
-    final response = await http.get(uri);
-    if (response.statusCode != 200) throw Exception('Failed to load data');
+    try {
+      // Log the final URL to ensure it's correct
+      print('Fetching data from: $uri');
 
-    final responseData = json.decode(response.body);
-    return {
-      'data': List.from(responseData['data'])
-          .map((item) => _mapTransaction(item))
-          .toList(),
-      'motor_tersewa': responseData['motor_tersewa'],
-      'sisa_motor': responseData['sisa_motor'],
-      'timestamp': responseData['timestamp'], // Update lastUpdated
-    };
+      final response = await http.get(uri);
+
+      // Log response status code
+      print('Response status code: ${response.statusCode}');
+
+      if (response.statusCode != 200) {
+        // Log the error if the status code is not 200
+        print(
+            'Error: Failed to load data with status code: ${response.statusCode}');
+        throw Exception('Failed to load data');
+      }
+
+      // Log response body for debugging purposes
+      print('Response body: ${response.body}');
+
+      final responseData = json.decode(response.body);
+
+      // Check if responseData is valid before accessing keys
+      if (responseData == null) {
+        print('Error: responseData is null');
+        throw Exception('Invalid response data');
+      }
+
+      // Log the response data for inspection
+      print('Parsed response data: $responseData');
+
+      return {
+        'data': List.from(responseData['data'])
+            .map((item) => _mapTransaction(item))
+            .toList(),
+        'motor_tersewa': responseData['motor_tersewa'],
+        'sisa_motor': responseData['sisa_motor'],
+        'timestamp': responseData['timestamp'], // Update lastUpdated
+      };
+    } catch (e) {
+      // Log the error with full context
+      print('Error fetching transaksi: $e'); // Debug log
+      throw Exception('Failed to load transaksi: $e');
+    }
   }
 
   // Memetakan transaksi

@@ -2,31 +2,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:rosantibike_mobile/widgets/booking/booking_card.dart';
-import 'package:rosantibike_mobile/widgets/booking/search_bar.dart';
+import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
+import 'package:rosantibike_mobile/blocs/transaksi/transaksi_event.dart';
+import 'package:rosantibike_mobile/blocs/transaksi/transaksi_state.dart';
+import 'package:rosantibike_mobile/widgets/transaksi/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
+import 'package:rosantibike_mobile/widgets/transaksi/transaksi_card.dart';
 import '../theme/theme_provider.dart';
-import '../blocs/booking/booking_bloc.dart';
-import '../blocs/booking/booking_event.dart';
-import '../blocs/booking/booking_state.dart';
 import '../constants/currency_format.dart';
 import '../constants/date_format.dart';
 
-class BookingPage extends StatefulWidget {
-  const BookingPage({Key? key}) : super(key: key);
+class TransaksiPage extends StatefulWidget {
+  const TransaksiPage({Key? key}) : super(key: key);
 
   @override
-  State<BookingPage> createState() => _BookingPageState();
+  State<TransaksiPage> createState() => _BookingPageState();
 }
 
-class _BookingPageState extends State<BookingPage> {
-  late BookingBloc _bookingBloc;
+class _BookingPageState extends State<TransaksiPage> {
+  late TransaksiBloc _transaksiBloc;
 
   @override
   void initState() {
     super.initState();
-    _bookingBloc = context.read<BookingBloc>();
-    _bookingBloc.add(FetchBookings());
+    _transaksiBloc = context.read<TransaksiBloc>();
+    _transaksiBloc.add(FetchTransaksi());
   }
 
   @override
@@ -38,7 +38,7 @@ class _BookingPageState extends State<BookingPage> {
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'Booking Analytics',
+          'Transaksi Analytics',
           style: theme.appBarTheme.titleTextStyle,
         ),
         actions: [
@@ -71,62 +71,62 @@ class _BookingPageState extends State<BookingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              const BookingSearchBar(),
+              const TransaksiSearchBar(),
               const SizedBox(height: 20),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    _bookingBloc.add(FetchBookings());
+                    _transaksiBloc.add(FetchTransaksi());
                   },
-                  child: BlocConsumer<BookingBloc, BookingState>(
+                  child: BlocConsumer<TransaksiBloc, TransaksiState>(
                     listener: (context, state) {
-                      if (state is BookingError) {
+                      if (state is TransaksiError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.message)),
                         );
                       }
                     },
                     builder: (context, state) {
-                      if (state is BookingLoading) {
+                      if (state is TransaksiLoading) {
                         return const ShimmerLoading();
                       }
 
-                      if (state is BookingError) {
+                      if (state is TransaksiError) {
                         return Center(child: Text('Error: ${state.message}'));
                       }
 
-                      if (state is BookingLoaded) {
-                        if (state.bookings.isEmpty) {
+                      if (state is TransaksiLoaded) {
+                        if (state.transaksis.isEmpty) {
                           return const Center(
-                              child: Text('Booking tidak ditemukan.'));
+                              child: Text('Transaksi tidak ditemukan.'));
                         }
 
                         return ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: state.bookings.length,
+                          itemCount: state.transaksis.length,
                           itemBuilder: (context, index) {
-                            final booking = state.bookings[index];
+                            final transaksi = state.transaksis[index];
                             print(
-                                'Booking ${booking.id} - Nopol: ${booking.nopol}');
+                                'Transaksi ${transaksi.id} - Nopol: ${transaksi.nopol}');
 
-                            return BookingCard(
-                              bookingId: booking.id.toString(),
-                              customer: booking.namaPenyewa,
-                              nopol: booking.nopol,
+                            return TransaksiCard(
+                              transaksiId: transaksi.id.toString(),
+                              customer: transaksi.namaPenyewa,
+                              nopol: transaksi.nopol,
                               dateSewa: DateFormatUtils.formatTanggalPendek(
-                                DateTime.parse(booking.tglSewa),
+                                DateTime.parse(transaksi.tglSewa),
                               ),
                               dateKembali: DateFormatUtils.formatTanggalPendek(
-                                DateTime.parse(booking.tglKembali),
+                                DateTime.parse(transaksi.tglKembali),
                               ),
                               jamSewa: DateFormatUtils.formatJam(
-                                DateTime.parse(booking.tglSewa),
+                                DateTime.parse(transaksi.tglSewa),
                               ),
                               jamKembali: DateFormatUtils.formatJam(
-                                DateTime.parse(booking.tglKembali),
+                                DateTime.parse(transaksi.tglKembali),
                               ),
-                              total: formatCurrency(booking.total),
-                              motorType: booking.jenisMotor.stok.merk,
+                              total: formatCurrency(transaksi.total),
+                              motorType: transaksi.jenisMotor.stok.merk,
                             );
                           },
                         );
@@ -143,7 +143,7 @@ class _BookingPageState extends State<BookingPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add new booking logic
+          // Add new transaksi logic
         },
         backgroundColor: theme.primaryColor,
         child: const Icon(Icons.add),

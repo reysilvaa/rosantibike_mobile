@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/pages/transaksi_booking_detail/details_page.dart';
-import 'package:intl/intl.dart'; // Add import for date formatting
 
-class BookingCard extends StatelessWidget {
-  final String bookingId;
+class TransaksiCard extends StatelessWidget {
+  final String transaksiId;
   final String customer;
   final String nopol;
   final String dateSewa;
@@ -13,9 +12,9 @@ class BookingCard extends StatelessWidget {
   final String total;
   final String motorType;
 
-  const BookingCard({
+  const TransaksiCard({
     Key? key,
-    required this.bookingId,
+    required this.transaksiId,
     required this.customer,
     required this.nopol,
     required this.dateSewa,
@@ -48,7 +47,7 @@ class BookingCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => DetailsPage(
-                bookingId: bookingId,
+                bookingId: transaksiId,
                 customer: customer,
                 nopol: nopol,
                 dateSewa: dateSewa,
@@ -115,7 +114,7 @@ class BookingCard extends StatelessWidget {
                       size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
                   const SizedBox(width: 8),
                   Text(
-                    'ID: $bookingId',
+                    'ID: $transaksiId',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color:
                           theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
