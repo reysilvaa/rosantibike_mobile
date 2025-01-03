@@ -1,14 +1,15 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart'; // Add this import
 import 'package:rosantibike_mobile/api/booking_api.dart';
 import 'package:rosantibike_mobile/api/jenis_motor_api.dart';
 import 'package:rosantibike_mobile/api/transaksi_api.dart';
+import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/pages/dashboard_page.dart';
-import 'package:rosantibike_mobile/pages/transaksi_page.dart';
+import 'package:rosantibike_mobile/pages/booking_page.dart';
 import 'package:rosantibike_mobile/pages/wallets_page.dart';
 import 'package:rosantibike_mobile/pages/review_page.dart';
 import 'package:rosantibike_mobile/pages/settings_page.dart';
@@ -16,8 +17,9 @@ import 'package:rosantibike_mobile/bottom_navigation_widget.dart';
 import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:rosantibike_mobile/theme/app_theme.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null); // Initialize Indonesian locale
   runApp(
     MultiProvider(
       providers: [
@@ -46,6 +48,10 @@ class MyApp extends StatelessWidget {
                 bookingApi: BookingApi(),
               )..add(FetchDashboardData()),
             ),
+            BlocProvider(
+              create: (context) => BookingBloc(bookingApi: BookingApi()),
+              child: BookingPage(),
+            )
           ],
           child: MaterialApp(
             title: 'Dashboard App',
@@ -73,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     const DashboardPage(),
-    const TransaksiPage(),
+    const BookingPage(),
     const WalletsPage(),
     const ReviewPage(),
     const SettingsPage(),

@@ -13,7 +13,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   final _stateController = StreamController<DashboardState>.broadcast();
   Timer? _pollingTimer;
-  String? _lastUpdated; // Timestamp for tracking the last update
+  String? _lastTransaksiUpdate;
+  String? _lastMotorUpdate;
+  String? _lastBookingUpdate;
 
   Stream<DashboardState> get stateStream => _stateController.stream;
 
@@ -27,33 +29,32 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     _startPolling();
   }
 
-  // Starts polling the API every 10 seconds
   void _startPolling() {
-    // Initial data fetch
     add(FetchDashboardData());
-
-    // Poll data every 10 seconds
     _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
       add(FetchDashboardData());
     });
   }
 
-  // Fetch the dashboard data from API
   Future<void> _fetchDashboardData(
     FetchDashboardData event,
     Emitter<DashboardState> emit,
   ) async {
     try {
-      final transactions =
-          await transaksiApi.getTransaksi(lastUpdated: _lastUpdated);
-      final jenisMotors =
-          await jenisMotorApi.getJenisMotors(lastUpdated: _lastUpdated);
-      final booking = await bookingApi.getBooking(lastUpdated: _lastUpdated);
+      final transactions = await transaksiApi.getTransaksi(
+        lastUpdated: _lastTransaksiUpdate,
+      );
+      final jenisMotors = await jenisMotorApi.getJenisMotors(
+        lastUpdated: _lastMotorUpdate,
+      );
+      final booking = await bookingApi.getBooking(
+        lastUpdated: _lastBookingUpdate,
+      );
 
-      // Update the timestamp to track last fetched data
-      _lastUpdated = transactions['timestamp'];
+      _lastTransaksiUpdate = transactions['timestamp'];
+      _lastMotorUpdate = jenisMotors['timestamp'];
+      _lastBookingUpdate = booking['timestamp'];
 
-      // Create the new state for the loaded data
       final newState = DashboardLoaded(
         motorTersewa: transactions['motor_tersewa'] ?? 0,
         sisaMotor: transactions['sisa_motor'] ?? 0,
@@ -63,9 +64,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         motorUnits: jenisMotors['data'] ?? [],
       );
 
-      // Only emit if there is a change in state
-      if (state is! DashboardLoaded ||
-          (state as DashboardLoaded).data != newState.data) {
+      if (_shouldUpdateState(newState)) {
         emit(newState);
         _stateController.add(newState);
       }
@@ -76,32 +75,52 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
   }
 
-  // Update the state when dashboard data changes
+  bool _shouldUpdateState(DashboardLoaded newState) {
+    if (state is! DashboardLoaded) return true;
+
+    final currentState = state as DashboardLoaded;
+    return currentState.motorTersewa != newState.motorTersewa ||
+        currentState.sisaMotor != newState.sisaMotor ||
+        currentState.totalUnit != newState.totalUnit ||
+        currentState.totalBooking != newState.totalBooking ||
+        _hasDataChanged(currentState.data, newState.data) ||
+        _hasDataChanged(currentState.motorUnits, newState.motorUnits);
+  }
+
+  bool _hasDataChanged(List<dynamic> oldData, List<dynamic> newData) {
+    if (oldData.length != newData.length) return true;
+    for (int i = 0; i < oldData.length; i++) {
+      if (oldData[i].toString() != newData[i].toString()) return true;
+    }
+    return false;
+  }
+
   void _updateDashboardData(
     UpdateDashboardData event,
     Emitter<DashboardState> emit,
   ) {
-    final currentState = state;
-    if (currentState is DashboardLoaded) {
+    if (state is DashboardLoaded) {
+      final currentState = state as DashboardLoaded;
       final newState = DashboardLoaded(
         motorTersewa: event.motorTersewa ?? currentState.motorTersewa,
         sisaMotor: event.sisaMotor ?? currentState.sisaMotor,
         totalUnit: event.totalUnit ?? currentState.totalUnit,
         totalBooking: event.totalBooking ?? currentState.totalBooking,
-        data: event.data as List<dynamic>? ?? currentState.data,
-        motorUnits:
-            event.motorUnits as List<dynamic>? ?? currentState.motorUnits,
+        data: event.data ?? currentState.data,
+        motorUnits: event.motorUnits ?? currentState.motorUnits,
       );
 
-      // Only emit the updated state if there's a change
-      if (newState != currentState) {
+      if (_shouldUpdateState(newState)) {
         emit(newState);
         _stateController.add(newState);
       }
     }
   }
 
-  // Close the bloc and cancel polling when the bloc is closed
+  void refreshDashboard() {
+    add(FetchDashboardData());
+  }
+
   @override
   Future<void> close() async {
     _pollingTimer?.cancel();

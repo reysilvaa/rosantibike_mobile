@@ -6,7 +6,6 @@ class JenisMotor {
   final String nopol;
   final String status;
   final Stok stok;
-  final int count;
 
   JenisMotor({
     required this.id,
@@ -14,17 +13,23 @@ class JenisMotor {
     required this.nopol,
     required this.status,
     required this.stok,
-    required this.count,
   });
 
   factory JenisMotor.fromJson(Map<String, dynamic> json) {
     return JenisMotor(
-      id: json['id'],
-      idStok: json['id_stok'],
-      nopol: json['nopol'],
-      status: json['status'],
-      stok: Stok.fromJson(json['stok']),
-      count: json['count'],
+      id: json['id'] as int,
+      idStok: json['id_stok'] as int,
+      nopol: json['nopol'] as String,
+      status: json['status'] as String,
+      stok: Stok.fromJson(json['stok'] as Map<String, dynamic>),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'id_stok': idStok,
+        'nopol': nopol,
+        'status': status,
+        'stok': stok.toJson(),
+      };
 }

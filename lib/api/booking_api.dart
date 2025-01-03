@@ -8,25 +8,32 @@ import 'package:rosantibike_mobile/model/booking.dart';
 class BookingApi {
   final String apiUrl = ApiService.apiUrl;
 
-  // Mendapatkan data booking
   Future<Map<String, dynamic>> getBooking({String? lastUpdated}) async {
     final uri =
         Uri.parse('$apiUrl/admin/booking/list').replace(queryParameters: {
       if (lastUpdated != null) 'last_updated': lastUpdated,
     });
 
-    final response = await http.get(uri);
-    if (response.statusCode != 200) throw Exception('Failed to load data');
+    try {
+      final response = await http.get(uri);
+      if (response.statusCode != 200) {
+        print('error');
+        throw Exception('Failed to load data');
+      }
 
-    final responseData = json.decode(response.body);
+      final responseData = json.decode(response.body);
+      if (!responseData['success']) {
+        throw Exception(responseData['message'] ?? 'Failed to load data');
+      }
 
-    return {
-      'data': List.from(responseData['data'])
-          .map((item) => _mapTransaction(item))
-          .toList(),
-      'count': responseData['count'],
-      'timestamp': responseData['timestamp'], // For lastUpdated
-    };
+      return {
+        'data': List<Map<String, dynamic>>.from(responseData['data']),
+        'count': responseData['count'] ?? 0,
+        'timestamp': responseData['timestamps'],
+      };
+    } catch (e) {
+      throw Exception('Failed to load bookings: ${e.toString()}');
+    }
   }
 
   // Memetakan booking
