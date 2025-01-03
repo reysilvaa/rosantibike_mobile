@@ -1,7 +1,7 @@
-// booking_page.dart (Updated)
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rosantibike_mobile/pages/in_app_web_view.dart';
 import 'package:rosantibike_mobile/widgets/booking/booking_card.dart';
 import 'package:rosantibike_mobile/widgets/booking/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
@@ -11,6 +11,7 @@ import '../blocs/booking/booking_event.dart';
 import '../blocs/booking/booking_state.dart';
 import '../constants/currency_format.dart';
 import '../constants/date_format.dart';
+import '../widgets/header_widget.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
@@ -25,52 +26,23 @@ class _BookingPageState extends State<BookingPage> {
   @override
   void initState() {
     super.initState();
-    _bookingBloc = context.read<BookingBloc>();
+    _bookingBloc = BlocProvider.of<BookingBloc>(context);
     _bookingBloc.add(FetchBookings());
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final theme = Theme.of(context);
-
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Booking Analytics',
-          style: theme.appBarTheme.titleTextStyle,
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-              color: theme.appBarTheme.iconTheme?.color,
-            ),
-            onPressed: () {
-              themeProvider.toggleTheme();
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.filter_list,
-              color: theme.appBarTheme.iconTheme?.color,
-            ),
-            onPressed: () {
-              // Add filter logic
-            },
-          ),
-        ],
-        elevation: theme.appBarTheme.elevation,
-        backgroundColor: theme.appBarTheme.backgroundColor,
-      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 8),
+              HeaderWidget(title: 'Booking'),
+              const SizedBox(height: 20),
               const BookingSearchBar(),
               const SizedBox(height: 20),
               Expanded(
@@ -106,8 +78,6 @@ class _BookingPageState extends State<BookingPage> {
                           itemCount: state.bookings.length,
                           itemBuilder: (context, index) {
                             final booking = state.bookings[index];
-                            print(
-                                'Booking ${booking.id} - Nopol: ${booking.nopol}');
 
                             return BookingCard(
                               bookingId: booking.id.toString(),
@@ -143,9 +113,14 @@ class _BookingPageState extends State<BookingPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add new booking logic
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InAppBrowserWidget(),
+            ),
+          );
         },
-        backgroundColor: theme.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.add),
       ),
     );

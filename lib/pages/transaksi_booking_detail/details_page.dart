@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'dart:convert'; // Untuk decoding Base64
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/details_card.dart';
 import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/pdf_preview_widget.dart';
-import 'dart:io';
 
 class DetailsPage extends StatefulWidget {
   final String type;
@@ -86,33 +87,57 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Booking Details'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.download),
-            onPressed: _downloadInvoice,
-            tooltip: 'Download Invoice',
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header widget untuk judul halaman
+              HeaderWidget(title: 'Detail Booking'),
+              const SizedBox(height: 20),
+
+              // Konten utama yang dapat digulir
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Kartu untuk menampilkan detail booking
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DetailsCard(
+                          bookingId: widget.bookingId,
+                          customer: widget.customer,
+                          nopol: widget.nopol,
+                          dateSewa: widget.dateSewa,
+                          dateKembali: widget.dateKembali,
+                          jamSewa: widget.jamSewa,
+                          jamKembali: widget.jamKembali,
+                          total: widget.total,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Widget untuk menampilkan pratinjau PDF invoice
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: PdfPreviewWidget(invoicePdf: invoicePdf),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            DetailsCard(
-              bookingId: widget.bookingId,
-              customer: widget.customer,
-              nopol: widget.nopol,
-              dateSewa: widget.dateSewa,
-              dateKembali: widget.dateKembali,
-              jamSewa: widget.jamSewa,
-              jamKembali: widget.jamKembali,
-              total: widget.total,
-            ),
-            const SizedBox(height: 16),
-            PdfPreviewWidget(invoicePdf: invoicePdf),
-          ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _downloadInvoice,
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.download),
+        tooltip: 'Download Invoice',
       ),
     );
   }

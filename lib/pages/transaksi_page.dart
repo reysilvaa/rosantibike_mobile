@@ -1,25 +1,26 @@
-// booking_page.dart (Updated)
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_event.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_state.dart';
+import 'package:rosantibike_mobile/pages/in_app_web_view.dart';
 import 'package:rosantibike_mobile/widgets/transaksi/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
 import 'package:rosantibike_mobile/widgets/transaksi/transaksi_card.dart';
 import '../theme/theme_provider.dart';
 import '../constants/currency_format.dart';
 import '../constants/date_format.dart';
+import '../widgets/header_widget.dart';
 
 class TransaksiPage extends StatefulWidget {
   const TransaksiPage({Key? key}) : super(key: key);
 
   @override
-  State<TransaksiPage> createState() => _BookingPageState();
+  State<TransaksiPage> createState() => _TransaksiPageState();
 }
 
-class _BookingPageState extends State<TransaksiPage> {
+class _TransaksiPageState extends State<TransaksiPage> {
   late TransaksiBloc _transaksiBloc;
 
   @override
@@ -32,45 +33,17 @@ class _BookingPageState extends State<TransaksiPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Transaksi Analytics',
-          style: theme.appBarTheme.titleTextStyle,
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-              color: theme.appBarTheme.iconTheme?.color,
-            ),
-            onPressed: () {
-              themeProvider.toggleTheme();
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.filter_list,
-              color: theme.appBarTheme.iconTheme?.color,
-            ),
-            onPressed: () {
-              // Add filter logic
-            },
-          ),
-        ],
-        elevation: theme.appBarTheme.elevation,
-        backgroundColor: theme.appBarTheme.backgroundColor,
-      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 8),
+              HeaderWidget(title: 'Transaksi'),
+              const SizedBox(height: 20),
               const TransaksiSearchBar(),
               const SizedBox(height: 20),
               Expanded(
@@ -106,8 +79,6 @@ class _BookingPageState extends State<TransaksiPage> {
                           itemCount: state.transaksis.length,
                           itemBuilder: (context, index) {
                             final transaksi = state.transaksis[index];
-                            print(
-                                'Transaksi ${transaksi.id} - Nopol: ${transaksi.nopol}');
 
                             return TransaksiCard(
                               transaksiId: transaksi.id.toString(),
@@ -143,9 +114,14 @@ class _BookingPageState extends State<TransaksiPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add new transaksi logic
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InAppBrowserWidget(),
+            ),
+          );
         },
-        backgroundColor: theme.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.add),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
 import 'package:rosantibike_mobile/widgets/dashboard/unit_preview.dart';
+import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import '../widgets/dashboard/stat_card.dart';
 import '../widgets/dashboard/menu_grid.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(context, themeProvider),
+              HeaderWidget(title: 'Dashboard'),
               const SizedBox(height: 20),
               StreamBuilder<DashboardState>(
                 stream: _dashboardBloc.stateStream,
