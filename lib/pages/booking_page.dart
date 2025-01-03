@@ -106,9 +106,13 @@ class _BookingPageState extends State<BookingPage> {
                           itemCount: state.bookings.length,
                           itemBuilder: (context, index) {
                             final booking = state.bookings[index];
+                            print(
+                                'Booking ${booking.id} - Nopol: ${booking.nopol}');
+
                             return BookingCard(
                               bookingId: booking.id.toString(),
                               customer: booking.namaPenyewa,
+                              nopol: booking.nopol,
                               dateSewa: DateFormatUtils.formatTanggalPendek(
                                 DateTime.parse(booking.tglSewa),
                               ),

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart'; // Add import for date formatting
 class BookingCard extends StatelessWidget {
   final String bookingId;
   final String customer;
+  final String nopol;
   final String dateSewa;
   final String dateKembali;
   final String jamSewa;
@@ -16,6 +17,7 @@ class BookingCard extends StatelessWidget {
     Key? key,
     required this.bookingId,
     required this.customer,
+    required this.nopol,
     required this.dateSewa,
     required this.jamSewa,
     required this.jamKembali,
@@ -48,6 +50,7 @@ class BookingCard extends StatelessWidget {
               builder: (context) => DetailsPage(
                 bookingId: bookingId,
                 customer: customer,
+                nopol: nopol,
                 dateSewa: dateSewa,
                 dateKembali: dateKembali,
                 jamKembali: jamKembali,
@@ -121,7 +124,21 @@ class BookingCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              // Date and time section
+              Row(
+                children: [
+                  Icon(Icons.confirmation_number_outlined,
+                      size: 16, color: theme.iconTheme.color?.withOpacity(0.7)),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Nopol: $nopol',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color:
+                          theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   Icon(Icons.calendar_today,

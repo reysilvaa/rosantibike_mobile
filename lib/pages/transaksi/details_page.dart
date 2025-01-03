@@ -8,6 +8,7 @@ import 'dart:io';
 class DetailsPage extends StatelessWidget {
   final String bookingId;
   final String customer;
+  final String nopol;
   final String dateSewa;
   final String dateKembali;
   final String jamSewa;
@@ -18,6 +19,7 @@ class DetailsPage extends StatelessWidget {
     Key? key,
     required this.bookingId,
     required this.customer,
+    required this.nopol,
     required this.dateSewa,
     required this.dateKembali,
     required this.jamKembali,

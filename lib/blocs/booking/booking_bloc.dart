@@ -9,7 +9,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final BookingApi bookingApi;
   final _stateController = StreamController<BookingState>.broadcast();
   Timer? _pollingTimer;
-  Timer? _debounceTimer; // Timer for debouncing search
+  Timer? _searchDebounceTimer; // Add debounce timer
   String? _lastUpdated;
 
   // Store search query
@@ -20,7 +20,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc({required this.bookingApi}) : super(BookingInitial()) {
     on<FetchBookings>(_fetchBookings);
     on<UpdateBookings>(_updateBookings);
-    on<SearchBookings>(_debouncedSearchBookings); // Use debounced search
+    on<SearchBookings>(_searchBookings);
     _startPolling();
   }
 
@@ -35,9 +35,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       FetchBookings event, Emitter<BookingState> emit) async {
     try {
       final response = await bookingApi.getBooking(
-        lastUpdated: _lastUpdated,
-        search: _searchQuery,
-      );
+          lastUpdated: _lastUpdated, search: _searchQuery);
       _lastUpdated = response['timestamp'];
 
       final bookings = List<Booking>.from(
@@ -73,13 +71,17 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     _stateController.add(newState);
   }
 
-  // Debounced search logic
-  void _debouncedSearchBookings(
-      SearchBookings event, Emitter<BookingState> emit) {
-    _debounceTimer?.cancel(); // Cancel the previous debounce timer
-    _debounceTimer = Timer(const Duration(seconds: 1), () {
-      _searchQuery = event.searchQuery;
-      add(FetchBookings());
+  // Implement search bookings logic with debouncing
+  void _searchBookings(SearchBookings event, Emitter<BookingState> emit) {
+    if (_searchDebounceTimer?.isActive ?? false) {
+      _searchDebounceTimer?.cancel(); // Cancel any existing timer
+    }
+
+    _searchQuery = event.searchQuery;
+
+    // Start a new debounce timer
+    _searchDebounceTimer = Timer(const Duration(milliseconds: 500), () {
+      add(FetchBookings()); // Trigger fetch after the debounce delay
     });
   }
 
@@ -90,7 +92,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   @override
   Future<void> close() async {
     _pollingTimer?.cancel();
-    _debounceTimer?.cancel(); // Cancel debounce timer on close
+    _searchDebounceTimer?.cancel(); // Cancel the debounce timer
     await _stateController.close();
     return super.close();
   }
