@@ -12,6 +12,7 @@ import '../blocs/booking/booking_state.dart';
 import '../constants/currency_format.dart';
 import '../constants/date_format.dart';
 import '../widgets/header_widget.dart';
+import 'package:flutter/services.dart'; // Import SystemChrome
 
 class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
@@ -33,6 +34,23 @@ class _BookingPageState extends State<BookingPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+
+    // Update status bar to match the current theme
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context)
+            .scaffoldBackgroundColor, // Update status bar color
+        statusBarIconBrightness: themeProvider.isDarkMode
+            ? Brightness.light
+            : Brightness.dark, // Adjust icon brightness based on theme
+        systemNavigationBarColor: Theme.of(context)
+            .scaffoldBackgroundColor, // Update navigation bar color
+        systemNavigationBarIconBrightness: themeProvider.isDarkMode
+            ? Brightness.light
+            : Brightness.dark, // Adjust navigation bar icons
+      ),
+    );
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -41,7 +59,7 @@ class _BookingPageState extends State<BookingPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderWidget(title: 'Booking'),
+              HeaderWidget(title: "Booking"), // Custom header
               const SizedBox(height: 20),
               const BookingSearchBar(),
               const SizedBox(height: 20),

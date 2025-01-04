@@ -1,46 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart'; // Untuk SystemChrome
 
 class AppTheme {
   // Color constants
-  static const Color _primaryLight = Color(0xFF2196F3);
-  static const Color _primaryDark = Color(0xFF64B5F6);
-  static const Color _errorColor = Color(0xFFE57373);
-
-  // New gradient colors
-  static const List<Color> _lightGradient = [
-    Color(0xFF2196F3),
-    Color(0xFF42A5F5),
-  ];
-
-  static const List<Color> _darkGradient = [
-    Color(0xFF64B5F6),
-    Color(0xFF90CAF9),
-  ];
+  static const Color _primaryLight = Color(0xFF2196F3); // Vibrant blue
+  static const Color _primaryDark =
+      Color(0xFF64B5F6); // Lighter blue for dark theme
+  static const Color _errorColor = Color(0xFFE57373); // Light red
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.blue,
     primaryColor: _primaryLight,
-    scaffoldBackgroundColor: Colors.grey[50],
-    cardColor: Colors.white,
+    scaffoldBackgroundColor: Colors.grey[50], // Lighter background
+    cardColor: Colors.white, // Pure white cards
     shadowColor: Colors.black,
     dividerColor: Colors.grey[300],
 
-    extensions: [
-      DetailsCardTheme(
-        headerGradient: _lightGradient,
-        headerTextColor: Colors.white,
-        sectionTitleColor: Colors.grey[700]!,
-        iconColor: _primaryLight,
-        totalBackgroundColor: _primaryLight.withOpacity(0.1),
-        totalTextColor: _primaryLight,
-        chipBackgroundColor: Colors.white.withOpacity(0.2),
-        chipTextColor: Colors.white,
-      ),
-    ],
-
-    // Existing text theme
+    // Text colors using Poppins font
     textTheme: GoogleFonts.poppinsTextTheme(
       const TextTheme(
         headlineLarge: TextStyle(
@@ -263,76 +241,23 @@ class AppTheme {
       ),
     ),
   );
-}
 
-// Custom theme extension for DetailsCard
-class DetailsCardTheme extends ThemeExtension<DetailsCardTheme> {
-  final List<Color> headerGradient;
-  final Color headerTextColor;
-  final Color sectionTitleColor;
-  final Color iconColor;
-  final Color totalBackgroundColor;
-  final Color totalTextColor;
-  final Color chipBackgroundColor;
-  final Color chipTextColor;
-
-  DetailsCardTheme({
-    required this.headerGradient,
-    required this.headerTextColor,
-    required this.sectionTitleColor,
-    required this.iconColor,
-    required this.totalBackgroundColor,
-    required this.totalTextColor,
-    required this.chipBackgroundColor,
-    required this.chipTextColor,
-  });
-
-  @override
-  ThemeExtension<DetailsCardTheme> copyWith({
-    List<Color>? headerGradient,
-    Color? headerTextColor,
-    Color? sectionTitleColor,
-    Color? iconColor,
-    Color? totalBackgroundColor,
-    Color? totalTextColor,
-    Color? chipBackgroundColor,
-    Color? chipTextColor,
-  }) {
-    return DetailsCardTheme(
-      headerGradient: headerGradient ?? this.headerGradient,
-      headerTextColor: headerTextColor ?? this.headerTextColor,
-      sectionTitleColor: sectionTitleColor ?? this.sectionTitleColor,
-      iconColor: iconColor ?? this.iconColor,
-      totalBackgroundColor: totalBackgroundColor ?? this.totalBackgroundColor,
-      totalTextColor: totalTextColor ?? this.totalTextColor,
-      chipBackgroundColor: chipBackgroundColor ?? this.chipBackgroundColor,
-      chipTextColor: chipTextColor ?? this.chipTextColor,
-    );
-  }
-
-  @override
-  ThemeExtension<DetailsCardTheme> lerp(
-    ThemeExtension<DetailsCardTheme>? other,
-    double t,
-  ) {
-    if (other is! DetailsCardTheme) {
-      return this;
-    }
-    return DetailsCardTheme(
-      headerGradient: [
-        Color.lerp(headerGradient[0], other.headerGradient[0], t)!,
-        Color.lerp(headerGradient[1], other.headerGradient[1], t)!,
-      ],
-      headerTextColor: Color.lerp(headerTextColor, other.headerTextColor, t)!,
-      sectionTitleColor:
-          Color.lerp(sectionTitleColor, other.sectionTitleColor, t)!,
-      iconColor: Color.lerp(iconColor, other.iconColor, t)!,
-      totalBackgroundColor:
-          Color.lerp(totalBackgroundColor, other.totalBackgroundColor, t)!,
-      totalTextColor: Color.lerp(totalTextColor, other.totalTextColor, t)!,
-      chipBackgroundColor:
-          Color.lerp(chipBackgroundColor, other.chipBackgroundColor, t)!,
-      chipTextColor: Color.lerp(chipTextColor, other.chipTextColor, t)!,
+  // Apply system UI updates for status bar and navigation bar
+  static void updateSystemUI(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context)
+            .scaffoldBackgroundColor, // Background color of the status bar
+        statusBarIconBrightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark,
+        systemNavigationBarColor: Theme.of(context)
+            .scaffoldBackgroundColor, // Color of navigation bar
+        systemNavigationBarIconBrightness:
+            Theme.of(context).brightness == Brightness.dark
+                ? Brightness.light
+                : Brightness.dark,
+      ),
     );
   }
 }

@@ -50,14 +50,13 @@ class _DashboardPageState extends State<DashboardPage> {
                         current is DashboardError,
                     listener: (context, state) {
                       if (state is DashboardError) {
-                        // Print full error to the console
                         print('Error: ${state.message}');
-                        // print(
-                        //     'Stack trace: ${state.stackTrace}'); // If stack trace is available
-
-                        // Optionally, you can also show the error message in the SnackBar
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(state.message)),
+                          SnackBar(
+                            content: Text(state.message),
+                            duration: const Duration(seconds: 3),
+                            backgroundColor: Colors.red,
+                          ),
                         );
                       }
                     },
@@ -72,8 +71,6 @@ class _DashboardPageState extends State<DashboardPage> {
               const MenuGrid(),
               const SizedBox(height: 30),
               const MotorCarousel(),
-              // const SizedBox(height: 20),
-              // const Expanded(child: MenuGrid()),
             ],
           ),
         ),
@@ -81,36 +78,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, ThemeProvider themeProvider) {
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Dashboard',
-          style: theme.appBarTheme.titleTextStyle?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                color: theme.iconTheme.color,
-              ),
-              onPressed: () => themeProvider.toggleTheme(),
-            ),
-            IconButton(
-              icon: Icon(Icons.more_horiz, color: theme.iconTheme.color),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
+  // Refactored dashboard stats widget with better spacing
   Widget _buildDashboardStats(BuildContext context, DashboardState state) {
     final sisaMotor = (state is DashboardLoaded) ? state.sisaMotor : 0;
     final motorTersewa = (state is DashboardLoaded) ? state.motorTersewa : 0;
@@ -174,6 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  // Updated value widget with custom text styling and colors
   Widget _buildValueWidget(BuildContext context, int value, bool isLoading,
       bool isError, bool isSisaMotor) {
     final theme = Theme.of(context);
@@ -202,6 +171,42 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  // // Custom header dengan penyesuaian warna background dan teks
+  // Widget _buildHeader(BuildContext context, ThemeProvider themeProvider) {
+  //   final theme = Theme.of(context);
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Text(
+  //         'Dashboard',
+  //         style: theme.appBarTheme.titleTextStyle?.copyWith(
+  //           fontWeight: FontWeight.bold,
+  //           fontSize: 22, // Ukuran teks tetap besar untuk visibilitas
+  //           color: theme.brightness == Brightness.dark
+  //               ? Colors.white
+  //               : Colors.black, // Sesuaikan warna teks berdasarkan mode
+  //         ),
+  //       ),
+  //       Row(
+  //         children: [
+  //           IconButton(
+  //             icon: Icon(
+  //               themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+  //               color: theme.iconTheme.color,
+  //             ),
+  //             onPressed: () => themeProvider.toggleTheme(),
+  //           ),
+  //           IconButton(
+  //             icon: Icon(Icons.more_horiz, color: theme.iconTheme.color),
+  //             onPressed: () {},
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Refined percentage calculation for consistency
   String _calculatePercentage(int value, int total) {
     if (total <= 0) return '0%';
     return '${((value / total) * 100).toStringAsFixed(0)}%';
