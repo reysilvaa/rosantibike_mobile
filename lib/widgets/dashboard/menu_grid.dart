@@ -15,7 +15,6 @@ class _MenuGridState extends State<MenuGrid>
   final List<Animation<double>> _fadeAnimations = [];
 
   List<Map<String, dynamic>> getMenuItems(bool isDarkMode) {
-    // Colors for light mode
     final lightGradients = [
       [const Color(0xFF2196F3), const Color(0xFF64B5F6)],
       [const Color(0xFF1E88E5), const Color(0xFF42A5F5)],
@@ -23,7 +22,6 @@ class _MenuGridState extends State<MenuGrid>
       [const Color(0xFF1565C0), const Color(0xFF1E88E5)],
     ];
 
-    // Colors for dark mode - using gray scale
     final darkGradients = [
       [const Color(0xFF424242), const Color(0xFF616161)],
       [const Color(0xFF484848), const Color(0xFF666666)],
@@ -65,7 +63,6 @@ class _MenuGridState extends State<MenuGrid>
       duration: const Duration(milliseconds: 1000),
     );
 
-    // Initialize animations
     for (int i = 0; i < 4; i++) {
       final startDelay = (i / 4) * 0.4;
       _scaleAnimations.add(
@@ -107,37 +104,26 @@ class _MenuGridState extends State<MenuGrid>
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = 4;
-        final spacing = 16.0;
-        final horizontalPadding = 16.0;
-        final verticalPadding = 16.0;
+        // Adaptive spacing based on screen width
+        final spacing = constraints.maxWidth * 0.02; // 2% of screen width
+        final padding = constraints.maxWidth * 0.03; // 3% of screen width
 
-        final availableWidth = constraints.maxWidth -
-            (horizontalPadding * 2) -
-            (spacing * (crossAxisCount - 1));
-        final itemWidth = availableWidth / crossAxisCount;
-        final itemHeight = itemWidth * 1.2;
-
-        final rows = (menuItems.length / crossAxisCount).ceil();
-        final totalHeight = (rows * itemHeight) +
-            (spacing * (rows - 1)) +
-            (verticalPadding * 2);
+        // Calculate item dimensions
+        final availableWidth = constraints.maxWidth - (padding * 2);
+        final itemWidth = (availableWidth - (spacing * 3)) / 4;
+        final itemHeight = itemWidth * 1.1; // Reduced aspect ratio
 
         return Container(
-          height: totalHeight,
-          padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: verticalPadding,
-          ),
+          padding: EdgeInsets.all(padding),
           decoration: BoxDecoration(
             color: theme.cardColor,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
                 color: theme.shadowColor.withOpacity(isDarkMode ? 0.3 : 0.08),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-                spreadRadius: 2,
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+                spreadRadius: 1,
               ),
             ],
           ),
@@ -145,7 +131,7 @@ class _MenuGridState extends State<MenuGrid>
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
+              crossAxisCount: 4,
               crossAxisSpacing: spacing,
               mainAxisSpacing: spacing,
               childAspectRatio: itemWidth / itemHeight,
@@ -162,6 +148,7 @@ class _MenuGridState extends State<MenuGrid>
                     label: item['label'] as String,
                     gradient: item['gradient'] as List<Color>,
                     theme: theme,
+                    iconSize: itemWidth * 0.4, // Adaptive icon size
                   ),
                 ),
               );
@@ -178,6 +165,7 @@ class MenuGridItem extends StatefulWidget {
   final String label;
   final List<Color> gradient;
   final ThemeData theme;
+  final double iconSize;
 
   const MenuGridItem({
     Key? key,
@@ -185,6 +173,7 @@ class MenuGridItem extends StatefulWidget {
     required this.label,
     required this.gradient,
     required this.theme,
+    required this.iconSize,
   }) : super(key: key);
 
   @override
@@ -213,37 +202,37 @@ class _MenuGridItemState extends State<MenuGridItem> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 64,
-              height: 64,
+              width: widget.iconSize * 1.8,
+              height: widget.iconSize * 1.8,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: widget.gradient,
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
                     color: widget.gradient.first
                         .withOpacity(isDarkMode ? 0.3 : 0.25),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                    spreadRadius: 0.5,
                   ),
                 ],
               ),
               child: Icon(
                 widget.icon,
                 color: Colors.white,
-                size: 30,
+                size: widget.iconSize,
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: widget.iconSize * 0.2),
             Text(
               widget.label,
-              style: widget.theme.textTheme.labelLarge?.copyWith(
+              style: widget.theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w600,
-                letterSpacing: 0.2,
+                letterSpacing: 0.1,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,

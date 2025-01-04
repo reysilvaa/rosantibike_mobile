@@ -134,7 +134,7 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(width: 16),
             Expanded(
               child: StatCard(
-                statType: 'MotorTersewa',
+                statType: 'MotorKeluar',
                 value: _buildValueWidget(
                     context, motorTersewa, false, false, false),
                 percentage: _calculatePercentage(motorTersewa, totalMotor),

@@ -237,12 +237,12 @@ class MotorCard extends StatelessWidget {
     final formattedPrice = formatCurrency(hargaPerHari);
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
           color: theme.dividerColor.withOpacity(0.1),
-          width: 1,
+          width: 20,
         ),
       ),
       elevation: isDarkMode ? 2 : 3,
@@ -250,7 +250,7 @@ class MotorCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 7,
+            flex: 8,
             child: ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(16)),
