@@ -21,6 +21,8 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<FetchBookings>(_fetchBookings);
     on<UpdateBookings>(_updateBookings);
     on<SearchBookings>(_searchBookings);
+    on<DeleteBooking>(_deleteBooking);
+
     _startPolling();
   }
 
@@ -87,6 +89,17 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
   void refreshBookings() {
     add(FetchBookings());
+  }
+
+  Future<void> _deleteBooking(
+      DeleteBooking event, Emitter<BookingState> emit) async {
+    print("Deleting transaksi with ID: ${event.bookingId}");
+    try {
+      await bookingApi.deleteBooking(event.bookingId);
+      add(FetchBookings()); // Refresh list after deletion
+    } catch (e) {
+      emit(BookingError('Failed to delete transaction: $e'));
+    }
   }
 
   @override

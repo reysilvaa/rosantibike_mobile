@@ -22,3 +22,8 @@ class SearchBookings extends BookingEvent {
 
   SearchBookings(this.searchQuery);
 }
+class DeleteBooking extends BookingEvent {
+  final int bookingId;
+
+  DeleteBooking(this.bookingId);
+}

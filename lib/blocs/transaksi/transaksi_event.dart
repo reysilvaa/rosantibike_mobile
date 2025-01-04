@@ -22,3 +22,8 @@ class SearchTransaksi extends TransaksiEvent {
 
   SearchTransaksi(this.searchQuery);
 }
+class DeleteTransaksi extends TransaksiEvent {
+  final int transaksiId;
+
+  DeleteTransaksi(this.transaksiId);
+}

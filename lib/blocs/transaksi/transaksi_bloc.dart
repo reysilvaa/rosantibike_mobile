@@ -21,6 +21,8 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
     on<FetchTransaksi>(_fetchTransaksis);
     on<UpdateTransaksi>(_updateTransaksis);
     on<SearchTransaksi>(_searchTransaksis);
+    on<DeleteTransaksi>(_deleteTransaksi);
+
     _startPolling();
   }
 
@@ -72,7 +74,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
   }
 
   // Implement search transaksis logic with debouncing
-  void _searchTransaksis( event, Emitter<TransaksiState> emit) {
+  void _searchTransaksis(event, Emitter<TransaksiState> emit) {
     if (_searchDebounceTimer?.isActive ?? false) {
       _searchDebounceTimer?.cancel(); // Cancel any existing timer
     }
@@ -83,6 +85,17 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
     _searchDebounceTimer = Timer(const Duration(milliseconds: 500), () {
       add(FetchTransaksi()); // Trigger fetch after the debounce delay
     });
+  }
+
+  Future<void> _deleteTransaksi(
+      DeleteTransaksi event, Emitter<TransaksiState> emit) async {
+    print("Deleting transaksi with ID: ${event.transaksiId}");
+    try {
+      await transaksiApi.deleteTransaksi(event.transaksiId);
+      add(FetchTransaksi()); // Refresh list after deletion
+    } catch (e) {
+      emit(TransaksiError('Failed to delete transaction: $e'));
+    }
   }
 
   void refreshBookings() {

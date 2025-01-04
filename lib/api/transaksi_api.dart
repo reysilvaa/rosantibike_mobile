@@ -179,7 +179,7 @@ class TransaksiApi {
   // Hapus transaksi
   Future<void> deleteTransaksi(int id) async {
     final response =
-        await http.delete(Uri.parse('$apiUrl/admin/transaksi/$id'));
+        await http.delete(Uri.parse('$apiUrl/admin/transaksi/delete/$id'));
     if (response.statusCode != 200)
       throw Exception('Failed to delete transaction');
   }
