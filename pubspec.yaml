@@ -46,9 +46,18 @@ dependencies:
   google_fonts: ^6.2.1
   carousel_slider: ^5.0.0
   shimmer: ^3.0.0
-  intl: ^0.18.0
+  intl: ^0.20.1
   flutter_inappwebview: ^6.1.5
   flutter_launcher_icons: ^0.14.2
+#   flutter_native_splash: ^2.4.4
+
+# flutter_native_splash:
+#   color: "#ffffff"
+#   image: assets/icon/icon.png
+#   android: true
+#   ios: true
+#   web: false
+#   fullscreen: true
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +68,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,8 +82,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/icon/icon.png
+    - assets/icon/
+    - assets/scooter/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
