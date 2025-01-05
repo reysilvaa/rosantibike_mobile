@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosantibike_mobile/api/booking_api.dart';
@@ -117,7 +119,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         transactionId: event.booking.id.toString(),
         motorType: event.booking.nopol,
       );
-      print('Notification sent successfully'); // Debug print
+      // Debug print
     } catch (e) {
       print('Error in _processNewBooking: $e'); // Debug print
       print('Stack trace: ${StackTrace.current}'); // Debug print
