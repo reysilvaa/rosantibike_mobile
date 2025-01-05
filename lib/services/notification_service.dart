@@ -1,9 +1,6 @@
 // lib/services/services.dart
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:rosantibike_mobile/api/api_service.dart';
 
 class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -47,9 +44,6 @@ class NotificationService {
       print("Foreground message received: ${message.messageId}");
       _handleForegroundMessage(message);
     });
-
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    print("Background message handler registered.");
   }
 
   Future<void> _createNotificationChannel() async {
@@ -137,45 +131,5 @@ class NotificationService {
     final token = await _firebaseMessaging.getToken();
     print("Device token: $token");
     return token;
-  }
-}
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Handling background message: ${message.messageId}');
-}
-
-class RentalService {
-  final String apiUrl = ApiService.apiUrl;
-  String _buildEndpoint(String endpoint) => '${ApiService.apiUrl}/$endpoint';
-  final NotificationService _notificationService = NotificationService();
-
-  Future<Map<String, dynamic>> createRental(
-      Map<String, dynamic> rentalData) async {
-    try {
-      final deviceToken = await _notificationService.getDeviceToken();
-      if (deviceToken == null) {
-        throw Exception('Tidak dapat mendapatkan device token');
-      }
-
-      rentalData['device_token'] = deviceToken;
-
-      final response = await http.post(
-        Uri.parse('$_buildEndpoint/transaksi/create'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode(rentalData),
-      );
-
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        final errorBody = jsonDecode(response.body);
-        throw Exception(errorBody['message'] ?? 'Gagal membuat rental');
-      }
-    } catch (e) {
-      throw Exception('Gagal membuat rental: $e');
-    }
   }
 }

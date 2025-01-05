@@ -53,7 +53,10 @@ class MyApp extends StatelessWidget {
             )..add(FetchDashboardData()),
           ),
           BlocProvider(
-            create: (context) => BookingBloc(bookingApi: BookingApi()),
+            create: (context) => BookingBloc(
+              bookingApi: BookingApi(),
+              notificationService: NotificationService(),
+            ),
           ),
           BlocProvider(
             create: (context) => TransaksiBloc(

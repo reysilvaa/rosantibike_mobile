@@ -59,7 +59,8 @@ class Booking {
       updatedAt: json['updated_at'] as String?,
       nopol: json['nopol'] as String,
       status: json['status'] as String,
-      jenisMotor: JenisMotor.fromJson(json['jenis_motor'] as Map<String, dynamic>),
+      jenisMotor:
+          JenisMotor.fromJson(json['jenis_motor'] as Map<String, dynamic>),
       count: json['count'] as int?,
     );
   }
