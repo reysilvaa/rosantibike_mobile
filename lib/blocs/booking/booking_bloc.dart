@@ -93,7 +93,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
   Future<void> _deleteBooking(
       DeleteBooking event, Emitter<BookingState> emit) async {
-    print("Deleting transaksi with ID: ${event.bookingId}");
     try {
       await bookingApi.deleteBooking(event.bookingId);
       add(FetchBookings()); // Refresh list after deletion

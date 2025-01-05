@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "65096759361",
+    "project_id": "rosantibikemotorent",
+    "storage_bucket": "rosantibikemotorent.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65096759361:android:75061544b1c60104102ec0",
+        "android_client_info": {
+          "package_name": "com.rosantibike.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFK8y8g5oLa5JLok425BcjHFmmxsM10oU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

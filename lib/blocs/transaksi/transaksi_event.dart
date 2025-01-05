@@ -27,3 +27,7 @@ class DeleteTransaksi extends TransaksiEvent {
 
   DeleteTransaksi(this.transaksiId);
 }
+class ProcessNewTransaksi extends TransaksiEvent {
+  final Transaksi transaksi;
+  ProcessNewTransaksi(this.transaksi);
+}

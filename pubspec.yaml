@@ -49,15 +49,18 @@ dependencies:
   intl: ^0.20.1
   flutter_inappwebview: ^6.1.5
   flutter_launcher_icons: ^0.14.2
-#   flutter_native_splash: ^2.4.4
-
-# flutter_native_splash:
-#   color: "#ffffff"
-#   image: assets/icon/icon.png
-#   android: true
-#   ios: true
-#   web: false
-#   fullscreen: true
+  flutter_native_splash: ^2.4.4
+  firebase_core: ^2.16.0
+  firebase_messaging: ^14.6.3
+  flutter_local_notifications: ^18.0.1
+  
+flutter_native_splash:
+  color: "#ffffff"
+  image: null
+  android: true
+  ios: true
+  web: false
+  fullscreen: true
 
 dev_dependencies:
   flutter_test:

@@ -1,13 +1,13 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id "dev.flutter.flutter-gradle-plugin" // Flutter Gradle Plugin
+    id "com.google.gms.google-services" // Firebase Plugin
 }
 
 android {
     namespace = "com.rosantibike.mobile"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -16,25 +16,26 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.rosantibike.mobile"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 23
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            // Enable resource shrinking (removes unused resources)
+            shrinkResources true
+            
+            // Enable code shrinking (ProGuard or R8)
+            minifyEnabled true
+            
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -42,3 +43,17 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Import Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+
+    // Tambahkan Firebase libraries sesuai kebutuhan
+    implementation 'com.google.firebase:firebase-messaging' // Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-analytics' // Firebase Analytics
+    implementation 'com.google.firebase:firebase-auth' // Firebase Authentication (opsional)
+    implementation 'com.google.firebase:firebase-database' // Realtime Database (opsional)
+}
+
+// Tambahkan plugin Google Services
+apply plugin: 'com.google.gms.google-services'

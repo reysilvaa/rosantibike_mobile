@@ -15,10 +15,10 @@ class BookingApi {
     });
 
     try {
-      print('Fetching bookings from: $uri'); // Debug log
+      // Debug log
       final response = await http.get(uri);
-      print('Response status code: ${response.statusCode}'); // Debug log
-      print('Response body: ${response.body}'); // Debug log
+      // Debug log
+      // Debug log
 
       if (response.statusCode != 200) {
         throw Exception('Failed to load data: ${response.statusCode}');
@@ -28,7 +28,7 @@ class BookingApi {
 
       if (responseData == null ||
           responseData is List && responseData.isEmpty) {
-        print('Empty response received'); // Debug log
+        // Debug log
         return {
           'data': [],
           'count': 0,
@@ -51,13 +51,13 @@ class BookingApi {
           (success is bool && !success) ||
           (success is String && success.toLowerCase() != 'true') ||
           (success is int && success != 1)) {
-        print('Success validation failed: $success'); // Debug log
+        // Debug log
         throw Exception(responseData['message'] ?? 'Failed to load data');
       }
 
       final data = responseData['data'];
       if (data == null) {
-        print('No data field in response'); // Debug log
+        // Debug log
         return {
           'data': [],
           'count': 0,
@@ -73,7 +73,7 @@ class BookingApi {
             responseData['timestamps'] ?? DateTime.now().toIso8601String(),
       };
     } catch (e) {
-      print('Error fetching bookings: $e'); // Debug log
+      // Debug log
       throw Exception('Failed to load bookings: $e');
     }
   }

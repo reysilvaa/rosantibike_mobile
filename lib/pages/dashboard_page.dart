@@ -50,7 +50,6 @@ class _DashboardPageState extends State<DashboardPage> {
                         current is DashboardError,
                     listener: (context, state) {
                       if (state is DashboardError) {
-                        print('Error: ${state.message}');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(state.message),

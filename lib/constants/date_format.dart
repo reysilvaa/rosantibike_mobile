@@ -14,7 +14,7 @@ class DateFormatUtils {
 
   static String formatJam(DateTime date) {
     try {
-      print(date); // Menampilkan nilai DateTime untuk pengecekan
+      // Menampilkan nilai DateTime untuk pengecekan
       return DateFormat("HH:mm", "id_ID").format(date);
     } catch (e) {
       return "Invalid time format";
