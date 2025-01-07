@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosantibike_mobile/constants/currency_format.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
@@ -42,12 +43,9 @@ class _MotorCarouselState extends State<MotorCarousel> {
     return BlocConsumer<DashboardBloc, DashboardState>(
       listener: (context, state) {
         if (state is DashboardError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: theme.colorScheme.error,
-            ),
+          SnackBarHelper.showErrorSnackBar(
+            context,
+            'Mencoba menyambungkan kembali',
           );
         }
       },

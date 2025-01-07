@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/in_app_web_view.dart';
 import 'package:rosantibike_mobile/widgets/booking/booking_card.dart';
 import 'package:rosantibike_mobile/widgets/booking/search_bar.dart';
@@ -71,8 +72,9 @@ class _BookingPageState extends State<BookingPage> {
                   child: BlocConsumer<BookingBloc, BookingState>(
                     listener: (context, state) {
                       if (state is BookingError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(state.message)),
+                        SnackBarHelper.showErrorSnackBar(
+                          context,
+                          'Mencoba memuat data...',
                         );
                       }
                     },

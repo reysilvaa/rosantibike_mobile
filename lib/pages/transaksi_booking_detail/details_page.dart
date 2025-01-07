@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:convert'; // Untuk decoding Base64
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/details_card.dart';
 import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/pdf_preview_widget.dart';
@@ -76,8 +77,9 @@ class _DetailsPageState extends State<DetailsPage> {
       final file = File('${output.path}/Invoice-${widget.bookingId}.pdf');
       await file.writeAsBytes(response.bodyBytes);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invoice downloaded to ${file.path}')),
+      SnackBarHelper.showSuccessSnackBar(
+        context,
+        'Tersimpan di : ${file.path}',
       );
     } else {
       throw Exception('Failed to download invoice');

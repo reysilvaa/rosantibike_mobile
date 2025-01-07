@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_event.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 
 import 'package:rosantibike_mobile/pages/transaksi_booking_detail/details_page.dart';
 
@@ -41,11 +42,9 @@ class TransaksiCard extends StatelessWidget {
         context
             .read<TransaksiBloc>()
             .add(DeleteTransaksi(int.parse(transaksiId)));
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Menghapus transaksi...'),
-            backgroundColor: Colors.orange,
-          ),
+        SnackBarHelper.showSuccessSnackBar(
+          context,
+          'Berhasil menghapus Transaksi',
         );
       },
       background: Container(

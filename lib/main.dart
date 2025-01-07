@@ -7,7 +7,6 @@ import 'package:rosantibike_mobile/api/jenis_motor_api.dart';
 import 'package:rosantibike_mobile/api/transaksi_api.dart';
 import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
-import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/notification/notification_bloc.dart';
 import 'package:rosantibike_mobile/blocs/notification/notification_event.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
@@ -45,27 +44,32 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
       return MultiBlocProvider(
         providers: [
-          BlocProvider(
+          BlocProvider<DashboardBloc>(
+            lazy: false,
             create: (context) => DashboardBloc(
               transaksiApi: TransaksiApi(),
               jenisMotorApi: JenisMotorApi(),
               bookingApi: BookingApi(),
-            )..add(FetchDashboardData()),
-          ),
-          BlocProvider(
-            create: (context) => BookingBloc(
-              bookingApi: BookingApi(),
-              notificationService: NotificationService(),
             ),
           ),
-          BlocProvider(
-            create: (context) => TransaksiBloc(
-                transaksiApi: TransaksiApi(),
-                notificationService: notificationService),
+          BlocProvider<BookingBloc>(
+            lazy: false,
+            create: (context) => BookingBloc(
+              bookingApi: BookingApi(),
+              notificationService: notificationService,
+            ),
           ),
-          BlocProvider(
+          BlocProvider<TransaksiBloc>(
+            lazy: false,
+            create: (context) => TransaksiBloc(
+              transaksiApi: TransaksiApi(),
+              notificationService: notificationService,
+            ),
+          ),
+          BlocProvider<NotificationBloc>(
+            lazy: false,
             create: (context) => NotificationBloc(
-              notificationService: NotificationService(),
+              notificationService: notificationService,
             )..add(InitializeNotification()),
           ),
         ],

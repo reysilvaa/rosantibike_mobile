@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/api/auth_api.dart';
 import 'package:rosantibike_mobile/screen/main_screen.dart';
-import 'package:rosantibike_mobile/theme/theme_provider.dart'; // Ensure this file exists
+import 'package:rosantibike_mobile/theme/theme_provider.dart'; 
 import 'package:provider/provider.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -43,52 +45,46 @@ class _LoginPageState extends State<LoginPage>
     super.dispose();
   }
 
-  Future<void> _login(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) return;
+ Future<void> _login(BuildContext context) async {
+  if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+  setState(() {
+    _isLoading = true;
+  });
 
-    try {
-      final response = await _authApi.login(
-        _usernameController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      if (response['access_token'] == null) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Access token is missing. Please try again.'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-        return; // Stop further execution
-      }
-
-// Proceed to the main screen if access_token is present
+  try {
+    final response = await _authApi.login(
+      _usernameController.text.trim(),
+      _passwordController.text.trim(),
+    );
+    if (response['access_token'] == null) {
       if (!mounted) return;
-      Navigator.pushReplacement(
+      SnackBarHelper.showErrorSnackBar(
         context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
+        'Password atau Username salah',
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('An error occurred. Please try again.'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      return; // Stop further execution
+    }
+
+    // Proceed to the main screen if access_token is present
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+  } catch (e) {
+    SnackBarHelper.showErrorSnackBar(
+      context,
+      'Terjadi Kesalahan, Hubungi Reynald.',
+    );
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {

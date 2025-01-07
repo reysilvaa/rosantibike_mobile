@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/api/auth_api.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/auth/login_page.dart';
 import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -15,8 +14,9 @@ class SettingsPage extends StatelessWidget {
       final String? token = prefs.getString('access_token');
 
       if (token == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No token found. Please log in again.')),
+        SnackBarHelper.showErrorSnackBar(
+          context,
+          'Terjadi Kesalahan',
         );
         _navigateToLogin(context);
         return;
@@ -28,13 +28,15 @@ class SettingsPage extends StatelessWidget {
       if (isLoggedOut) {
         _navigateToLogin(context);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logout failed')),
+        SnackBarHelper.showErrorSnackBar(
+          context,
+          'Logout gagal',
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+      SnackBarHelper.showErrorSnackBar(
+        context,
+        'Error: $e',
       );
     }
   }

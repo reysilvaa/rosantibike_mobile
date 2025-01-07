@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/widgets/dashboard/unit_preview.dart';
 import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import '../widgets/dashboard/stat_card.dart';
@@ -50,12 +51,9 @@ class _DashboardPageState extends State<DashboardPage> {
                         current is DashboardError,
                     listener: (context, state) {
                       if (state is DashboardError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                            duration: const Duration(seconds: 3),
-                            backgroundColor: Colors.red,
-                          ),
+                        SnackBarHelper.showErrorSnackBar(
+                          context,
+                          'Mencoba memuat data...',
                         );
                       }
                     },

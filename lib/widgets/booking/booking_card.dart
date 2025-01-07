@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
 import 'package:rosantibike_mobile/blocs/booking/booking_event.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/transaksi_booking_detail/details_page.dart';
-import 'package:intl/intl.dart'; // Add import for date formatting
 import 'package:flutter_bloc/flutter_bloc.dart'; // Make sure to import Bloc if needed
-import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart'; // Import your Bloc
 
 class BookingCard extends StatelessWidget {
   final String bookingId;
@@ -40,11 +39,9 @@ class BookingCard extends StatelessWidget {
       onDismissed: (direction) {
         // Use Bloc to delete booking
         context.read<BookingBloc>().add(DeleteBooking(int.parse(bookingId)));
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Menghapus booking...'),
-            backgroundColor: Colors.orange,
-          ),
+        SnackBarHelper.showSuccessSnackBar(
+          context,
+          'Berhasil menghapus booking',
         );
       },
       background: Container(
