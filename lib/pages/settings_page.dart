@@ -1,12 +1,10 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/api/auth_api,dart';
 import 'package:rosantibike_mobile/pages/auth/login_page.dart';
 import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
-import '../theme/theme_provider.dart';
+
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
