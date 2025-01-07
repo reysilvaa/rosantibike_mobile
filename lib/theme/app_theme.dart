@@ -4,10 +4,11 @@ import 'package:flutter/services.dart'; // Untuk SystemChrome
 
 class AppTheme {
   // Color constants
-  static const Color _primaryLight = Color(0xFF2196F3); // Vibrant blue
-  static const Color _primaryDark =
-      Color(0xFF64B5F6); // Lighter blue for dark theme
-  static const Color _errorColor = Color(0xFFE57373); // Light red
+  static const Color _primaryLight = Color(0xFF2196F3);
+  static const Color _primaryDark = Color(0xFF64B5F6);
+  static const Color _darkBackground = Color(0xFF010818);
+  static const Color _darkSurface = Color(0xFF0A1625);
+  static const Color _errorColor = Color(0xFFE57373);
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
@@ -129,11 +130,10 @@ class AppTheme {
     brightness: Brightness.dark,
     primarySwatch: Colors.blue,
     primaryColor: _primaryDark,
-    scaffoldBackgroundColor:
-        const Color(0xFF121212), // Material dark background
-    cardColor: const Color(0xFF1E1E1E), // Slightly lighter than background
+    scaffoldBackgroundColor: _darkBackground,
+    cardColor: _darkSurface,
     shadowColor: Colors.black,
-    dividerColor: Colors.grey[800],
+    dividerColor: Colors.blue.withOpacity(0.1),
 
     // Text colors using Poppins font
     textTheme: GoogleFonts.poppinsTextTheme(
@@ -175,12 +175,12 @@ class AppTheme {
     ),
 
     // AppBar theme
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF1E1E1E),
+    appBarTheme: AppBarTheme(
+      backgroundColor: _darkSurface,
       elevation: 0,
-      iconTheme: IconThemeData(color: Colors.white),
-      actionsIconTheme: IconThemeData(color: Colors.white),
-      titleTextStyle: TextStyle(
+      iconTheme: const IconThemeData(color: Colors.white),
+      actionsIconTheme: const IconThemeData(color: Colors.white),
+      titleTextStyle: const TextStyle(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -196,15 +196,15 @@ class AppTheme {
     // Input decoration theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: const Color(0xFF2C2C2C),
-      hintStyle: TextStyle(color: Colors.grey[400]),
+      fillColor: Colors.blue.withOpacity(0.05),
+      hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: BorderSide(color: Colors.blue.withOpacity(0.1)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: BorderSide(color: Colors.blue.withOpacity(0.1)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -223,20 +223,20 @@ class AppTheme {
     ),
 
     // Bottom navigation bar theme
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Color(0xFF1E1E1E),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: _darkSurface,
       selectedItemColor: _primaryDark,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.white.withOpacity(0.5),
       elevation: 8,
       type: BottomNavigationBarType.fixed,
     ),
 
     // Floating action button theme
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _primaryDark,
       foregroundColor: Colors.white,
       elevation: 4,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
     ),

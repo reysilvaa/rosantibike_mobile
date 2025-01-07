@@ -125,7 +125,7 @@ class BottomNavigation extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Add New',
+                'Tambah Booking',
                 style: TextStyle(
                   color: selectedIndex == 2
                       ? selectedColor
