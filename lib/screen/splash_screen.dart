@@ -40,27 +40,29 @@ class _SplashScreenState extends State<SplashScreen>
 
   bool hideIcon = false;
   int _currentPage = 0;
-
   final List<FeatureItem> features = [
     FeatureItem(
       icon: Icons.speed_rounded,
-      title: 'Fast Booking',
-      description: 'Book your ride in seconds with our streamlined process',
+      title: 'Pemesanan Cepat',
+      description:
+          'Pesan perjalanan Anda dalam hitungan detik dengan proses yang efisien',
     ),
     FeatureItem(
       icon: Icons.location_on_rounded,
-      title: 'Track Real-time',
-      description: 'Know exactly where your ride is at all times',
+      title: 'Pelacakan Real-time',
+      description: 'Ketahui dengan tepat di mana perjalanan Anda setiap saat',
     ),
     FeatureItem(
       icon: Icons.safety_check_rounded,
-      title: 'Safe & Secure',
-      description: 'Your safety is our top priority with verified drivers',
+      title: 'Aman & Terjamin',
+      description:
+          'Keamanan data Anda adalah prioritas utama saya jadi jangan khawatir',
     ),
     FeatureItem(
       icon: Icons.support_agent_rounded,
-      title: '24/7 Support',
-      description: 'Round-the-clock customer support at your service',
+      title: 'Dukungan 24/7',
+      description:
+          'Layanan dukungan yang mudah sepanjang waktu siap melayani Anda',
     ),
   ];
 
@@ -187,10 +189,10 @@ class _SplashScreenState extends State<SplashScreen>
                   FadeAnimation(
                     duration: const Duration(milliseconds: 1000),
                     child: Text(
-                      "Welcome",
+                      "Selamat Datang",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 50,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -199,11 +201,11 @@ class _SplashScreenState extends State<SplashScreen>
                   FadeAnimation(
                     duration: const Duration(milliseconds: 1300),
                     child: Text(
-                      "Experience seamless rides with\nour premium service.",
+                      "dalam hadir kemudahan akses\nPengelola Rosantibike Motorent.",
                       style: TextStyle(
                         color: Colors.white.withOpacity(.7),
                         height: 1.4,
-                        fontSize: 20,
+                        fontSize: 17,
                       ),
                     ),
                   ),

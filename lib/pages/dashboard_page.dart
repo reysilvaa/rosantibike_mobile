@@ -40,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderWidget(title: 'Dashboard'),
+              HeaderWidget(title: 'Dasbor'),
               const SizedBox(height: 20),
               StreamBuilder<DashboardState>(
                 stream: _dashboardBloc.stateStream,

@@ -70,7 +70,7 @@ class BottomNavigation extends StatelessWidget {
               ),
               items: [
                 _buildNavItem(Icons.dashboard_outlined, Icons.dashboard,
-                    'Dashboard', selectedIndex == 0, selectedColor),
+                    'Dasbor', selectedIndex == 0, selectedColor),
                 _buildNavItem(Icons.analytics_outlined, Icons.analytics,
                     'Booking', selectedIndex == 1, selectedColor),
                 const BottomNavigationBarItem(
@@ -80,7 +80,7 @@ class BottomNavigation extends StatelessWidget {
                 _buildNavItem(Icons.rate_review_outlined, Icons.rate_review,
                     'Transaksi', selectedIndex == 3, selectedColor),
                 _buildNavItem(Icons.settings_outlined, Icons.settings,
-                    'Settings', selectedIndex == 4, selectedColor),
+                    'Pengaturan', selectedIndex == 4, selectedColor),
               ],
             ),
           ),
@@ -125,7 +125,7 @@ class BottomNavigation extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Tambah Booking',
+                'Tambah',
                 style: TextStyle(
                   color: selectedIndex == 2
                       ? selectedColor
