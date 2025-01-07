@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rosantibike_mobile/pages/auth/login_page.dart';
+import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  final ThemeProvider themeProvider;
+
+  const SplashScreen({
+    Key? key,
+    required this.themeProvider,
+  }) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -23,6 +29,49 @@ class FeatureItem {
     required this.title,
     required this.description,
   });
+}
+
+class ThemeToggleButton extends StatelessWidget {
+  final ThemeProvider themeProvider;
+
+  const ThemeToggleButton({
+    Key? key,
+    required this.themeProvider,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: IconButton(
+        icon: AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return RotationTransition(
+              turns: animation,
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+          child: Icon(
+            themeProvider.isDarkMode
+                ? Icons.light_mode_rounded
+                : Icons.dark_mode_rounded,
+            key: ValueKey<bool>(themeProvider.isDarkMode),
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        onPressed: () {
+          themeProvider.toggleTheme();
+        },
+      ),
+    );
+  }
 }
 
 class _SplashScreenState extends State<SplashScreen>
@@ -75,23 +124,31 @@ class _SplashScreenState extends State<SplashScreen>
       viewportFraction: 0.9,
     );
 
-    _scaleController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
     _scaleAnimation =
         Tween<double>(begin: 1.0, end: 0.8).animate(_scaleController);
 
-    _widthController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
+    _widthController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600),
+    );
     _widthAnimation =
         Tween<double>(begin: 80.0, end: 300.0).animate(_widthController);
 
     _positionController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
     _positionAnimation =
         Tween<double>(begin: 0.0, end: 215.0).animate(_positionController);
 
-    _scale2Controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _scale2Controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
     _scale2Animation =
         Tween<double>(begin: 1.0, end: 32.0).animate(_scale2Controller);
 
@@ -101,12 +158,11 @@ class _SplashScreenState extends State<SplashScreen>
       });
     });
 
-    // Setup animation sequence
     _setupAnimationListeners();
   }
 
   void _setupAnimationListeners() {
-    _scaleAnimation.addStatusListener((status) {
+    _scaleController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _widthController.forward();
       }
@@ -127,7 +183,7 @@ class _SplashScreenState extends State<SplashScreen>
       }
     });
 
-    _scale2Animation.addStatusListener((status) {
+    _scale2Controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _navigateToNextPage();
       }
@@ -153,8 +209,11 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Color(0xFF010818),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Container(
         width: double.infinity,
         child: Stack(
@@ -170,7 +229,7 @@ class _SplashScreenState extends State<SplashScreen>
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      Colors.blue.withOpacity(0.2),
+                      theme.primaryColor.withOpacity(0.2),
                       Colors.transparent,
                     ],
                   ),
@@ -178,11 +237,23 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
 
-            // Welcome Text at the top
+            // Theme Toggle Button
+            Positioned(
+              top: 50,
+              right: 20,
+              child: FadeAnimation(
+                duration: const Duration(milliseconds: 1000),
+                child: ThemeToggleButton(
+                  themeProvider: widget.themeProvider,
+                ),
+              ),
+            ),
+
+            // Welcome Text
             Positioned(
               top: 60,
               left: 20,
-              right: 20,
+              right: 70,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -190,11 +261,7 @@ class _SplashScreenState extends State<SplashScreen>
                     duration: const Duration(milliseconds: 1000),
                     child: Text(
                       "Selamat Datang",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: theme.textTheme.headlineLarge,
                     ),
                   ),
                   SizedBox(height: 15),
@@ -202,10 +269,8 @@ class _SplashScreenState extends State<SplashScreen>
                     duration: const Duration(milliseconds: 1300),
                     child: Text(
                       "dalam hadir kemudahan akses\nPengelola Rosantibike Motorent.",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(.7),
+                      style: theme.textTheme.bodyLarge?.copyWith(
                         height: 1.4,
-                        fontSize: 17,
                       ),
                     ),
                   ),
@@ -215,7 +280,7 @@ class _SplashScreenState extends State<SplashScreen>
 
             // Features PageView
             Positioned(
-              top: 220, // Adjusted position to be below welcome text
+              top: 220,
               left: 0,
               right: 0,
               height: 400,
@@ -228,10 +293,10 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.05),
+                        color: theme.primaryColor.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.blue.withOpacity(0.1),
+                          color: theme.primaryColor.withOpacity(0.1),
                           width: 2,
                         ),
                       ),
@@ -241,16 +306,12 @@ class _SplashScreenState extends State<SplashScreen>
                           Icon(
                             features[index].icon,
                             size: 80,
-                            color: Colors.blue,
+                            color: theme.primaryColor,
                           ),
                           SizedBox(height: 30),
                           Text(
                             features[index].title,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: theme.textTheme.titleLarge,
                           ),
                           SizedBox(height: 15),
                           Padding(
@@ -258,10 +319,7 @@ class _SplashScreenState extends State<SplashScreen>
                             child: Text(
                               features[index].description,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.7),
-                                fontSize: 16,
-                              ),
+                              style: theme.textTheme.bodyMedium,
                             ),
                           ),
                         ],
@@ -274,7 +332,7 @@ class _SplashScreenState extends State<SplashScreen>
 
             // Page Indicator
             Positioned(
-              bottom: 160, // Adjusted position
+              bottom: 160,
               left: 0,
               right: 0,
               height: 30,
@@ -289,22 +347,22 @@ class _SplashScreenState extends State<SplashScreen>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _currentPage == index
-                          ? Colors.blue
-                          : Colors.blue.withOpacity(0.3),
+                          ? theme.primaryColor
+                          : theme.primaryColor.withOpacity(0.3),
                     ),
                   ),
                 ),
               ),
             ),
 
-            // Start Button at the bottom
+            // Start Button
             Positioned(
               bottom: 60,
               left: 20,
               right: 20,
               child: FadeAnimation(
                 duration: const Duration(milliseconds: 1600),
-                child: _buildStartButton(),
+                child: _buildStartButton(theme),
               ),
             ),
           ],
@@ -313,7 +371,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  Widget _buildStartButton() {
+  Widget _buildStartButton(ThemeData theme) {
     return AnimatedBuilder(
       animation: _scaleController,
       builder: (context, child) => Transform.scale(
@@ -327,7 +385,7 @@ class _SplashScreenState extends State<SplashScreen>
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: Colors.blue.withOpacity(.4),
+                color: theme.primaryColor.withOpacity(.4),
               ),
               child: InkWell(
                 onTap: () {
@@ -348,11 +406,13 @@ class _SplashScreenState extends State<SplashScreen>
                               height: 60,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.blue,
+                                color: theme.primaryColor,
                               ),
                               child: hideIcon == false
-                                  ? Icon(Icons.arrow_forward,
-                                      color: Colors.white)
+                                  ? Icon(
+                                      Icons.arrow_forward,
+                                      color: theme.colorScheme.onPrimary,
+                                    )
                                   : Container(),
                             ),
                           ),

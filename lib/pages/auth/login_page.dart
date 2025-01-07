@@ -55,23 +55,24 @@ class _LoginPageState extends State<LoginPage>
         _usernameController.text.trim(),
         _passwordController.text.trim(),
       );
-
-      if (response['success'] == true) {
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
-      } else {
+      if (response['access_token'] == null) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response['message'] ?? 'Login failed'),
+            content: const Text('Access token is missing. Please try again.'),
             backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
+        return; // Stop further execution
       }
+
+// Proceed to the main screen if access_token is present
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -126,13 +127,13 @@ class _LoginPageState extends State<LoginPage>
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        'Welcome Back',
+                        'Halo lagi..',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Sign in to continue',
+                        'Masuk yuk!',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage>
                       // Username Field
                       _CustomTextField(
                         controller: _usernameController,
-                        label: 'Username',
+                        label: 'Nama Pengguna',
                         prefixIcon: Icons.person_outline,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -155,15 +156,15 @@ class _LoginPageState extends State<LoginPage>
                       // Password Field
                       _CustomTextField(
                         controller: _passwordController,
-                        label: 'Password',
+                        label: 'Kata Sandi',
                         prefixIcon: Icons.lock_outline,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'Silakan masukkan kata sandi Anda';
                           }
                           if (value.length < 1) {
-                            return 'Password must be at least 6 characters';
+                            return 'Kata sandi harus terdiri dari minimal 6 karakter';
                           }
                           return null;
                         },
@@ -173,7 +174,7 @@ class _LoginPageState extends State<LoginPage>
                       // Login Button
                       _CustomButton(
                         onPressed: _isLoading ? null : () => _login(context),
-                        text: 'Login',
+                        text: 'Masuk',
                         isLoading: _isLoading,
                       ),
                       const SizedBox(height: 16),
@@ -187,7 +188,7 @@ class _LoginPageState extends State<LoginPage>
                                   builder: (context) => const LoginPage()));
                         },
                         child: Text(
-                          'Don\'t have an account? Register',
+                          'Belum punya akun? Daftar',
                           style:
                               Theme.of(context).textTheme.bodyLarge?.copyWith(
                                     color: Theme.of(context).primaryColor,
@@ -201,7 +202,7 @@ class _LoginPageState extends State<LoginPage>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Theme Mode: ',
+                            'Mode Tema: ',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           IconButton(
