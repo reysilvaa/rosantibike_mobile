@@ -1,8 +1,14 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin" // Flutter Gradle Plugin
-    id "com.google.gms.google-services" // Firebase Plugin
+    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -27,33 +33,45 @@ android {
         versionName = "1.0.0"
     }
 
+    signingConfigs {
+        release {
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
-            // Enable resource shrinking (removes unused resources)
+            signingConfig = signingConfigs.release
             shrinkResources true
-            
-            // Enable code shrinking (ProGuard or R8)
             minifyEnabled true
-            
-            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
-flutter {
-    source = "../.."
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.android.play:core-common:2.0.3'
+        // Exclude older versions of Play Core
+        exclude group: 'com.google.android.play', module: 'core'
+    }
 }
 
 dependencies {
-    // Import Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation("com.google.android.material:material:1.12.0")
 
-    // Tambahkan Firebase libraries sesuai kebutuhan
-    implementation 'com.google.firebase:firebase-messaging' // Firebase Cloud Messaging
-    implementation 'com.google.firebase:firebase-analytics' // Firebase Analytics
-    implementation 'com.google.firebase:firebase-auth' // Firebase Authentication (opsional)
-    implementation 'com.google.firebase:firebase-database' // Realtime Database (opsional)
+    // Updated Play Core dependencies
+    implementation 'com.google.android.play:app-update:2.0.1'
+    implementation 'com.google.android.play:core-common:2.0.3'
+    implementation 'com.google.android.play:feature-delivery:2.0.1'
+
+    // Firebase libraries
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
 }
-
-// Tambahkan plugin Google Services
-apply plugin: 'com.google.gms.google-services'

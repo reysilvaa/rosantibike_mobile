@@ -12,11 +12,12 @@ class TransaksiApi {
   // Function to get the token from SharedPreferences
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    return prefs.getString('access_token');
   }
 
   // Get transactions with optional filtering by lastUpdated or search
-  Future<Map<String, dynamic>> getTransaksi({String? lastUpdated, String? search}) async {
+  Future<Map<String, dynamic>> getTransaksi(
+      {String? lastUpdated, String? search}) async {
     final token = await _getToken(); // Get the token
     final uri = Uri.parse('$apiUrl/admin/transaksi').replace(queryParameters: {
       if (search != null) 'search': search,

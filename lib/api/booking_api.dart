@@ -12,7 +12,7 @@ class BookingApi {
   // Function to get the token from SharedPreferences
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    return prefs.getString('access_token');
   }
 
   Future<Map<String, dynamic>> getBooking(
@@ -67,14 +67,16 @@ class BookingApi {
         return {
           'data': [],
           'count': 0,
-          'timestamp': responseData['timestamps'] ?? DateTime.now().toIso8601String(),
+          'timestamp':
+              responseData['timestamps'] ?? DateTime.now().toIso8601String(),
         };
       }
 
       return {
         'data': data is List ? data : [data],
         'count': responseData['count'] ?? (data is List ? data.length : 1),
-        'timestamp': responseData['timestamps'] ?? DateTime.now().toIso8601String(),
+        'timestamp':
+            responseData['timestamps'] ?? DateTime.now().toIso8601String(),
       };
     } catch (e) {
       throw Exception('Failed to load bookings: $e');

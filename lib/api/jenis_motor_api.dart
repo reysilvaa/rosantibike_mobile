@@ -10,7 +10,7 @@ class JenisMotorApi {
   // Function to get the token from SharedPreferences
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    return prefs.getString('access_token');
   }
 
   // Get the list of jenis motor with count
