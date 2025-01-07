@@ -181,7 +181,10 @@ class _LoginPageState extends State<LoginPage>
                       // Register Link
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()));
                         },
                         child: Text(
                           'Don\'t have an account? Register',
