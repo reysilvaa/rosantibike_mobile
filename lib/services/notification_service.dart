@@ -25,7 +25,7 @@ class NotificationService {
     print("Notification permission granted: ${settings.authorizationStatus}");
 
     const AndroidInitializationSettings androidInitialize =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: androidInitialize);
 

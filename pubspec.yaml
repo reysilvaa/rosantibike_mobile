@@ -58,14 +58,6 @@ dependencies:
   simple_animations: ^5.1.0
   awesome_snackbar_content: ^0.1.5
 
-flutter_native_splash:
-  color: "#ffffff"
-  image: null
-  android: true
-  ios: true
-  web: false
-  fullscreen: true
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

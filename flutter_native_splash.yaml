@@ -1,0 +1,20 @@
+flutter_native_splash:
+  # Warna latar belakang splash screen
+  color: "#FFFFFF" # Putih untuk mode terang
+
+  # Gambar utama untuk splash screen
+  image: assets/icon/main_icon.png
+
+  # Konfigurasi untuk perangkat Android 12+
+  android_12:
+    image: assets/icon/main_icon.png
+    color: "#FFFFFF" # Putih untuk mode terang
+
+  # Mode Gelap
+  # color_dark: "#042a49" # Biru tua untuk dark mode
+  # image_dark: assets/icon/main_icon.png
+
+  # Platform
+  android: true
+  ios: true
+  web: false # Nonaktifkan splash screen untuk web
