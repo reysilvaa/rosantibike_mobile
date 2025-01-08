@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_event.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_state.dart';
+import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/in_app_web_view.dart';
 import 'package:rosantibike_mobile/widgets/transaksi/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
@@ -54,9 +55,8 @@ class _TransaksiPageState extends State<TransaksiPage> {
                   child: BlocConsumer<TransaksiBloc, TransaksiState>(
                     listener: (context, state) {
                       if (state is TransaksiError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(state.message)),
-                        );
+                        SnackBarHelper.showErrorSnackBar(
+                            context, 'Mencoba memuat data...');
                       }
                     },
                     builder: (context, state) {

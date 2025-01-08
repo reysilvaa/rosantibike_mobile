@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rosantibike_mobile/pages/transaksi_booking_detail/details_page.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int selectedIndex;
@@ -184,7 +185,7 @@ class BottomNavigation extends StatelessWidget {
 class CustomPageRoute extends PageRouteBuilder {
   final Widget child;
 
-  CustomPageRoute({required this.child})
+  CustomPageRoute({required this.child, required DetailsPage page})
       : super(
           transitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, secondaryAnimation) => child,

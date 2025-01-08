@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rosantibike_mobile/blocs/booking/booking_bloc.dart';
 import 'package:rosantibike_mobile/blocs/booking/booking_event.dart';
+import 'package:rosantibike_mobile/constants/page_transition.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/transaksi_booking_detail/details_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; // Make sure to import Bloc if needed
@@ -77,10 +78,10 @@ class BookingCard extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => DetailsPage(
+              RightToLeftTransition(
+                page: DetailsPage(
                   id: bookingId,
-                  type: 'book',
+                  type: 'booking',
                   bookingId: bookingId,
                   customer: customer,
                   nopol: nopol,
