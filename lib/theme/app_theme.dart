@@ -246,13 +246,11 @@ class AppTheme {
   static void updateSystemUI(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context)
-            .scaffoldBackgroundColor, // Background color of the status bar
+        statusBarColor: Theme.of(context).scaffoldBackgroundColor,
         statusBarIconBrightness: Theme.of(context).brightness == Brightness.dark
             ? Brightness.light
             : Brightness.dark,
-        systemNavigationBarColor: Theme.of(context)
-            .scaffoldBackgroundColor, // Color of navigation bar
+        systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
         systemNavigationBarIconBrightness:
             Theme.of(context).brightness == Brightness.dark
                 ? Brightness.light

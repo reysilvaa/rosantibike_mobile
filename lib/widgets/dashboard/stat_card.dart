@@ -47,43 +47,39 @@ class _StatCardState extends State<StatCard>
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final isDark = themeProvider.isDarkMode;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
 
     final Map<String, Map<String, dynamic>> statTypeStyles = {
       'SisaMotor': {
-        'backgroundColor': isDark ? Colors.black : const Color(0xFF2196F3),
+        'backgroundColor': theme.primaryColor,
         'textColor': Colors.white,
-        'progressBarColor': Colors.blue,
+        'progressBarColor': theme.colorScheme.primary,
         'icon': Icons.motorcycle,
       },
       'MotorKeluar': {
-        'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
-        'textColor': isDark ? Colors.white : Colors.black,
-        'progressBarColor': Colors.red,
+        'backgroundColor': theme.cardTheme.color,
+        'textColor': theme.textTheme.titleMedium?.color,
+        'progressBarColor': theme.colorScheme.error,
         'icon': Icons.north_east_rounded,
       },
       'TotalUnit': {
-        'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
-        'textColor': isDark ? Colors.white : Colors.black,
-        'progressBarColor': Colors.blue,
+        'backgroundColor': theme.cardTheme.color,
+        'textColor': theme.textTheme.titleMedium?.color,
+        'progressBarColor': theme.colorScheme.primary,
         'icon': Icons.motorcycle_rounded,
       },
       'TotalBooking': {
-        'backgroundColor': isDark ? Colors.grey[800] : Colors.grey[200],
-        'textColor': isDark ? Colors.white : Colors.black,
-        'progressBarColor': Colors.blue,
+        'backgroundColor': theme.cardTheme.color,
+        'textColor': theme.textTheme.titleMedium?.color,
+        'progressBarColor': theme.colorScheme.primary,
         'icon': Icons.web,
       },
     };
 
     final style =
         statTypeStyles[widget.statType] ?? statTypeStyles['SisaMotor'];
-
-    final valueTextColor = isDark
-        ? Colors.white
-        : (widget.statType == 'SisaMotor' ? Colors.white : Colors.black);
 
     // Responsive font sizes
     final double titleFontSize = screenWidth < 360 ? 12 : 14;
@@ -98,61 +94,57 @@ class _StatCardState extends State<StatCard>
       onTapCancel: () => _controller.reverse(),
       child: ScaleTransition(
         scale: _scaleAnimation,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Container(
-              padding: EdgeInsets.all(screenWidth < 360 ? 12 : 16),
-              decoration: BoxDecoration(
-                color: style?['backgroundColor'],
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+        child: Container(
+          padding: EdgeInsets.all(screenWidth < 360 ? 12 : 16),
+          decoration: BoxDecoration(
+            color: style?['backgroundColor'],
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: theme.shadowColor.withOpacity(0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        style?['icon'],
-                        color: style?['textColor'],
-                        size: iconSize,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          widget.statType.replaceAllMapped(
-                            RegExp(r'([a-z])([A-Z])'),
-                            (Match m) => '${m[1]} ${m[2]}',
-                          ),
-                          style: TextStyle(
-                            color: style?['textColor'],
-                            fontSize: titleFontSize,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
+                  Icon(
+                    style?['icon'],
+                    color: style?['textColor'],
+                    size: iconSize,
                   ),
-                  const SizedBox(height: 8),
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      color: valueTextColor,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      widget.statType.replaceAllMapped(
+                        RegExp(r'([a-z])([A-Z])'),
+                        (Match m) => '${m[1]} ${m[2]}',
+                      ),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: style?['textColor'],
+                        fontSize: titleFontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    child: widget.value,
                   ),
                 ],
               ),
-            );
-          },
+              const SizedBox(height: 8),
+              DefaultTextStyle(
+                style: theme.textTheme.headlineMedium!.copyWith(
+                  color: style?['textColor'],
+                  overflow: TextOverflow.ellipsis,
+                ),
+                child: widget.value,
+              ),
+            ],
+          ),
         ),
       ),
     );
