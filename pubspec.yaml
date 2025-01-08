@@ -57,6 +57,8 @@ dependencies:
   page_transition: ^2.2.1
   simple_animations: ^5.1.0
   awesome_snackbar_content: ^0.1.5
+  photo_view: ^0.14.0
+
 
 dev_dependencies:
   flutter_test:

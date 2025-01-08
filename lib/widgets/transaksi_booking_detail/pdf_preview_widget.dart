@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:typed_data';
 import 'package:printing/printing.dart';
+import 'pdf_fullscreen_widget.dart';
 
 class PdfPreviewWidget extends StatefulWidget {
   final Future<Uint8List> invoicePdf;
@@ -39,6 +40,14 @@ class _PdfPreviewWidgetState extends State<PdfPreviewWidget>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _openFullscreenPdf(Uint8List pdfData) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PdfFullscreenViewer(pdfData: pdfData),
+      ),
+    );
   }
 
   Widget _buildCustomToolbar(BuildContext context) {
@@ -242,26 +251,18 @@ class _PdfPreviewWidgetState extends State<PdfPreviewWidget>
                             : 'Failed to load PDF. Please try again.',
                       );
                     } else {
-                      return PdfPreview(
-                        build: (_) async => snapshot.data!,
-                        initialPageFormat: PdfPageFormat.a4,
-                        canChangePageFormat: false,
-                        canChangeOrientation: false,
-                        allowPrinting: false,
-                        allowSharing: false,
-                        pdfPreviewPageDecoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        scrollViewDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
+                      return GestureDetector(
+                        onTap: () => _openFullscreenPdf(snapshot.data!),
+                        child: PdfPreview(
+                          build: (_) async => snapshot.data!,
+                          initialPageFormat: PdfPageFormat.a4,
+                          canChangePageFormat: false,
+                          canChangeOrientation: false,
+                          allowPrinting: false,
+                          allowSharing: false,
+                          scrollViewDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
                       );
                     }

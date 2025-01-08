@@ -24,10 +24,13 @@ void main() async {
   final notificationService = NotificationService();
   await notificationService.initialize();
 
+  // Create ThemeProvider instance before running app
+  final themeProvider = ThemeProvider();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider.value(value: themeProvider),
       ],
       child: MyApp(notificationService: notificationService),
     ),
@@ -41,47 +44,56 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider<DashboardBloc>(
-            lazy: false,
-            create: (context) => DashboardBloc(
-              transaksiApi: TransaksiApi(),
-              jenisMotorApi: JenisMotorApi(),
-              bookingApi: BookingApi(),
-            ),
-          ),
-          BlocProvider<BookingBloc>(
-            lazy: false,
-            create: (context) => BookingBloc(
-              bookingApi: BookingApi(),
-              notificationService: notificationService,
-            ),
-          ),
-          BlocProvider<TransaksiBloc>(
-            lazy: false,
-            create: (context) => TransaksiBloc(
-              transaksiApi: TransaksiApi(),
-              notificationService: notificationService,
-            ),
-          ),
-          BlocProvider<NotificationBloc>(
-            lazy: false,
-            create: (context) => NotificationBloc(
-              notificationService: notificationService,
-            )..add(InitializeNotification()),
-          ),
-        ],
-        child: MaterialApp(
-          title: 'Rosantibike Mobile',
-          themeMode: themeProvider.themeMode,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          home: SplashScreen(themeProvider: themeProvider),
-          debugShowCheckedModeBanner: false,
-        ),
-      );
-    });
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return Builder(
+          builder: (context) {
+            // Update system UI based on current theme
+            AppTheme.updateSystemUI(context);
+
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<DashboardBloc>(
+                  lazy: false,
+                  create: (context) => DashboardBloc(
+                    transaksiApi: TransaksiApi(),
+                    jenisMotorApi: JenisMotorApi(),
+                    bookingApi: BookingApi(),
+                  ),
+                ),
+                BlocProvider<BookingBloc>(
+                  lazy: false,
+                  create: (context) => BookingBloc(
+                    bookingApi: BookingApi(),
+                    notificationService: notificationService,
+                  ),
+                ),
+                BlocProvider<TransaksiBloc>(
+                  lazy: false,
+                  create: (context) => TransaksiBloc(
+                    transaksiApi: TransaksiApi(),
+                    notificationService: notificationService,
+                  ),
+                ),
+                BlocProvider<NotificationBloc>(
+                  lazy: false,
+                  create: (context) => NotificationBloc(
+                    notificationService: notificationService,
+                  )..add(InitializeNotification()),
+                ),
+              ],
+              child: MaterialApp(
+                title: 'Rosantibike Mobile',
+                themeMode: themeProvider.themeMode,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                home: SplashScreen(themeProvider: themeProvider),
+                debugShowCheckedModeBanner: false,
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
