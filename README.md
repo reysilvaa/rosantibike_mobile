@@ -113,8 +113,8 @@ Kami menyambut kontribusi untuk meningkatkan aplikasi ini! Berikut langkah-langk
 ## 📧 Kontak
 
 Jika Anda memiliki pertanyaan atau saran, silakan hubungi:
-- **Nama**: Rey Silva
-- **Email**: reysilva@example.com
+- **Nama**: Reynald Silva
+- **Email**: reynaldsilva123@gmail.com
 - **GitHub**: [reysilvaa](https://github.com/reysilvaa)
 
 ---
