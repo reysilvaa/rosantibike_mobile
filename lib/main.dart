@@ -54,33 +54,25 @@ class MyApp extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DashboardBloc>(
-                  lazy: false,
-                  create: (context) => DashboardBloc(
-                    transaksiApi: TransaksiApi(),
-                    jenisMotorApi: JenisMotorApi(),
-                    bookingApi: BookingApi(),
-                  ),
-                ),
+                    create: (context) => DashboardBloc(
+                          transaksiApi: TransaksiApi(),
+                          jenisMotorApi: JenisMotorApi(),
+                          bookingApi: BookingApi(),
+                        )),
                 BlocProvider<BookingBloc>(
-                  lazy: false,
-                  create: (context) => BookingBloc(
-                    bookingApi: BookingApi(),
-                    notificationService: notificationService,
-                  ),
-                ),
+                    create: (context) => BookingBloc(
+                          bookingApi: BookingApi(),
+                          notificationService: notificationService,
+                        )),
                 BlocProvider<TransaksiBloc>(
-                  lazy: false,
-                  create: (context) => TransaksiBloc(
-                    transaksiApi: TransaksiApi(),
-                    notificationService: notificationService,
-                  ),
-                ),
+                    create: (context) => TransaksiBloc(
+                          transaksiApi: TransaksiApi(),
+                          notificationService: notificationService,
+                        )),
                 BlocProvider<NotificationBloc>(
-                  lazy: false,
-                  create: (context) => NotificationBloc(
-                    notificationService: notificationService,
-                  )..add(InitializeNotification()),
-                ),
+                    create: (context) => NotificationBloc(
+                          notificationService: notificationService,
+                        )..add(InitializeNotification())),
               ],
               child: MaterialApp(
                 title: 'Rosantibike Mobile',

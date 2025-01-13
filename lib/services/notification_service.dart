@@ -1,8 +1,7 @@
-// lib/services/services.dart
-// ignore_for_file: avoid_print
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/details_card.dart';
 
 class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -46,6 +45,23 @@ class NotificationService {
       print("Foreground message received: ${message.messageId}");
       _handleForegroundMessage(message);
     });
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      _handleNotificationTap(
+        NotificationResponse(
+          notificationResponseType:
+              NotificationResponseType.selectedNotification,
+          payload: message.data['transaction_id'],
+        ),
+      );
+    });
+  }
+
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    print('Handling a background message: ${message.messageId}');
+    await _handleForegroundMessage(message);
   }
 
   Future<void> _createNotificationChannel() async {
@@ -123,8 +139,25 @@ class NotificationService {
       if (data.length == 2) {
         final String transactionId = data[0];
         final String motorType = data[1];
-        // TODO: Navigate to transaction detail page
-        // Navigator.pushNamed(context, '/transaction-detail', arguments: transactionId);
+
+        // If you have access to context, you can navigate here:
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => DetailsCard(
+        //       transactionId: transactionId,
+        //       motorType: motorType,
+        //       bookingId: 'your_booking_id',
+        //       customer: 'your_customer',
+        //       nopol: 'your_nopol',
+        //       dateSewa: 'your_date_sewa',
+        //       dateKembali: 'your_date_kembali',
+        //       jamSewa: 'your_jam_sewa',
+        //       jamKembali: 'your_jam_kembali',
+        //       total: 'your_total',
+        //     ),
+        //   ),
+        // );
       }
     }
   }
