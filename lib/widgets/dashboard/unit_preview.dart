@@ -279,51 +279,47 @@ class MotorCard extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isSmallScreen ? 12 : 16,
-                vertical: isSmallScreen ? 6 : 8, // Reduced vertical padding
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // Added to prevent overflow
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    merk,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: isSmallScreen ? 14 : 16, // Responsive font size
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4), // Reduced spacing
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$formattedPrice / Hari',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize:
-                              isSmallScreen ? 12 : 14, // Responsive font size
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        size: isSmallScreen ? 16 : 20,
-                        color: theme.primaryColor,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isSmallScreen ? 16 : 20, // Jarak horizontal
+              vertical: isSmallScreen ? 8 : 12, // Jarak vertikal
             ),
-          ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  merk,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: isSmallScreen ? 14 : 16,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8), // Jarak antara teks dan row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '$formattedPrice / Hari',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.primaryColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: isSmallScreen ? 12 : 14,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      size: isSmallScreen ? 16 : 20,
+                      color: theme.primaryColor,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
