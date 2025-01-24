@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:rosantibike_mobile/blocs/unit/unit_state.dart';
 import 'package:rosantibike_mobile/model/jenis_motor.dart';
 
 abstract class JenisMotorState extends Equatable {
@@ -41,4 +42,9 @@ class JenisMotorError extends JenisMotorState {
 
   @override
   List<Object> get props => [message];
+}
+class AddJenisMotor extends JenisMotorEvent {
+  final Map<String, dynamic> newMotor;
+  
+  AddJenisMotor(this.newMotor);
 }
