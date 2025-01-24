@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/booking_form.dart';
+import 'package:rosantibike_mobile/screen/main_screen.dart';
 import 'package:rosantibike_mobile/widgets/booking/booking_card.dart';
 import 'package:rosantibike_mobile/widgets/booking/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
@@ -136,7 +137,9 @@ class _BookingPageState extends State<BookingPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const BookingForm(),
+              builder: (context) => const MainScreen(
+                selectedIndex: 2,
+              ),
             ),
           );
         },

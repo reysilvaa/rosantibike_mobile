@@ -4,6 +4,7 @@ import 'package:rosantibike_mobile/constants/my_in_app_webview.dart';
 import 'package:rosantibike_mobile/pages/booking_page.dart';
 import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 import 'package:rosantibike_mobile/pages/unit_screen.dart';
+import 'package:rosantibike_mobile/screen/main_screen.dart';
 
 class MenuGrid extends StatefulWidget {
   const MenuGrid({Key? key}) : super(key: key);
@@ -200,26 +201,33 @@ class _MenuGridItemState extends State<MenuGridItem> {
         if (widget.label == 'myBooking') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BookingPage()),
+            MaterialPageRoute(
+                builder: (context) => MainScreen(
+                    selectedIndex:
+                        1)), // Mengarahkan ke MainScreen dengan index 1 untuk Booking
           );
         } else if (widget.label == 'myTransaksi') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TransaksiPage()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    MainScreen(selectedIndex: 3)), // Index 0 untuk Transaksi
           );
         } else if (widget.label == 'myUnit') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UnitScreen()),
+            MaterialPageRoute(
+                builder: (context) => UnitScreen()), // Index 2 untuk Unit
           );
         } else if (widget.label == 'myWeb') {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => InAppWebViewWidget(
-                      url: 'https://rosantibikemotorent.com/login',
-                      title: 'My Web',
-                    )),
+              builder: (context) => InAppWebViewWidget(
+                url: 'https://rosantibikemotorent.com/login',
+                title: 'My Web',
+              ),
+            ),
           );
         }
       },

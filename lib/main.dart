@@ -11,6 +11,7 @@ import 'package:rosantibike_mobile/blocs/notification/notification_bloc.dart';
 import 'package:rosantibike_mobile/blocs/notification/notification_event.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/blocs/unit/unit_bloc.dart';
+import 'package:rosantibike_mobile/screen/main_screen.dart';
 import 'package:rosantibike_mobile/screen/splash_screen.dart';
 import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:rosantibike_mobile/theme/app_theme.dart';
@@ -85,7 +86,10 @@ class MyApp extends StatelessWidget {
                 themeMode: themeProvider.themeMode,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
-                home: SplashScreen(themeProvider: themeProvider),
+                // home: SplashScreen(themeProvider: themeProvider),
+                home: MainScreen(
+                  selectedIndex: 0,
+                ),
                 debugShowCheckedModeBanner: false,
               ),
             );
