@@ -5,7 +5,7 @@ import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_event.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_state.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
-import 'package:rosantibike_mobile/pages/in_app_web_view.dart';
+import 'package:rosantibike_mobile/pages/booking_form.dart';
 import 'package:rosantibike_mobile/widgets/transaksi/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
 import 'package:rosantibike_mobile/widgets/transaksi/transaksi_card.dart';
@@ -117,7 +117,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const InAppBrowserWidget(),
+              builder: (context) => const BookingForm(),
             ),
           );
         },

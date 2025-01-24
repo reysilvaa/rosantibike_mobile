@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
-import 'package:rosantibike_mobile/bottom_navigation_widget.dart';
-import 'package:rosantibike_mobile/theme/theme_provider.dart';
 
 class MyInAppBrowser extends InAppBrowser {
   MyInAppBrowser({super.webViewEnvironment});
@@ -39,19 +36,27 @@ class MyInAppBrowser extends InAppBrowser {
   }
 }
 
-class InAppBrowserWidget extends StatefulWidget {
-  const InAppBrowserWidget({Key? key}) : super(key: key);
+class InAppWebViewWidget extends StatefulWidget {
+  final String url;
+  final String title;
+
+  const InAppWebViewWidget({
+    Key? key, 
+    required this.url, 
+    required this.title
+  }) : super(key: key);
 
   @override
-  _InAppBrowserWidgetState createState() => _InAppBrowserWidgetState();
+  _InAppWebViewWidgetState createState() => _InAppWebViewWidgetState();
 }
 
-class _InAppBrowserWidgetState extends State<InAppBrowserWidget> {
+class _InAppWebViewWidgetState extends State<InAppWebViewWidget> {
   late MyInAppBrowser _browser;
   static WebViewEnvironment? webViewEnvironment;
   bool _isLoading = true;
   double _loadingProgress = 0.0;
   String? _errorMessage;
+  late InAppWebViewController _webViewController;
 
   @override
   void initState() {
@@ -89,9 +94,12 @@ class _InAppBrowserWidgetState extends State<InAppBrowserWidget> {
     }
   }
 
+  void _refreshPage() {
+    _webViewController.reload();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -99,7 +107,7 @@ class _InAppBrowserWidgetState extends State<InAppBrowserWidget> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context, themeProvider),
+            _buildHeader(context, widget.title, _refreshPage),
             Expanded(
               child: Stack(
                 children: [
@@ -116,9 +124,10 @@ class _InAppBrowserWidgetState extends State<InAppBrowserWidget> {
                   else
                     InAppWebView(
                       initialUrlRequest: URLRequest(
-                        url: WebUri("https://rosantibikemotorent.com/booking"),
+                        url: WebUri(widget.url),
                       ),
                       onWebViewCreated: (controller) {
+                        _webViewController = controller;
                         _browser.onBrowserCreated();
                       },
                       onLoadStart: (controller, url) {
@@ -250,7 +259,7 @@ class ErrorDisplay extends StatelessWidget {
   }
 }
 
-Widget _buildHeader(BuildContext context, ThemeProvider themeProvider) {
+Widget _buildHeader(BuildContext context, String title, VoidCallback onRefresh) {
   final theme = Theme.of(context);
   return Padding(
     padding: const EdgeInsets.all(16.0),
@@ -258,27 +267,14 @@ Widget _buildHeader(BuildContext context, ThemeProvider themeProvider) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Booking',
+          title,
           style: theme.appBarTheme.titleTextStyle?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
-        Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                color: theme.iconTheme.color,
-              ),
-              onPressed: () => themeProvider.toggleTheme(),
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh, color: theme.iconTheme.color),
-              onPressed: () {
-                // Add refresh functionality
-              },
-            ),
-          ],
+        IconButton(
+          icon: Icon(Icons.refresh, color: theme.iconTheme.color),
+          onPressed: onRefresh,
         ),
       ],
     ),

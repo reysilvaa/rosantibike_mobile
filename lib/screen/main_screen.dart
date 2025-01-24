@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../pages/dashboard_page.dart';
 import '../../pages/booking_page.dart';
-import '../../pages/in_app_web_view.dart';
+import '../pages/booking_form.dart';
 import '../../pages/transaksi_page.dart';
 import '../../pages/settings_page.dart';
 import '../../bottom_navigation_widget.dart';
@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const DashboardPage(),
     const BookingPage(),
-    const InAppBrowserWidget(),
+    const BookingForm(),
     const TransaksiPage(),
     const SettingsPage(),
   ];

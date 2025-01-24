@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rosantibike_mobile/constants/my_in_app_webview.dart';
+import 'package:rosantibike_mobile/pages/booking_page.dart';
+import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 
 class MenuGrid extends StatefulWidget {
   const MenuGrid({Key? key}) : super(key: key);
@@ -193,7 +196,31 @@ class _MenuGridItemState extends State<MenuGridItem> {
       onTapCancel: () => setState(() => _isPressed = false),
       onTap: () {
         HapticFeedback.mediumImpact();
-        // Add your onTap functionality here
+        if (widget.label == 'myBooking') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BookingPage()),
+          );
+        } else if (widget.label == 'myTransaksi') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TransaksiPage()),
+          );
+        } else if (widget.label == 'myUnit') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TransaksiPage()),
+          );
+        } else if (widget.label == 'myWeb') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => InAppWebViewWidget(
+                      url: 'https://rosantibikemotorent.com/login',
+                      title: 'My Web',
+                    )),
+          );
+        }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),

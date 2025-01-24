@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
-import 'package:rosantibike_mobile/pages/in_app_web_view.dart';
+import 'package:rosantibike_mobile/pages/booking_form.dart';
 import 'package:rosantibike_mobile/widgets/booking/booking_card.dart';
 import 'package:rosantibike_mobile/widgets/booking/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
@@ -136,7 +136,7 @@ class _BookingPageState extends State<BookingPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const InAppBrowserWidget(),
+              builder: (context) => const BookingForm(),
             ),
           );
         },

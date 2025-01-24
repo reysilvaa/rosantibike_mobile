@@ -4,6 +4,8 @@ import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
+import 'package:rosantibike_mobile/pages/booking_page.dart';
+import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 import 'package:rosantibike_mobile/widgets/dashboard/unit_preview.dart';
 import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import '../widgets/dashboard/stat_card.dart';
@@ -104,7 +106,12 @@ class _DashboardPageState extends State<DashboardPage> {
                     context, motorTersewa, false, false, false),
                 percentage: _calculatePercentage(motorTersewa, totalMotor),
                 isIncreasing: true,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TransaksiPage()),
+                  );
+                },
               ),
             ),
           ],
@@ -130,7 +137,12 @@ class _DashboardPageState extends State<DashboardPage> {
                     context, totalBooking, false, false, false),
                 percentage: '0%',
                 isIncreasing: true,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BookingPage()),
+                  );
+                },
               ),
             ),
           ],
