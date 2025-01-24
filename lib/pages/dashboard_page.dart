@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
+import 'package:rosantibike_mobile/constants/page_transition.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 import 'package:rosantibike_mobile/pages/booking_page.dart';
 import 'package:rosantibike_mobile/pages/transaksi_page.dart';
+import 'package:rosantibike_mobile/pages/unit_screen.dart';
+import 'package:rosantibike_mobile/screen/main_screen.dart';
 import 'package:rosantibike_mobile/widgets/dashboard/unit_preview.dart';
 import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import '../widgets/dashboard/stat_card.dart';
@@ -109,7 +112,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TransaksiPage()),
+                    RightToLeftTransition(
+                      page: MainScreen(selectedIndex: 3),
+                    ),
                   );
                 },
               ),
@@ -126,7 +131,14 @@ class _DashboardPageState extends State<DashboardPage> {
                     _buildValueWidget(context, totalMotor, false, false, false),
                 percentage: '100%',
                 isIncreasing: true,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    RightToLeftTransition(
+                      page: UnitScreen(),
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(width: 16),
@@ -140,7 +152,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => BookingPage()),
+                    RightToLeftTransition(
+                      page: MainScreen(selectedIndex: 1),
+                    ),
                   );
                 },
               ),

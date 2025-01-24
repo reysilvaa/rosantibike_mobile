@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rosantibike_mobile/constants/my_in_app_webview.dart';
+import 'package:rosantibike_mobile/constants/page_transition.dart';
 import 'package:rosantibike_mobile/pages/booking_page.dart';
 import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 import 'package:rosantibike_mobile/pages/unit_screen.dart';
@@ -201,29 +202,29 @@ class _MenuGridItemState extends State<MenuGridItem> {
         if (widget.label == 'myBooking') {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => MainScreen(
-                    selectedIndex:
-                        1)), // Mengarahkan ke MainScreen dengan index 1 untuk Booking
+            RightToLeftTransition(
+              page: MainScreen(selectedIndex: 1),
+            ),
           );
         } else if (widget.label == 'myTransaksi') {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    MainScreen(selectedIndex: 3)), // Index 0 untuk Transaksi
+            RightToLeftTransition(
+              page: MainScreen(selectedIndex: 3),
+            ),
           );
         } else if (widget.label == 'myUnit') {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => UnitScreen()), // Index 2 untuk Unit
+            RightToLeftTransition(
+              page: UnitScreen(),
+            ),
           );
         } else if (widget.label == 'myWeb') {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => InAppWebViewWidget(
+            RightToLeftTransition(
+              page: InAppWebViewWidget(
                 url: 'https://rosantibikemotorent.com/login',
                 title: 'My Web',
               ),
