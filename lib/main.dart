@@ -10,6 +10,7 @@ import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/notification/notification_bloc.dart';
 import 'package:rosantibike_mobile/blocs/notification/notification_event.dart';
 import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
+import 'package:rosantibike_mobile/blocs/unit/unit_bloc.dart';
 import 'package:rosantibike_mobile/screen/splash_screen.dart';
 import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:rosantibike_mobile/theme/app_theme.dart';
@@ -68,6 +69,11 @@ class MyApp extends StatelessWidget {
                     create: (context) => TransaksiBloc(
                           transaksiApi: TransaksiApi(),
                           notificationService: notificationService,
+                        )),
+                BlocProvider<JenisMotorBloc>(
+                    create: (context) => JenisMotorBloc(
+                          jenisMotorApi: JenisMotorApi(),
+                          // notificationService: notificationService,
                         )),
                 BlocProvider<NotificationBloc>(
                     create: (context) => NotificationBloc(

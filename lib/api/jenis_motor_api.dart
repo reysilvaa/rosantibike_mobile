@@ -16,7 +16,8 @@ class JenisMotorApi {
   // Get the list of jenis motor with count
   Future<Map<String, dynamic>> getJenisMotors({String? lastUpdated}) async {
     final token = await _getToken(); // Get the token
-    final uri = Uri.parse('$apiUrl/admin/jenis-motor').replace(queryParameters: {
+    final uri =
+        Uri.parse('$apiUrl/admin/jenis-motor').replace(queryParameters: {
       if (lastUpdated != null) 'last_updated': lastUpdated,
     });
 
@@ -27,6 +28,9 @@ class JenisMotorApi {
           'Authorization': 'Bearer $token', // Include token in the header
         },
       );
+
+      // Debugging: print the response body
+      // print('Response: ${response.body}');
 
       if (response.statusCode != 200) {
         throw Exception('Failed to load jenis motors');

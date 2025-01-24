@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:rosantibike_mobile/constants/my_in_app_webview.dart';
 import 'package:rosantibike_mobile/pages/booking_page.dart';
 import 'package:rosantibike_mobile/pages/transaksi_page.dart';
+import 'package:rosantibike_mobile/pages/unit_screen.dart';
 
 class MenuGrid extends StatefulWidget {
   const MenuGrid({Key? key}) : super(key: key);
@@ -209,7 +210,7 @@ class _MenuGridItemState extends State<MenuGridItem> {
         } else if (widget.label == 'myUnit') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TransaksiPage()),
+            MaterialPageRoute(builder: (context) => UnitScreen()),
           );
         } else if (widget.label == 'myWeb') {
           Navigator.push(
