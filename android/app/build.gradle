@@ -13,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.rosantibike.mobile"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.rosantibike.mobile"
         minSdkVersion = flutter.minSdkVersion
-        targetSdk = 33
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
     }
