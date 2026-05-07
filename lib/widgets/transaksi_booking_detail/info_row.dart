@@ -9,14 +9,14 @@ class InfoRow extends StatelessWidget {
   final TextStyle? labelStyle;
 
   const InfoRow({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.value,
     this.iconColor,
     this.valueStyle,
     this.labelStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class InfoRow extends StatelessWidget {
                   label,
                   style: labelStyle ?? 
                     Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).textTheme.labelLarge?.color?.withOpacity(0.8),
+                      color: Theme.of(context).textTheme.labelLarge?.color?.withValues(alpha: 0.8),
                     ),
                 ),
                 const SizedBox(height: 4),

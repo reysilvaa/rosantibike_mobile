@@ -8,9 +8,9 @@ class PdfPreviewWidget extends StatefulWidget {
   final Future<Uint8List> invoicePdf;
 
   const PdfPreviewWidget({
-    Key? key,
+    super.key,
     required this.invoicePdf,
-  }) : super(key: key);
+  });
 
   @override
   State<PdfPreviewWidget> createState() => _PdfPreviewWidgetState();
@@ -58,7 +58,7 @@ class _PdfPreviewWidgetState extends State<PdfPreviewWidget>
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -108,7 +108,7 @@ class _PdfPreviewWidgetState extends State<PdfPreviewWidget>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: Theme.of(context).primaryColor.withOpacity(0.2),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
             ),
           ),
           child: Row(
@@ -208,7 +208,7 @@ class _PdfPreviewWidgetState extends State<PdfPreviewWidget>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(16)),
             ),

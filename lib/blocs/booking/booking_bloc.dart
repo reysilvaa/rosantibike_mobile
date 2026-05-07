@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 // ignore_for_file: avoid_print
 
 import 'dart:async';
@@ -30,15 +31,15 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<DeleteBooking>(_deleteBooking);
     on<ProcessNewBooking>(_processNewBooking);
 
-    print('BookingBloc initialized'); // Debug print
+    debugPrint('BookingBloc initialized'); // Debug print
     _startPolling();
   }
 
   void _startPolling() {
-    print('Starting polling for bookings'); // Debug print
+    debugPrint('Starting polling for bookings'); // Debug print
     add(FetchBookings());
     _pollingTimer = Timer.periodic(const Duration(seconds: 20), (_) {
-      print('Polling timer triggered'); // Debug print
+      debugPrint('Polling timer triggered'); // Debug print
       add(FetchBookings());
     });
   }
@@ -46,7 +47,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   Future<void> _fetchBookings(
       FetchBookings event, Emitter<BookingState> emit) async {
     try {
-      print('Fetching bookings...'); // Debug print
+      debugPrint('Fetching bookings...'); // Debug print
       emit(BookingLoading());
 
       final response = await bookingApi.getBooking(
@@ -54,7 +55,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         search: _searchQuery,
       );
 
-      print('Response received: ${response.toString()}'); // Debug print
+      debugPrint('Response received: ${response.toString()}'); // Debug print
 
       _lastUpdated = response['timestamp'];
 
@@ -62,13 +63,13 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         response['data'].map((item) => Booking.fromJson(item)),
       );
 
-      print('Number of bookings fetched: ${bookings.length}'); // Debug print
+      debugPrint('Number of bookings fetched: ${bookings.length}'); // Debug print
 
       if (_previousBookings != null) {
-        print('Previous bookings exist, checking for new ones'); // Debug print
+        debugPrint('Previous bookings exist, checking for new ones'); // Debug print
         _checkForNewBookings(bookings);
       } else {
-        print('No previous bookings to compare'); // Debug print
+        debugPrint('No previous bookings to compare'); // Debug print
       }
 
       _previousBookings = List.from(bookings);
@@ -76,13 +77,13 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       final currentState = state;
       if (currentState is! BookingLoaded ||
           _hasBookingsChanged(currentState.bookings, bookings)) {
-        print('State needs update'); // Debug print
+        debugPrint('State needs update'); // Debug print
         final newState = BookingLoaded(bookings);
         emit(newState);
         _stateController.add(newState);
       }
     } catch (e) {
-      print('Error in _fetchBookings: $e'); // Debug print
+      debugPrint('Error in _fetchBookings: $e'); // Debug print
       final errorState =
           BookingError('Error fetching bookings: ${e.toString()}');
       emit(errorState);
@@ -91,13 +92,13 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   }
 
   void _checkForNewBookings(List<Booking> newBookings) {
-    print('Checking for new bookings...'); // Debug print
+    debugPrint('Checking for new bookings...'); // Debug print
     for (var booking in newBookings) {
       bool isNew = _previousBookings == null ||
           !_previousBookings!.any((old) => old.id == booking.id);
-      print('Checking booking ID: ${booking.id}, isNew: $isNew'); // Debug print
+      debugPrint('Checking booking ID: ${booking.id}, isNew: $isNew'); // Debug print
       if (isNew) {
-        print('New booking found! ID: ${booking.id}'); // Debug print
+        debugPrint('New booking found! ID: ${booking.id}'); // Debug print
         add(ProcessNewBooking(booking));
       }
     }
@@ -106,11 +107,11 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   Future<void> _processNewBooking(
       ProcessNewBooking event, Emitter<BookingState> emit) async {
     try {
-      print('Processing new booking notification...'); // Debug print
-      print('Booking details:'); // Debug print
-      print('ID: ${event.booking.id}');
-      print('Nama Penyewa: ${event.booking.namaPenyewa}');
-      print('Nopol: ${event.booking.nopol}');
+      debugPrint('Processing new booking notification...'); // Debug print
+      debugPrint('Booking details:'); // Debug print
+      debugPrint('ID: ${event.booking.id}');
+      debugPrint('Nama Penyewa: ${event.booking.namaPenyewa}');
+      debugPrint('Nopol: ${event.booking.nopol}');
 
       await notificationService.showTransactionNotification(
         title: 'Booking Baru #${event.booking.id}',
@@ -121,8 +122,8 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       );
       // Debug print
     } catch (e) {
-      print('Error in _processNewBooking: $e'); // Debug print
-      print('Stack trace: ${StackTrace.current}'); // Debug print
+      debugPrint('Error in _processNewBooking: $e'); // Debug print
+      debugPrint('Stack trace: ${StackTrace.current}'); // Debug print
     }
   }
 

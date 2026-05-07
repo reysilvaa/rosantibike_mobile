@@ -15,8 +15,8 @@ class Transaksi {
   final String total;
   final String nopol;
   final String status;
-  final int motor_tersewa;
-  final int sisa_motor;
+  final int motorTersewa;
+  final int sisaMotor;
   final JenisMotor jenisMotor;
 
   Transaksi({
@@ -35,8 +35,8 @@ class Transaksi {
     required this.nopol,
     required this.status,
     required this.jenisMotor,
-    required this.motor_tersewa,
-    required this.sisa_motor,
+    required this.motorTersewa,
+    required this.sisaMotor,
   });
 
   factory Transaksi.fromJson(Map<String, dynamic> json) {
@@ -55,8 +55,8 @@ class Transaksi {
       total: json['total'] ?? '',
       nopol: json['nopol'] ?? '',
       status: json['status'] ?? '',
-      motor_tersewa: json['motor_tersewa'] ?? 0,
-      sisa_motor: json['sisa_motor'] ?? 0,
+      motorTersewa: json['motorTersewa'] ?? 0,
+      sisaMotor: json['sisaMotor'] ?? 0,
       jenisMotor: JenisMotor.fromJson(json['jenis_motor'] ?? {}),
     );
   }

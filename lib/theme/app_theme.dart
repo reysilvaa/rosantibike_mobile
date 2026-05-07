@@ -8,7 +8,6 @@ class AppTheme {
   static const Color _primaryDark = Color(0xFF64B5F6);
   static const Color _darkBackground = Color(0xFF010818);
   static const Color _darkSurface = Color(0xFF0A1625);
-  static const Color _errorColor = Color(0xFFE57373);
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
@@ -97,10 +96,10 @@ class AppTheme {
     ),
 
     // Card theme
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Colors.white,
       elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: Colors.black.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -133,7 +132,7 @@ class AppTheme {
     scaffoldBackgroundColor: _darkBackground,
     cardColor: _darkSurface,
     shadowColor: Colors.black,
-    dividerColor: Colors.blue.withOpacity(0.1),
+    dividerColor: Colors.blue.withValues(alpha: 0.1),
 
     // Text colors using Poppins font
     textTheme: GoogleFonts.poppinsTextTheme(
@@ -196,15 +195,15 @@ class AppTheme {
     // Input decoration theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.blue.withOpacity(0.05),
-      hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+      fillColor: Colors.blue.withValues(alpha: 0.05),
+      hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.blue.withOpacity(0.1)),
+        borderSide: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.blue.withOpacity(0.1)),
+        borderSide: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -213,10 +212,10 @@ class AppTheme {
     ),
 
     // Card theme
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: const Color(0xFF1E1E1E),
       elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.3),
+      shadowColor: Colors.black.withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -226,7 +225,7 @@ class AppTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: _darkSurface,
       selectedItemColor: _primaryDark,
-      unselectedItemColor: Colors.white.withOpacity(0.5),
+      unselectedItemColor: Colors.white.withValues(alpha: 0.5),
       elevation: 8,
       type: BottomNavigationBarType.fixed,
     ),

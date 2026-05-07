@@ -22,7 +22,7 @@ class DetailsPage extends StatefulWidget {
   final String total;
 
   const DetailsPage({
-    Key? key,
+    super.key,
     required this.type,
     required this.id,
     required this.bookingId,
@@ -33,10 +33,10 @@ class DetailsPage extends StatefulWidget {
     required this.jamSewa,
     required this.jamKembali,
     required this.total,
-  }) : super(key: key);
+  });
 
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
@@ -77,6 +77,7 @@ class _DetailsPageState extends State<DetailsPage> {
       final file = File('${output.path}/Invoice-${widget.bookingId}.pdf');
       await file.writeAsBytes(response.bodyBytes);
 
+      if (!mounted) return;
       SnackBarHelper.showSuccessSnackBar(
         context,
         'Tersimpan di : ${file.path}',
@@ -138,8 +139,8 @@ class _DetailsPageState extends State<DetailsPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _downloadInvoice,
         backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.download),
         tooltip: 'Simopan Bukti',
+        child: const Icon(Icons.download),
       ),
     );
   }

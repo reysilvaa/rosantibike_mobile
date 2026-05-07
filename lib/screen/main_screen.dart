@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../pages/dashboard_page.dart';
 import '../../pages/booking_page.dart';
-import '../../pages/booking_form.dart';
 import '../../pages/transaksi_page.dart';
 import '../../pages/settings_page.dart';
 import '../../bottom_navigation_widget.dart';
@@ -9,7 +8,7 @@ import '../../bottom_navigation_widget.dart';
 class MainScreen extends StatefulWidget {
   final int selectedIndex;
 
-  const MainScreen({Key? key, required this.selectedIndex}) : super(key: key);
+  const MainScreen({super.key, required this.selectedIndex});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -27,7 +26,6 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const DashboardPage(),
     const BookingPage(),
-    const BookingForm(),
     const TransaksiPage(),
     const SettingsPage(),
   ];

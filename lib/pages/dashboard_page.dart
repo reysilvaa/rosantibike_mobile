@@ -5,8 +5,6 @@ import 'package:rosantibike_mobile/blocs/dashboard/dashboard_event.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
 import 'package:rosantibike_mobile/constants/page_transition.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
-import 'package:rosantibike_mobile/pages/booking_page.dart';
-import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 import 'package:rosantibike_mobile/pages/unit_screen.dart';
 import 'package:rosantibike_mobile/screen/main_screen.dart';
 import 'package:rosantibike_mobile/widgets/dashboard/unit_preview.dart';
@@ -17,7 +15,7 @@ import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  const DashboardPage({super.key});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -37,7 +35,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -113,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Navigator.push(
                     context,
                     RightToLeftTransition(
-                      page: MainScreen(selectedIndex: 3),
+                      page: MainScreen(selectedIndex: 2),
                     ),
                   );
                 },

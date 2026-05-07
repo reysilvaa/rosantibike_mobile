@@ -15,7 +15,7 @@ import '../constants/date_format.dart';
 import '../widgets/header_widget.dart';
 
 class TransaksiPage extends StatefulWidget {
-  const TransaksiPage({Key? key}) : super(key: key);
+  const TransaksiPage({super.key});
 
   @override
   State<TransaksiPage> createState() => _TransaksiPageState();
@@ -33,7 +33,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

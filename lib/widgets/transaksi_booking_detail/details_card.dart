@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rosantibike_mobile/theme/app_theme.dart';
 import 'info_row.dart';
 
 class DetailsCard extends StatelessWidget {
@@ -13,7 +12,7 @@ class DetailsCard extends StatelessWidget {
   final String total;
 
   const DetailsCard({
-    Key? key,
+    super.key,
     required this.bookingId,
     required this.customer,
     required this.nopol,
@@ -22,7 +21,7 @@ class DetailsCard extends StatelessWidget {
     required this.jamSewa,
     required this.jamKembali,
     required this.total,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class DetailsCard extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withOpacity(0.8),
+                    Theme.of(context).primaryColor.withValues(alpha: 0.8),
                   ],
                 ),
               ),
@@ -71,7 +70,7 @@ class DetailsCard extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -88,7 +87,7 @@ class DetailsCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -158,7 +157,7 @@ class DetailsCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: InfoRow(

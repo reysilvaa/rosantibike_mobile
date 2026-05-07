@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class StatCard extends StatefulWidget {
   final String statType;
   final Widget value;
@@ -9,13 +8,13 @@ class StatCard extends StatefulWidget {
   final VoidCallback onTap;
 
   const StatCard({
-    Key? key,
+    super.key,
     required this.statType,
     required this.value,
     required this.percentage,
     required this.isIncreasing,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<StatCard> createState() => _StatCardState();
@@ -47,7 +46,6 @@ class _StatCardState extends State<StatCard>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
 
     final Map<String, Map<String, dynamic>> statTypeStyles = {
@@ -100,7 +98,7 @@ class _StatCardState extends State<StatCard>
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: theme.shadowColor.withOpacity(0.1),
+                color: theme.shadowColor.withValues(alpha: 0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

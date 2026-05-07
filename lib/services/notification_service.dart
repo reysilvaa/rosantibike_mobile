@@ -1,7 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/material.dart';
-import 'package:rosantibike_mobile/widgets/transaksi_booking_detail/details_card.dart';
 
 class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -14,14 +12,12 @@ class NotificationService {
       'Notifications for new transactions';
 
   Future<void> initialize() async {
-    print("Initializing Notification Service...");
 
-    final settings = await _firebaseMessaging.requestPermission(
+    await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
-    print("Notification permission granted: ${settings.authorizationStatus}");
 
     const AndroidInitializationSettings androidInitialize =
         AndroidInitializationSettings('@mipmap/launcher_icon');
@@ -31,18 +27,13 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse details) {
-        print("Notification tapped: ${details.payload}");
         _handleNotificationTap(details);
       },
     );
-    print("token: ${await getDeviceToken()}");
-    print("Local notifications initialized.");
 
     await _createNotificationChannel();
-    print("Notification channel created.");
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Foreground message received: ${message.messageId}");
       _handleForegroundMessage(message);
     });
 
@@ -60,7 +51,6 @@ class NotificationService {
 
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    print('Handling a background message: ${message.messageId}');
     await _handleForegroundMessage(message);
   }
 
@@ -97,9 +87,6 @@ class NotificationService {
     String? transactionId,
     String? motorType,
   }) async {
-    print("Showing transaction notification...");
-    print(
-        "Title: $title, Body: $body, Transaction ID: $transactionId, Motor Type: $motorType");
 
     final AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
@@ -130,15 +117,12 @@ class NotificationService {
       notificationDetails,
       payload: '$transactionId|$motorType',
     );
-    print("Notification shown.");
   }
 
   void _handleNotificationTap(NotificationResponse details) {
     if (details.payload != null) {
       final List<String> data = details.payload!.split('|');
       if (data.length == 2) {
-        final String transactionId = data[0];
-        final String motorType = data[1];
 
         // If you have access to context, you can navigate here:
         // Navigator.push(
@@ -164,7 +148,6 @@ class NotificationService {
 
   Future<String?> getDeviceToken() async {
     final token = await _firebaseMessaging.getToken();
-    print("Device token: $token");
     return token;
   }
 }

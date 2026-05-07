@@ -13,7 +13,6 @@ import 'package:rosantibike_mobile/blocs/transaksi/transaksi_bloc.dart';
 import 'package:rosantibike_mobile/blocs/unit/unit_bloc.dart';
 import 'package:rosantibike_mobile/blocs/unit/unit_state.dart';
 import 'package:rosantibike_mobile/screen/main_screen.dart';
-import 'package:rosantibike_mobile/screen/splash_screen.dart';
 import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:rosantibike_mobile/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -43,7 +42,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final NotificationService notificationService;
 
-  const MyApp({Key? key, required this.notificationService}) : super(key: key);
+  const MyApp({super.key, required this.notificationService});
 
   @override
   Widget build(BuildContext context) {

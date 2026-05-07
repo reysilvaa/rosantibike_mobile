@@ -21,8 +21,8 @@ class ThemeProvider extends ChangeNotifier {
   bool get isDarkMode {
     if (_isSystemTheme) {
       // Jika menggunakan system theme, cek system brightness
-      final window = WidgetsBinding.instance.window;
-      return window.platformBrightness == Brightness.dark;
+      final dispatcher = WidgetsBinding.instance.platformDispatcher;
+      return dispatcher.platformBrightness == Brightness.dark;
     }
     // Jika manual theme, cek _themeMode
     return _themeMode == ThemeMode.dark;

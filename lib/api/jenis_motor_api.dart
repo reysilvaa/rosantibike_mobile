@@ -17,7 +17,7 @@ class JenisMotorApi {
   Future<Map<String, dynamic>> getJenisMotors({String? lastUpdated}) async {
     final token = await _getToken(); // Get the token
     final uri =
-        Uri.parse('$apiUrl/admin/jenis-motor').replace(queryParameters: {
+        Uri.parse('$apiUrl/jenis-motor').replace(queryParameters: {
       if (lastUpdated != null) 'last_updated': lastUpdated,
     });
 
@@ -29,19 +29,25 @@ class JenisMotorApi {
         },
       );
 
-      // Debugging: print the response body
-      // print('Response: ${response.body}');
-
       if (response.statusCode != 200) {
         throw Exception('Failed to load jenis motors');
       }
 
       final responseData = json.decode(response.body);
 
+      // Handle both paginated and list responses
+      if (responseData is List) {
+        return {
+          'data': responseData,
+          'count': responseData.length,
+          'timestamp': DateTime.now().toIso8601String(),
+        };
+      }
+
       return {
-        'data': List.from(responseData['data']),
-        'count': responseData['count'],
-        'timestamp': responseData['timestamp'],
+        'data': responseData['data'] ?? [],
+        'count': responseData['meta']?['totalItems'] ?? responseData['count'] ?? (responseData['data'] as List?)?.length ?? 0,
+        'timestamp': responseData['timestamp'] ?? DateTime.now().toIso8601String(),
       };
     } catch (e) {
       throw Exception('Failed to load jenis motors: $e');
@@ -53,7 +59,7 @@ class JenisMotorApi {
     final token = await _getToken(); // Get the token
 
     final response = await http.get(
-      Uri.parse('$apiUrl/admin/jenis-motor/$id'),
+      Uri.parse('$apiUrl/jenis-motor/$id'),
       headers: {
         'Authorization': 'Bearer $token', // Include token in the header
       },
@@ -61,7 +67,9 @@ class JenisMotorApi {
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
-      return JenisMotor.fromJson(responseData['data']);
+      // New API might return data directly or wrapped in 'data'
+      final data = responseData['data'] ?? responseData;
+      return JenisMotor.fromJson(data);
     } else {
       throw Exception('Failed to load jenis motor');
     }
@@ -72,7 +80,7 @@ class JenisMotorApi {
     final token = await _getToken(); // Get the token
 
     final response = await http.post(
-      Uri.parse('$apiUrl/admin/jenis-motor'),
+      Uri.parse('$apiUrl/jenis-motor'),
       body: json.encode(data),
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +89,7 @@ class JenisMotorApi {
     );
 
     if (response.statusCode != 201) {
-      throw Exception('Failed to create jenis motor');
+      throw Exception('Failed to create jenis motor: ${response.body}');
     }
   }
 
@@ -89,8 +97,8 @@ class JenisMotorApi {
   Future<void> updateJenisMotor(int id, Map<String, dynamic> data) async {
     final token = await _getToken(); // Get the token
 
-    final response = await http.put(
-      Uri.parse('$apiUrl/admin/jenis-motor/$id'),
+    final response = await http.patch(
+      Uri.parse('$apiUrl/jenis-motor/$id'),
       body: json.encode(data),
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +107,7 @@ class JenisMotorApi {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to update jenis motor');
+      throw Exception('Failed to update jenis motor: ${response.body}');
     }
   }
 
@@ -108,14 +116,14 @@ class JenisMotorApi {
     final token = await _getToken(); // Get the token
 
     final response = await http.delete(
-      Uri.parse('$apiUrl/admin/jenis-motor/$id'),
+      Uri.parse('$apiUrl/jenis-motor/$id'),
       headers: {
         'Authorization': 'Bearer $token', // Include token in the header
       },
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to delete jenis motor');
+      throw Exception('Failed to delete jenis motor: ${response.body}');
     }
   }
 }

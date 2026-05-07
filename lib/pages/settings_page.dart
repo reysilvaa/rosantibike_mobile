@@ -6,7 +6,7 @@ import 'package:rosantibike_mobile/widgets/header_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   void _logout(BuildContext context) async {
     try {
@@ -14,6 +14,7 @@ class SettingsPage extends StatelessWidget {
       final String? token = prefs.getString('access_token');
 
       if (token == null) {
+        if (!context.mounted) return;
         SnackBarHelper.showErrorSnackBar(
           context,
           'Terjadi Kesalahan',
@@ -25,6 +26,7 @@ class SettingsPage extends StatelessWidget {
       final authApi = AuthApi();
       bool isLoggedOut = await authApi.logout(token);
 
+      if (!context.mounted) return;
       if (isLoggedOut) {
         _navigateToLogin(context);
       } else {
@@ -34,6 +36,7 @@ class SettingsPage extends StatelessWidget {
         );
       }
     } catch (e) {
+      if (!context.mounted) return;
       SnackBarHelper.showErrorSnackBar(
         context,
         'Error: $e',
@@ -183,7 +186,7 @@ class SettingsPage extends StatelessWidget {
         ),
         trailing: Icon(
           Icons.arrow_forward_ios,
-          color: theme.iconTheme.color?.withOpacity(0.5),
+          color: theme.iconTheme.color?.withValues(alpha: 0.5),
           size: 16,
         ),
         onTap: onTap,

@@ -1,3 +1,3 @@
 class ApiService {
-  static const String apiUrl = 'https://rosantibikemotorent.com/api';
+  static const String apiUrl = 'https://api.rosantibikemotorent.com/api';
 }

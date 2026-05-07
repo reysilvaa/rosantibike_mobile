@@ -15,7 +15,7 @@ import '../api/jenis_motor_api.dart';
 import '../theme/theme_provider.dart';
 
 class UnitScreen extends StatefulWidget {
-  const UnitScreen({Key? key}) : super(key: key);
+  const UnitScreen({super.key});
 
   @override
   State<UnitScreen> createState() => _UnitScreenState();

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerLoading extends StatelessWidget {
-  const ShimmerLoading({Key? key}) : super(key: key);
+  const ShimmerLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class ShimmerLoading extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -81,7 +81,7 @@ class ShimmerBox extends StatelessWidget {
   final double width;
   final double height;
 
-  const ShimmerBox({Key? key, required this.width, required this.height}) : super(key: key);
+  const ShimmerBox({super.key, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {

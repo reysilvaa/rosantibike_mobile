@@ -7,36 +7,39 @@ class AuthApi {
   final String baseUrl = ApiService.apiUrl;
 
   // Login function
-  Future<Map<String, dynamic>> login(String uname, String pass) async {
+  Future<Map<String, dynamic>> login(String username, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/login'),
+        Uri.parse('$baseUrl/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'uname': uname,
-          'pass': pass,
+          'username': username,
+          'password': password,
         }),
       );
 
       final Map<String, dynamic> data = jsonDecode(response.body);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         if (data['access_token'] != null) {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('access_token', data['access_token']);
+          
+          // If expires_in is not provided, default to 1 day (86400 seconds)
+          final expiresIn = data['expires_in'] ?? 86400;
           await prefs.setInt(
               'expires_in',
               DateTime.now()
-                  .add(Duration(seconds: data['expires_in']))
+                  .add(Duration(seconds: expiresIn))
                   .millisecondsSinceEpoch);
           return {'success': true, 'access_token': data['access_token']};
         } else {
-          return {'success': false, 'message': data['error']};
+          return {'success': false, 'message': data['message'] ?? data['error'] ?? 'Login failed'};
         }
       } else {
         return {
           'success': false,
-          'message': 'Something went wrong. Please try again.'
+          'message': data['message'] ?? 'Something went wrong. Please try again.'
         };
       }
     } catch (e) {

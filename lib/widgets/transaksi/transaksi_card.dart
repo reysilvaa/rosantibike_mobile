@@ -19,7 +19,7 @@ class TransaksiCard extends StatelessWidget {
   final String motorType;
 
   const TransaksiCard({
-    Key? key,
+    super.key,
     required this.transaksiId,
     required this.customer,
     required this.nopol,
@@ -29,7 +29,7 @@ class TransaksiCard extends StatelessWidget {
     required this.total,
     required this.motorType,
     required this.dateKembali,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +69,11 @@ class TransaksiCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         elevation: 2,
         color: theme.cardColor,
-        shadowColor: theme.shadowColor.withOpacity(0.2),
+        shadowColor: theme.shadowColor.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: theme.dividerColor.withOpacity(0.1),
+            color: theme.dividerColor.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -130,7 +130,7 @@ class TransaksiCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: theme.primaryColor.withOpacity(0.1),
+                        color: theme.primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -144,19 +144,19 @@ class TransaksiCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Divider(color: theme.dividerColor.withOpacity(0.2)),
+                Divider(color: theme.dividerColor.withValues(alpha: 0.2)),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     Icon(Icons.confirmation_number_outlined,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Text(
                       'ID: $transaksiId',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color:
-                            theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                            theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -166,13 +166,13 @@ class TransaksiCard extends StatelessWidget {
                   children: [
                     Icon(Icons.confirmation_number_outlined,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Text(
                       'Nopol: $nopol',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color:
-                            theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                            theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -182,7 +182,7 @@ class TransaksiCard extends StatelessWidget {
                   children: [
                     Icon(Icons.calendar_today,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,14 +191,14 @@ class TransaksiCard extends StatelessWidget {
                           'Sewa: $dateSewa',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                         Text(
                           'Jam: $jamSewa',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.textTheme.bodySmall?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                       ],
@@ -210,7 +210,7 @@ class TransaksiCard extends StatelessWidget {
                   children: [
                     Icon(Icons.calendar_today,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,14 +219,14 @@ class TransaksiCard extends StatelessWidget {
                           'Kembali: $dateKembali',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                         Text(
                           'Jam: $jamKembali',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.textTheme.bodySmall?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                       ],

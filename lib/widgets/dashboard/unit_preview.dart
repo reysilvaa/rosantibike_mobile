@@ -8,7 +8,7 @@ import 'package:rosantibike_mobile/blocs/dashboard/dashboard_bloc.dart';
 import 'package:rosantibike_mobile/blocs/dashboard/dashboard_state.dart';
 
 class MotorCarousel extends StatefulWidget {
-  const MotorCarousel({Key? key}) : super(key: key);
+  const MotorCarousel({super.key});
 
   @override
   State<MotorCarousel> createState() => _MotorCarouselState();
@@ -116,7 +116,7 @@ class _MotorCarouselState extends State<MotorCarousel> {
                 margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: theme.primaryColor.withOpacity(0.4),
+                  color: theme.primaryColor.withValues(alpha: 0.4),
                 ),
               ),
             ),
@@ -136,13 +136,13 @@ class _MotorCarouselState extends State<MotorCarousel> {
             Icon(
               Icons.motorcycle_outlined,
               size: 48,
-              color: theme.colorScheme.primary.withOpacity(0.5),
+              color: theme.colorScheme.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 12),
             Text(
               "No motor units available",
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
               ),
             ),
           ],
@@ -196,7 +196,7 @@ class _MotorCarouselState extends State<MotorCarousel> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       color: theme.primaryColor
-                          .withOpacity(_currentIndex == index ? 1 : 0.4),
+                          .withValues(alpha: _currentIndex == index ? 1 : 0.4),
                     ),
                   ),
                 ),
@@ -215,11 +215,11 @@ class MotorCard extends StatelessWidget {
   final ThemeData theme;
 
   const MotorCard({
-    Key? key,
+    super.key,
     required this.unit,
     required this.isDarkMode,
     required this.theme,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -239,8 +239,8 @@ class MotorCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: theme.dividerColor.withOpacity(0.1),
-          width: 20,
+          color: theme.dividerColor.withValues(alpha: 0.1),
+          width: 1, // Adjusted from 20 which seemed like a mistake
         ),
       ),
       elevation: isDarkMode ? 2 : 3,
@@ -347,12 +347,12 @@ class _StatusBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: isReady
-            ? Colors.green.withOpacity(0.9)
-            : Colors.orange.withOpacity(0.9),
+            ? Colors.green.withValues(alpha: 0.9)
+            : Colors.orange.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: (isReady ? Colors.green : Colors.orange).withOpacity(0.3),
+            color: (isReady ? Colors.green : Colors.orange).withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -447,3 +447,4 @@ class _LoadingImage extends StatelessWidget {
     );
   }
 }
+

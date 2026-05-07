@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
-import 'package:rosantibike_mobile/pages/booking_form.dart';
-import 'package:rosantibike_mobile/screen/main_screen.dart';
 import 'package:rosantibike_mobile/widgets/booking/booking_card.dart';
 import 'package:rosantibike_mobile/widgets/booking/search_bar.dart';
 import 'package:rosantibike_mobile/widgets/loading/shimmer_loading.dart';
@@ -17,7 +15,7 @@ import '../widgets/header_widget.dart';
 import 'package:flutter/services.dart'; // Import SystemChrome
 
 class BookingPage extends StatefulWidget {
-  const BookingPage({Key? key}) : super(key: key);
+  const BookingPage({super.key});
 
   @override
   State<BookingPage> createState() => _BookingPageState();
@@ -131,20 +129,6 @@ class _BookingPageState extends State<BookingPage> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MainScreen(
-                selectedIndex: 2,
-              ),
-            ),
-          );
-        },
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.add),
       ),
     );
   }

@@ -10,12 +10,12 @@ class SplashScreen extends StatefulWidget {
   final ThemeProvider themeProvider;
 
   const SplashScreen({
-    Key? key,
+    super.key,
     required this.themeProvider,
-  }) : super(key: key);
+  });
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class FeatureItem {
@@ -34,15 +34,15 @@ class ThemeToggleButton extends StatelessWidget {
   final ThemeProvider themeProvider;
 
   const ThemeToggleButton({
-    Key? key,
+    super.key,
     required this.themeProvider,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.1),
+        color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(15),
       ),
       child: IconButton(
@@ -193,11 +193,16 @@ class _SplashScreenState extends State<SplashScreen>
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('access_token');
 
+    if (!mounted) return;
+
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            token == null ? LoginPage() : MainScreen(selectedIndex: 0,),
+        pageBuilder: (context, animation, secondaryAnimation) => token == null
+            ? LoginPage()
+            : MainScreen(
+                selectedIndex: 0,
+              ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -209,11 +214,10 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Stack(
           children: <Widget>[
@@ -228,7 +232,7 @@ class _SplashScreenState extends State<SplashScreen>
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      theme.primaryColor.withOpacity(0.2),
+                      theme.primaryColor.withValues(alpha: 0.2),
                       Colors.transparent,
                     ],
                   ),
@@ -292,10 +296,10 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                        color: theme.primaryColor.withOpacity(0.05),
+                        color: theme.primaryColor.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: theme.primaryColor.withOpacity(0.1),
+                          color: theme.primaryColor.withValues(alpha: 0.1),
                           width: 2,
                         ),
                       ),
@@ -347,7 +351,7 @@ class _SplashScreenState extends State<SplashScreen>
                       shape: BoxShape.circle,
                       color: _currentPage == index
                           ? theme.primaryColor
-                          : theme.primaryColor.withOpacity(0.3),
+                          : theme.primaryColor.withValues(alpha: 0.3),
                     ),
                   ),
                 ),
@@ -384,7 +388,7 @@ class _SplashScreenState extends State<SplashScreen>
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: theme.primaryColor.withOpacity(.4),
+                color: theme.primaryColor.withValues(alpha: .4),
               ),
               child: InkWell(
                 onTap: () {
@@ -443,7 +447,7 @@ class FadeAnimation extends StatelessWidget {
   final Duration duration;
   final Widget child;
 
-  FadeAnimation({required this.duration, required this.child});
+  const FadeAnimation({super.key, required this.duration, required this.child});
 
   @override
   Widget build(BuildContext context) {

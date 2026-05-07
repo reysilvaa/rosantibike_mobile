@@ -9,12 +9,12 @@ class UnitListCard extends StatelessWidget {
   final VoidCallback onEdit;
 
   const UnitListCard({
-    Key? key,
+    super.key,
     required this.motor,
     required this.onTap,
     required this.onDelete,
     required this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +27,18 @@ class UnitListCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         elevation: 2,
         color: theme.cardColor,
-        shadowColor: theme.shadowColor.withOpacity(0.2),
+        shadowColor: theme.shadowColor.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: theme.dividerColor.withOpacity(0.1),
+            color: theme.dividerColor.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
         child: ListTile(
           contentPadding: const EdgeInsets.all(12),
           leading: CachedNetworkImage(
-            imageUrl: motor.stok.foto ?? '',
+            imageUrl: motor.stok.foto,
             placeholder: (context, url) => CircularProgressIndicator(
               color: theme.primaryColor,
             ),

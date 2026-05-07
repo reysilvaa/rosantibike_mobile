@@ -5,7 +5,7 @@ import 'package:rosantibike_mobile/model/jenis_motor.dart';
 class UnitDetailScreen extends StatelessWidget {
   final JenisMotor motor;
 
-  const UnitDetailScreen({Key? key, required this.motor}) : super(key: key);
+  const UnitDetailScreen({super.key, required this.motor});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class UnitDetailScreen extends StatelessWidget {
               child: Hero(
                 tag: 'motor_image_${motor.id}',
                 child: CachedNetworkImage(
-                  imageUrl: motor.stok.foto ?? '',
+                  imageUrl: motor.stok.foto,
                   placeholder: (context, url) => CircularProgressIndicator(
                     color: theme.primaryColor,
                   ),
@@ -41,30 +41,16 @@ class UnitDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            _buildDetailRow(
-              context, 
-              icon: Icons.motorcycle, 
-              label: 'Merk', 
-              value: motor.stok.merk
-            ),
-            _buildDetailRow(
-              context, 
-              icon: Icons.numbers, 
-              label: 'Nomor Polisi', 
-              value: motor.nopol
-            ),
-            _buildDetailRow(
-              context, 
-              icon: Icons.check_circle, 
-              label: 'Status', 
-              value: motor.status
-            ),
-            _buildDetailRow(
-              context, 
-              icon: Icons.image, 
-              label: 'Judul Stok', 
-              value: motor.stok.judul
-            ),
+            _buildDetailRow(context,
+                icon: Icons.motorcycle, label: 'Merk', value: motor.stok.merk),
+            _buildDetailRow(context,
+                icon: Icons.numbers, label: 'Nomor Polisi', value: motor.nopol),
+            _buildDetailRow(context,
+                icon: Icons.check_circle, label: 'Status', value: motor.status),
+            _buildDetailRow(context,
+                icon: Icons.image,
+                label: 'Judul Stok',
+                value: motor.stok.judul),
           ],
         ),
       ),
@@ -78,12 +64,8 @@ class UnitDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(
-    BuildContext context, {
-    required IconData icon, 
-    required String label, 
-    required String value
-  }) {
+  Widget _buildDetailRow(BuildContext context,
+      {required IconData icon, required String label, required String value}) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -98,8 +80,8 @@ class UnitDetailScreen extends StatelessWidget {
                 Text(
                   label,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.7)
-                  ),
+                      color: theme.textTheme.bodySmall?.color
+                          ?.withValues(alpha: 0.7)),
                 ),
                 Text(
                   value,

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rosantibike_mobile/constants/snackbar_utils.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage>
         _passwordController.text.trim(),
       );
       if (response['access_token'] == null) {
-        if (!mounted) return;
+        if (!context.mounted) return;
         SnackBarHelper.showErrorSnackBar(
           context,
           'Password atau Username salah',
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage>
       }
 
       // Proceed to the main screen if access_token is present
-      if (!mounted) return;
+      if (!context.mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage>
                 )),
       );
     } catch (e) {
+      if (!context.mounted) return;
       SnackBarHelper.showErrorSnackBar(
         context,
         'Terjadi Kesalahan, Hubungi Reynald.',
@@ -103,7 +104,9 @@ class _LoginPageState extends State<LoginPage>
               end: Alignment.bottomCenter,
               colors: [
                 Theme.of(context).scaffoldBackgroundColor,
-                Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+                Theme.of(context)
+                    .scaffoldBackgroundColor
+                    .withValues(alpha: 0.8),
               ],
             ),
           ),
@@ -148,6 +151,7 @@ class _LoginPageState extends State<LoginPage>
                           }
                           return null;
                         },
+                        keyboardType: TextInputType.text,
                       ),
                       const SizedBox(height: 16),
 
@@ -161,11 +165,12 @@ class _LoginPageState extends State<LoginPage>
                           if (value == null || value.isEmpty) {
                             return 'Silakan masukkan kata sandi Anda';
                           }
-                          if (value.length < 1) {
+                          if (value.length < 6) {
                             return 'Kata sandi harus terdiri dari minimal 6 karakter';
                           }
                           return null;
                         },
+                        keyboardType: TextInputType.text,
                       ),
                       const SizedBox(height: 24),
 
@@ -237,14 +242,13 @@ class _CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
 
   const _CustomTextField({
-    Key? key,
     required this.controller,
     required this.label,
     required this.prefixIcon,
-    this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.validator,
-  }) : super(key: key);
+    required this.keyboardType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -256,8 +260,8 @@ class _CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(prefixIcon),
-        prefixIconColor: MaterialStateColor.resolveWith((states) {
-          if (states.contains(MaterialState.focused)) {
+        prefixIconColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.focused)) {
             return Theme.of(context).primaryColor;
           }
           return Theme.of(context).iconTheme.color ?? Colors.grey;
@@ -274,11 +278,10 @@ class _CustomButton extends StatelessWidget {
   final bool isLoading;
 
   const _CustomButton({
-    Key? key,
     required this.onPressed,
     required this.text,
     this.isLoading = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

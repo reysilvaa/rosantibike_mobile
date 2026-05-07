@@ -7,13 +7,13 @@ class AddMotorBottomSheet extends StatefulWidget {
   final JenisMotor? motor; // Add motor as an optional parameter
 
   const AddMotorBottomSheet({
-    Key? key,
+    super.key,
     required this.onSave,
     this.motor, // This will be used when editing
-  }) : super(key: key);
+  });
 
   @override
-  _AddMotorBottomSheetState createState() => _AddMotorBottomSheetState();
+  State<AddMotorBottomSheet> createState() => _AddMotorBottomSheetState();
 }
 
 class _AddMotorBottomSheetState extends State<AddMotorBottomSheet> {

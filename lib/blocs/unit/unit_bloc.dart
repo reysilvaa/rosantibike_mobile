@@ -23,13 +23,6 @@ class JenisMotorBloc extends Bloc<JenisMotorEvent, JenisMotorState> {
     try {
       final result = await jenisMotorApi.getJenisMotors();
 
-      // Debugging - Print the response to verify structure
-      print('Received response: $result');
-
-      if (result == null) {
-        throw Exception('No response data');
-      }
-
       // Ensure we have the 'data' key and it is a valid list
       if (result['data'] == null || result['data'].isEmpty) {
         throw Exception('Data is empty or missing');
@@ -47,10 +40,7 @@ class JenisMotorBloc extends Bloc<JenisMotorEvent, JenisMotorState> {
         // count: result['count'],
         // timestamp: result['timestamp'],
       ));
-
-      print('Jenis Motor Loaded');
     } catch (e) {
-      print('Error: $e');
       emit(JenisMotorError(e.toString()));
     }
   }

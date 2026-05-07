@@ -19,7 +19,7 @@ class TransaksiApi {
   Future<Map<String, dynamic>> getTransaksi(
       {String? lastUpdated, String? search}) async {
     final token = await _getToken(); // Get the token
-    final uri = Uri.parse('$apiUrl/admin/transaksi').replace(queryParameters: {
+    final uri = Uri.parse('$apiUrl/transaksi').replace(queryParameters: {
       if (search != null) 'search': search,
     });
 
@@ -32,7 +32,7 @@ class TransaksiApi {
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Failed to load data');
+        throw Exception('Failed to load data: ${response.statusCode}');
       }
 
       final responseData = json.decode(response.body);
@@ -41,13 +41,15 @@ class TransaksiApi {
         throw Exception('Invalid response data');
       }
 
+      final List data = responseData['data'] ?? (responseData is List ? responseData : []);
+
       return {
-        'data': List.from(responseData['data'])
+        'data': data
             .map((item) => _mapTransaction(item))
             .toList(),
-        'motor_tersewa': responseData['motor_tersewa'],
-        'sisa_motor': responseData['sisa_motor'],
-        'timestamp': responseData['timestamp'],
+        'motorTersewa': responseData['motorTersewa'] ?? 0,
+        'sisaMotor': responseData['sisaMotor'] ?? 0,
+        'timestamp': responseData['timestamp'] ?? DateTime.now().toIso8601String(),
       };
     } catch (e) {
       throw Exception('Failed to load transaksi: $e');
@@ -105,7 +107,7 @@ class TransaksiApi {
   Future<Transaksi> getTransaksiDetail(int id) async {
     final token = await _getToken(); // Get the token
     final response = await http.get(
-      Uri.parse('$apiUrl/admin/transaksi/$id'),
+      Uri.parse('$apiUrl/transaksi/$id'),
       headers: {
         'Authorization': 'Bearer $token', // Include token in the header
       },
@@ -116,7 +118,8 @@ class TransaksiApi {
     }
 
     final responseData = json.decode(response.body);
-    return Transaksi.fromJson(responseData);
+    final data = responseData['data'] ?? responseData;
+    return Transaksi.fromJson(data);
   }
 
   // Update transaction
@@ -124,8 +127,8 @@ class TransaksiApi {
     final token = await _getToken(); // Get the token
     final data = _mapTransactionToUpdate(transaksi);
 
-    final response = await http.put(
-      Uri.parse('$apiUrl/admin/transaksi/$id'),
+    final response = await http.patch(
+      Uri.parse('$apiUrl/transaksi/$id'),
       body: json.encode(data),
       headers: {
         "Content-Type": "application/json",
@@ -154,8 +157,8 @@ class TransaksiApi {
       "total": transaksi.total,
       "nopol": transaksi.nopol,
       "status": transaksi.status,
-      "motor_tersewa": transaksi.motor_tersewa,
-      "sisa_motor": transaksi.sisa_motor,
+      "motorTersewa": transaksi.motorTersewa,
+      "sisaMotor": transaksi.sisaMotor,
       "jenis_motor": _mapMotorToUpdate(transaksi.jenisMotor),
     };
   }
@@ -190,7 +193,7 @@ class TransaksiApi {
   Future<void> deleteTransaksi(int id) async {
     final token = await _getToken(); // Get the token
     final response = await http.delete(
-      Uri.parse('$apiUrl/admin/transaksi/delete/$id'),
+      Uri.parse('$apiUrl/transaksi/$id'),
       headers: {
         'Authorization': 'Bearer $token', // Include token in the header
       },
@@ -204,17 +207,27 @@ class TransaksiApi {
   // Bulk delete transactions
   Future<void> bulkDelete(List<int> ids) async {
     final token = await _getToken(); // Get the token
-    final response = await http.post(
-      Uri.parse('$apiUrl/admin/transaksi/bulk-delete'),
-      body: json.encode({"ids": ids}),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer $token', // Include token in the header
-      },
-    );
+    
+    try {
+      final response = await http.post(
+        Uri.parse('$apiUrl/transaksi/bulk-delete'),
+        body: json.encode({"ids": ids}),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token', // Include token in the header
+        },
+      );
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to delete transactions');
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        // Fallback to individual deletes
+        for (var id in ids) {
+          await deleteTransaksi(id);
+        }
+      }
+    } catch (e) {
+      for (var id in ids) {
+        await deleteTransaksi(id);
+      }
     }
   }
 }

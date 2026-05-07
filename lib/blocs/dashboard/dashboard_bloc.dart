@@ -56,8 +56,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       _lastBookingUpdate = booking['timestamp'];
 
       final newState = DashboardLoaded(
-        motorTersewa: transactions['motor_tersewa'] ?? 0,
-        sisaMotor: transactions['sisa_motor'] ?? 0,
+        motorTersewa: transactions['motorTersewa'] ?? 0,
+        sisaMotor: transactions['sisaMotor'] ?? 0,
         totalUnit: jenisMotors['count'] ?? 0,
         totalBooking: booking['count'] ?? 0,
         data: transactions['data'] ?? [],

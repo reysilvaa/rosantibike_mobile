@@ -8,9 +8,9 @@ class PdfFullscreenViewer extends StatelessWidget {
   final Uint8List pdfData;
 
   const PdfFullscreenViewer({
-    Key? key,
+    super.key,
     required this.pdfData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

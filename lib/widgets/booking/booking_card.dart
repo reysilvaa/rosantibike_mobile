@@ -18,7 +18,7 @@ class BookingCard extends StatelessWidget {
   final String motorType;
 
   const BookingCard({
-    Key? key,
+    super.key,
     required this.bookingId,
     required this.customer,
     required this.nopol,
@@ -28,7 +28,7 @@ class BookingCard extends StatelessWidget {
     required this.total,
     required this.motorType,
     required this.dateKembali,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +66,11 @@ class BookingCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         elevation: 2,
         color: theme.cardColor,
-        shadowColor: theme.shadowColor.withOpacity(0.2),
+        shadowColor: theme.shadowColor.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: theme.dividerColor.withOpacity(0.1),
+            color: theme.dividerColor.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -127,7 +127,7 @@ class BookingCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: theme.primaryColor.withOpacity(0.1),
+                        color: theme.primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -141,19 +141,19 @@ class BookingCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Divider(color: theme.dividerColor.withOpacity(0.2)),
+                Divider(color: theme.dividerColor.withValues(alpha: 0.2)),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     Icon(Icons.confirmation_number_outlined,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Text(
                       'ID: $bookingId',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color:
-                            theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                            theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -163,13 +163,13 @@ class BookingCard extends StatelessWidget {
                   children: [
                     Icon(Icons.confirmation_number_outlined,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Text(
                       'Nopol: $nopol',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color:
-                            theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                            theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -179,23 +179,23 @@ class BookingCard extends StatelessWidget {
                   children: [
                     Icon(Icons.calendar_today,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Sewa: ${dateSewa}',
+                          'Sewa: $dateSewa',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                         Text(
                           'Jam: $jamSewa',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.textTheme.bodySmall?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                       ],
@@ -207,23 +207,23 @@ class BookingCard extends StatelessWidget {
                   children: [
                     Icon(Icons.calendar_today,
                         size: 16,
-                        color: theme.iconTheme.color?.withOpacity(0.7)),
+                        color: theme.iconTheme.color?.withValues(alpha: 0.7)),
                     const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Kembali: ${dateKembali}',
+                          'Kembali: $dateKembali',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                         Text(
                           'Jam: $jamKembali',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.textTheme.bodySmall?.color
-                                ?.withOpacity(0.7),
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                       ],

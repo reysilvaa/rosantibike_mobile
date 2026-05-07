@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class PeriodSelector extends StatefulWidget {
-  const PeriodSelector({Key? key}) : super(key: key);
+  const PeriodSelector({super.key});
 
   @override
   State<PeriodSelector> createState() => _PeriodSelectorState();

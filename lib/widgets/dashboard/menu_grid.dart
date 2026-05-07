@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rosantibike_mobile/constants/my_in_app_webview.dart';
 import 'package:rosantibike_mobile/constants/page_transition.dart';
-import 'package:rosantibike_mobile/pages/booking_page.dart';
-import 'package:rosantibike_mobile/pages/transaksi_page.dart';
 import 'package:rosantibike_mobile/pages/unit_screen.dart';
 import 'package:rosantibike_mobile/screen/main_screen.dart';
 
 class MenuGrid extends StatefulWidget {
-  const MenuGrid({Key? key}) : super(key: key);
+  const MenuGrid({super.key});
 
   @override
   State<MenuGrid> createState() => _MenuGridState();
@@ -52,11 +49,6 @@ class _MenuGridState extends State<MenuGrid>
         'icon': Icons.motorcycle_outlined,
         'label': 'myUnit',
         'gradient': gradients[2],
-      },
-      {
-        'icon': Icons.admin_panel_settings,
-        'label': 'myWeb',
-        'gradient': gradients[3],
       },
     ];
   }
@@ -116,7 +108,7 @@ class _MenuGridState extends State<MenuGrid>
 
         // Calculate item dimensions
         final availableWidth = constraints.maxWidth - (padding * 2);
-        final itemWidth = (availableWidth - (spacing * 3)) / 4;
+        final itemWidth = (availableWidth - (spacing * 2)) / 3;
         final itemHeight = itemWidth * 1.1; // Reduced aspect ratio
 
         return Container(
@@ -126,7 +118,7 @@ class _MenuGridState extends State<MenuGrid>
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: theme.shadowColor.withOpacity(isDarkMode ? 0.3 : 0.08),
+                color: theme.shadowColor.withValues(alpha: isDarkMode ? 0.3 : 0.08),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
                 spreadRadius: 1,
@@ -137,7 +129,7 @@ class _MenuGridState extends State<MenuGrid>
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
+              crossAxisCount: 3,
               crossAxisSpacing: spacing,
               mainAxisSpacing: spacing,
               childAspectRatio: itemWidth / itemHeight,
@@ -174,13 +166,13 @@ class MenuGridItem extends StatefulWidget {
   final double iconSize;
 
   const MenuGridItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.gradient,
     required this.theme,
     required this.iconSize,
-  }) : super(key: key);
+  });
 
   @override
   State<MenuGridItem> createState() => _MenuGridItemState();
@@ -220,21 +212,11 @@ class _MenuGridItemState extends State<MenuGridItem> {
               page: UnitScreen(),
             ),
           );
-        } else if (widget.label == 'myWeb') {
-          Navigator.push(
-            context,
-            RightToLeftTransition(
-              page: InAppWebViewWidget(
-                url: 'https://rosantibikemotorent.com/login',
-                title: 'My Web',
-              ),
-            ),
-          );
         }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
-        transform: Matrix4.identity()..scale(_isPressed ? 0.95 : 1.0),
+        transform: Matrix4.diagonal3Values(_isPressed ? 0.95 : 1.0, _isPressed ? 0.95 : 1.0, 1.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -251,7 +233,7 @@ class _MenuGridItemState extends State<MenuGridItem> {
                 boxShadow: [
                   BoxShadow(
                     color: widget.gradient.first
-                        .withOpacity(isDarkMode ? 0.3 : 0.25),
+                        .withValues(alpha: isDarkMode ? 0.3 : 0.25),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                     spreadRadius: 0.5,

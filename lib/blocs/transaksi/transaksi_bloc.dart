@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 // ignore_for_file: avoid_print
 
 import 'dart:async';
@@ -97,7 +98,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
         motorType: event.transaksi.nopol,
       );
     } catch (e) {
-      print('Error showing notification: $e');
+      debugPrint('Error showing notification: $e');
     }
   }
 
