@@ -1,0 +1,60 @@
+name: Flutter Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Get version from pubspec.yaml
+        id: get_version
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          # Clean version for tag (replace + with - for better tag compatibility if needed, but usually + is fine)
+          TAG_VERSION="v${VERSION%+*}"
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build APK
+        run: flutter build apk --release --build-name=${{ steps.get_version.outputs.VERSION }}
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release --build-name=${{ steps.get_version.outputs.VERSION }}
+
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_version.outputs.TAG_VERSION }}-${{ github.run_number }}
+          name: Release ${{ steps.get_version.outputs.TAG_VERSION }} (Build ${{ github.run_number }})
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
