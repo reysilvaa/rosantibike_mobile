@@ -17,10 +17,13 @@ import 'package:rosantibike_mobile/theme/theme_provider.dart';
 import 'package:rosantibike_mobile/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rosantibike_mobile/services/notification_service.dart';
+import 'package:rosantibike_mobile/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await initializeDateFormatting('id_ID', null);
 
   final notificationService = NotificationService();

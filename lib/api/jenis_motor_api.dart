@@ -16,10 +16,10 @@ class JenisMotorApi {
   // Get the list of jenis motor with count
   Future<Map<String, dynamic>> getJenisMotors({String? lastUpdated}) async {
     final token = await _getToken(); // Get the token
-    final uri =
-        Uri.parse('$apiUrl/jenis-motor').replace(queryParameters: {
-      if (lastUpdated != null) 'last_updated': lastUpdated,
-    });
+    Uri uri = Uri.parse('$apiUrl/jenis-motor');
+    if (lastUpdated != null && lastUpdated.isNotEmpty) {
+      uri = uri.replace(queryParameters: {'last_updated': lastUpdated});
+    }
 
     try {
       final response = await http.get(

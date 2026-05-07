@@ -18,10 +18,10 @@ class BookingApi {
   Future<Map<String, dynamic>> getBooking(
       {String? lastUpdated, String? search}) async {
     final token = await _getToken(); // Get the token
-    final uri =
-        Uri.parse('$apiUrl/transaksi').replace(queryParameters: {
-      if (search != null) 'search': search,
-    });
+    Uri uri = Uri.parse('$apiUrl/transaksi');
+    if (search != null && search.isNotEmpty) {
+      uri = uri.replace(queryParameters: {'search': search});
+    }
 
     try {
       final response = await http.get(
